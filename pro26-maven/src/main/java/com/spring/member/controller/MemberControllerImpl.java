@@ -3,11 +3,8 @@ package com.spring.member.controller;
 import com.spring.member.service.MemberService;
 import com.spring.member.vo.MemberVO;
 import java.util.List;
-import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,12 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller("memberController")
 public class MemberControllerImpl implements MemberController {
-  private static final Logger LOGGER = LoggerFactory.getLogger(MemberControllerImpl.class);
-
   @Autowired private MemberService memberService;
-
-  // TODO: 아래 필드는 불필요해보임.
-  @Autowired private MemberVO memberVO;
 
   @Override
   @RequestMapping(value = "/member/listMembers.do", method = RequestMethod.GET)
@@ -44,10 +36,6 @@ public class MemberControllerImpl implements MemberController {
       HttpServletResponse response)
       throws Exception {
     request.setCharacterEncoding("utf-8");
-
-    LOGGER.info("### 필드의 memberVO:: {}", memberVO);
-    LOGGER.info("### 인자로 전달받은 memberVO:: {}", member);
-    LOGGER.info("### 두 VO가 같은지?:: {}", Objects.equals(memberVO, member));
 
     int result = 0;
     result = memberService.addMember(member);

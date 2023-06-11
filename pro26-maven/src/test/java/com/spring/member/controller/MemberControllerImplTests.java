@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +25,6 @@ import org.springframework.web.context.WebApplicationContext;
       "classpath:config/action-mybatis.xml"
     })
 @WebAppConfiguration
-@Slf4j
 public class MemberControllerImplTests {
 
   @Autowired private WebApplicationContext context;
