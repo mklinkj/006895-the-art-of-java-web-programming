@@ -24,17 +24,17 @@
     <jackson.version>2.15.2</jackson.version>
     <jackson-databind.version>${jackson.version}</jackson-databind.version>
 
-    <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
+    <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
 
     <junit.version>5.9.3</junit.version>
     <assertj.version>3.24.2</assertj.version>
     <json-unit.version>2.38.0</json-unit.version>
-    <mockito.version>5.3.1</mockito.version>
+    <mockito.version>5.4.0</mockito.version>
     <hamcrest.version>2.2</hamcrest.version>
 
-    <spring.version>6.0.9</spring.version>
+    <spring.version>6.0.10</spring.version>
 
-    <spring-security.version>6.1.0</spring-security.version>
+    <spring-security.version>6.1.1</spring-security.version>
 
     <aspectj.version>1.9.19</aspectj.version>
 
@@ -58,7 +58,7 @@
     <!-- webjars -->
     <webjars-jquery.version>3.6.4</webjars-jquery.version>
     <webjars-bootstrap.version>5.3.0</webjars-bootstrap.version>
-    <webjars-locator.version>0.46</webjars-locator.version>
+    <webjars-locator.version>0.47</webjars-locator.version>
     <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 
     <mybatis.version>3.5.13</mybatis.version>
@@ -73,8 +73,8 @@
     <!-- #### Servlet 4 Project Support #### -->
     <!-- ################################### -->
 
-    <spring5.version>5.3.27</spring5.version>
-    <spring-security5.version>5.8.3</spring-security5.version>
+    <spring5.version>5.3.28</spring5.version>
+    <spring-security5.version>5.8.4</spring-security5.version>
 
     <spring4.version>4.3.30.RELEASE</spring4.version>
     <!-- Spring 3까지 내려서 테스트하긴 시행착오가 많다. 😅 -->
@@ -104,9 +104,9 @@
 
     <!-- Maven 플러그인 버전 관리 -->
     <mybatis-generator-maven-plugin.version>1.4.2</mybatis-generator-maven-plugin.version>
-    <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
+    <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-    <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>
 
