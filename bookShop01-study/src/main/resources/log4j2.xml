@@ -5,8 +5,7 @@
     <Console name="console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
     </Console>
-
-    <!-- TODO: 파일 로깅은 어떻게 적용할지 알아보고 하자.. -->
+    <!-- log4j v1 기존 설정 -->
     <!--
     <appender class="org.apache.log4j.DailyRollingFileAppender" name="dailyFileAppender">
       <layout class="org.apache.log4j.PatternLayout">
@@ -16,7 +15,14 @@
       <param name="File" value="C:\\shopping\\logs\\bookshop.log"/>
     </appender>
     -->
-
+    <RollingFile name="dailyFileAppender"
+                 fileName="C:\\shopping\\logs\\bookshop.log"
+                 filePattern="C:\\shopping\\logs\\bookshop-%d{yyyy-MM-dd}.log">
+      <PatternLayout pattern="[%d{HH:mm:ss}]%-5p-%m%n"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+      </Policies>
+    </RollingFile>
   </Appenders>
 
   <Loggers>
@@ -32,7 +38,7 @@
 
     <Root level="debug">
       <AppenderRef ref="console"/>
-      <!--<AppenderRef ref="dailyFileAppender"/>-->
+      <AppenderRef ref="dailyFileAppender"/>
     </Root>
   </Loggers>
 </Configuration>
