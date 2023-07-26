@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configuration>
+<Configuration>
+  <Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <Logger level="info" name="com.spring.bookshop01"/>
+
+    <Logger level="info" name="org.springframework.core"/>
+    <Logger level="info" name="org.springframework.beans"/>
+    <Logger level="info" name="org.springframework.context"/>
+    <Logger level="info" name="org.springframework.web"/>
+
+    <!-- 메퍼는 코드정리가 좀 된 후에 TRACE로 추가하자.. -->
+    <!--<Logger name="mapper 패키지" level="TRACE"/>-->
+
+    <Root level="info">
+      <AppenderRef ref="console"/>
+    </Root>
+  </Loggers>
+</Configuration>

@@ -1,14 +1,16 @@
 package com.bookshop01.order.controller;
 
+import com.bookshop01.common.base.BaseController;
+import com.bookshop01.goods.vo.GoodsVO;
+import com.bookshop01.member.vo.MemberVO;
+import com.bookshop01.order.service.OrderService;
+import com.bookshop01.order.vo.OrderVO;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,12 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.bookshop01.common.base.BaseController;
-import com.bookshop01.goods.vo.GoodsVO;
-import com.bookshop01.member.vo.MemberVO;
-import com.bookshop01.order.service.OrderService;
-import com.bookshop01.order.vo.OrderVO;
 
 @Controller("orderController")
 @RequestMapping(value="/order")
@@ -41,9 +37,9 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		
 		Boolean isLogOn=(Boolean)session.getAttribute("isLogOn");
 		String action=(String)session.getAttribute("action");
-		//·Î±×ÀÎ ¿©ºÎ Ã¼Å©
-		//ÀÌÀü¿¡ ·Î±×ÀÎ »óÅÂÀÎ °æ¿ì´Â ÁÖ¹®°úÁ¤ ÁøÇà
-		//·Î±×¾Æ¿ô »óÅÂÀÎ °æ¿ì ·Î±×ÀÎ È­¸éÀ¸·Î ÀÌµ¿
+		//ë¡œê·¸ì¸ ì—¬ë¶€ ì²´í¬
+		//ì´ì „ì— ë¡œê·¸ì¸ ìƒíƒœì¸ ê²½ìš°ëŠ” ì£¼ë¬¸ê³¼ì • ì§„í–‰
+		//ë¡œê·¸ì•„ì›ƒ ìƒíƒœì¸ ê²½ìš° ë¡œê·¸ì¸ í™”ë©´ìœ¼ë¡œ ì´ë™
 		if(isLogOn==null || isLogOn==false){
 			session.setAttribute("orderInfo", _orderVO);
 			session.setAttribute("action", "/order/orderEachGoods.do");
@@ -142,11 +138,11 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 			orderVO.setCard_pay_month(receiverMap.get("card_pay_month"));
 			orderVO.setPay_orderer_hp_num(receiverMap.get("pay_orderer_hp_num"));	
 			orderVO.setOrderer_hp(orderer_hp);	
-			myOrderList.set(i, orderVO); //°¢ orderVO¿¡ ÁÖ¹®ÀÚ Á¤º¸¸¦ ¼¼ÆÃÇÑ ÈÄ ´Ù½Ã myOrderList¿¡ ÀúÀåÇÑ´Ù.
+			myOrderList.set(i, orderVO); //ê° orderVOì— ì£¼ë¬¸ì ì •ë³´ë¥¼ ì„¸íŒ…í•œ í›„ ë‹¤ì‹œ myOrderListì— ì €ì¥í•œë‹¤.
 		}//end for
 		
 	    orderService.addNewOrder(myOrderList);
-		mav.addObject("myOrderInfo",receiverMap);//OrderVO·Î ÁÖ¹®°á°ú ÆäÀÌÁö¿¡  ÁÖ¹®ÀÚ Á¤º¸¸¦ Ç¥½ÃÇÑ´Ù.
+		mav.addObject("myOrderInfo",receiverMap);//OrderVOë¡œ ì£¼ë¬¸ê²°ê³¼ í˜ì´ì§€ì—  ì£¼ë¬¸ì ì •ë³´ë¥¼ í‘œì‹œí•œë‹¤.
 		mav.addObject("myOrderList", myOrderList);
 		return mav;
 	}

@@ -26,15 +26,15 @@
 
     <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
 
-    <junit.version>5.9.3</junit.version>
+    <junit.version>5.10.0</junit.version>
     <assertj.version>3.24.2</assertj.version>
-    <json-unit.version>2.38.0</json-unit.version>
+    <json-unit.version>3.0.0</json-unit.version>
     <mockito.version>5.4.0</mockito.version>
     <hamcrest.version>2.2</hamcrest.version>
 
-    <spring.version>6.0.10</spring.version>
+    <spring.version>6.0.11</spring.version>
 
-    <spring-security.version>6.1.1</spring-security.version>
+    <spring-security.version>6.1.2</spring-security.version>
 
     <aspectj.version>1.9.19</aspectj.version>
 
@@ -49,7 +49,7 @@
 
     <ojdbc.version>23.2.0.0</ojdbc.version>
     <mysql-connector-j.version>8.0.33</mysql-connector-j.version>
-    <hsqldb.version>2.7.1</hsqldb.version>
+    <hsqldb.version>2.7.2</hsqldb.version>
 
     <java-time-jsptags.version>2.0.0</java-time-jsptags.version>
 
@@ -68,13 +68,15 @@
     <hikaricp.version>5.0.1</hikaricp.version>
 
     <commons-beanutils.version>1.9.4</commons-beanutils.version>
+    
+    <thumbnailator.version>0.4.20</thumbnailator.version>
 
     <!-- #################################### -->
     <!-- #### Servlet 4 Project Support #### -->
     <!-- ################################### -->
 
-    <spring5.version>5.3.28</spring5.version>
-    <spring-security5.version>5.8.4</spring-security5.version>
+    <spring5.version>5.3.29</spring5.version>
+    <spring-security5.version>5.8.5</spring-security5.version>
 
     <spring4.version>4.3.30.RELEASE</spring4.version>
     <!-- Spring 3까지 내려서 테스트하긴 시행착오가 많다. 😅 -->
@@ -251,6 +253,7 @@
   <!-- 하위 예제 프로젝트 모듈 -->
   <modules>
     <module>pro26-maven</module>
+    <module>bookShop01-study</module>
   </modules>
   
 </project>

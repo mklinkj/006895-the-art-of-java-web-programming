@@ -1,60 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mapper.order">
-<!-- 리절트 맵 정의 -->	
-	<resultMap id="orderGoodsResult" type="OrderVO">
-	    <result property="order_seq_num" column="order_seq_num" />
-		<result property="order_id" column="order_id" />
-		<result property="member_id" column="member_id" />
-		<result property="goods_id" column="goods_id" />
-		<result property="goods_title" column="goods_title" />
-		<result property="goods_sales_price" column="goods_sales_price" />
-		<result property="order_total_price" column="order_total_price" />
-		<result property="order_goods_qty" column="order_goods_qty" />
-		
-		<result property="orderer_name" column="orderer_name" />
-		<result property="receiver_name" column="receiver_name" />
-		<result property="receiver_hp1" column="receiver_hp1" />
-		<result property="receiver_hp2" column="receiver_hp2" />
-		<result property="receiver_hp3" column="receiver_hp3" />
-		
-		<result property="receiver_tel1" column="receiver_tel1" />
-		<result property="receiver_tel2" column="receiver_tel2" />
-		<result property="receiver_tel3" column="receiver_tel3" />
-		<result property="delivery_address" column="delivery_address" />
-		<result property="delivery_message" column="delivery_message" />
-		
-		<result property="delivery_method" column="delivery_method" />
-		<result property="gift_wrapping" column="gift_wrapping" />
-		<result property="pay_method" column="pay_method" />
-		<result property="card_com_name" column="card_com_name" />
-		<result property="card_pay_month" column="card_pay_month" />
-		
-		<result property="pay_orderer_hp_num" column="pay_orderer_hp_num" />
-		<result property="pay_order_time" column="pay_order_time" />
-		<result property="delivery_state" column="delivery_state" />
-		<result property="final_total_price" column="final_total_price" />
-		<result property="goods_qty" column="goods_qty" />
-		<result property="orderer_hp" column="orderer_hp" />
-		<result property="goods_fileName" column="goods_fileName" />
-	</resultMap>
-	
-	 <select id="selectMyOrderList" resultMap="orderGoodsResult"  parameterType="orderVO"  >
-	    <![CDATA[
-			select * from t_shopping_order
-			where to_char(pay_order_time,'yyyy-mm-dd')=to_char(sysdate,'yyyy-mm-dd') 
-        	and member_id=#{member_id}
-        	order by pay_order_time desc
-		]]>
-	</select>
-	<insert id="insertNewOrder" parameterType="orderVO"  >
-	    <selectKey resultType="int" keyProperty="order_seq_num" order="BEFORE">
-	    	select order_seq_num.nextval from dual
-	    </selectKey>
-	    <![CDATA[
+  <!-- 리절트 맵 정의 -->
+  <delete id="deleteGoodsFromCart" parameterType="orderVO">
+    delete
+    from t_shopping_cart
+    where goods_id = #{goods_id}
+  </delete>
+
+  <insert id="insertNewOrder" parameterType="orderVO">
+    <selectKey keyProperty="order_seq_num" order="BEFORE" resultType="int">
+      select order_seq_num.nextval from dual
+    </selectKey>
+    <![CDATA[
 			insert into t_shopping_order(order_seq_num,
 			                            order_id,
 										  member_id,
@@ -106,26 +67,69 @@
 						                #{orderer_hp},
 						                #{pay_orderer_hp_num})
     	]]>
-	</insert>
+  </insert>
+  <resultMap id="orderGoodsResult" type="OrderVO">
+    <result column="order_seq_num" property="order_seq_num"/>
+    <result column="order_id" property="order_id"/>
+    <result column="member_id" property="member_id"/>
+    <result column="goods_id" property="goods_id"/>
+    <result column="goods_title" property="goods_title"/>
+    <result column="goods_sales_price" property="goods_sales_price"/>
+    <result column="order_total_price" property="order_total_price"/>
+    <result column="order_goods_qty" property="order_goods_qty"/>
 
-   <select id="selectOrderID" resultType="int"  >
+    <result column="orderer_name" property="orderer_name"/>
+    <result column="receiver_name" property="receiver_name"/>
+    <result column="receiver_hp1" property="receiver_hp1"/>
+    <result column="receiver_hp2" property="receiver_hp2"/>
+    <result column="receiver_hp3" property="receiver_hp3"/>
+
+    <result column="receiver_tel1" property="receiver_tel1"/>
+    <result column="receiver_tel2" property="receiver_tel2"/>
+    <result column="receiver_tel3" property="receiver_tel3"/>
+    <result column="delivery_address" property="delivery_address"/>
+    <result column="delivery_message" property="delivery_message"/>
+
+    <result column="delivery_method" property="delivery_method"/>
+    <result column="gift_wrapping" property="gift_wrapping"/>
+    <result column="pay_method" property="pay_method"/>
+    <result column="card_com_name" property="card_com_name"/>
+    <result column="card_pay_month" property="card_pay_month"/>
+
+    <result column="pay_orderer_hp_num" property="pay_orderer_hp_num"/>
+    <result column="pay_order_time" property="pay_order_time"/>
+    <result column="delivery_state" property="delivery_state"/>
+    <result column="final_total_price" property="final_total_price"/>
+    <result column="goods_qty" property="goods_qty"/>
+    <result column="orderer_hp" property="orderer_hp"/>
+    <result column="goods_fileName" property="goods_fileName"/>
+  </resultMap>
+
+  <select id="selectOrderID" resultType="int">
 	    <![CDATA[
-		    select seq_order_id.nextval from dual
-    	]]>
+    select seq_order_id.nextval
+    from dual
+    ]]>
 	</select>
-	
-	<select id="selectMyOrder" resultMap="orderGoodsResult"   parameterType="String"  >
+
+  <select id="selectMyOrder" parameterType="String" resultMap="orderGoodsResult">
 	    <![CDATA[
-		    select * from t_shopping_order
-            where to_char(pay_order_time,'yyyy-mm-dd')=to_char(sysdate,'yyyy-mm-dd') 
-            and order_id=#{order_id}
-            order by pay_order_time desc
-    	]]>
+    select *
+    from t_shopping_order
+    where to_char(pay_order_time, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+      and order_id = #{order_id}
+    order by pay_order_time desc
+    ]]>
 	</select>
-	
-	<delete id="deleteGoodsFromCart" parameterType="orderVO">
-	  delete from t_shopping_cart
-	  where goods_id=#{goods_id}
-	</delete>
-	
+
+  <select id="selectMyOrderList" parameterType="orderVO" resultMap="orderGoodsResult">
+	    <![CDATA[
+    select *
+    from t_shopping_order
+    where to_char(pay_order_time, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+      and member_id = #{member_id}
+    order by pay_order_time desc
+    ]]>
+	</select>
+
 </mapper>

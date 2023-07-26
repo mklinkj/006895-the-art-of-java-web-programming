@@ -1,261 +1,226 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.spring</groupId>
-	<artifactId>bookshop-study</artifactId>
-	<name>bookshop-study</name>
-	<packaging>war</packaging>
-	<version>1.0.0-BUILD-SNAPSHOT</version>
-	<properties>
-		<java-version>1.7</java-version>
-		<org.springframework-version>4.1.1.RELEASE</org.springframework-version>
-		<org.aspectj-version>1.6.10</org.aspectj-version>
-		<org.slf4j-version>1.6.6</org.slf4j-version>
-	</properties>
-	<dependencies>
-		<!-- Spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
-			<exclusions>
-				<!-- Exclude Commons Logging in favor of SLF4j -->
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				 </exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-				
-		<!-- AspectJ -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${org.aspectj-version}</version>
-		</dependency>	
-		
-		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${org.slf4j-version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.mail</groupId>
-					<artifactId>mail</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.jms</groupId>
-					<artifactId>jms</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jdmk</groupId>
-					<artifactId>jmxtools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jmx</groupId>
-					<artifactId>jmxri</artifactId>
-				</exclusion>
-			</exclusions>
-			<scope>runtime</scope>
-		</dependency>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <artifactId>bookshop-study</artifactId>
 
-		<!-- @Inject -->
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>1</version>
-		</dependency>
-				
-		<!-- Servlet -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-	
-		<!-- Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.7</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<!-- JDBC 설정하기 -->
-     <dependency>
-	    <groupId>oracle.jdbc</groupId>
-	    <artifactId>OracleDriver</artifactId>
-	    <version>12.1.0.2.0</version>
-	    <scope>system</scope>
-	    <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc7.jar</systemPath>
-      </dependency>
-     
-      
-      <dependency>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-          <version>5.1.29</version>
-      </dependency>
-         <!-- myBatis 설정관련 라이브러리 -->
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.8.0</version>
-        </dependency>      
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>1.1.0</version>
-        </dependency>
+  <dependencies>
+    <!-- Spring -->
+    <dependency>
+      <artifactId>spring-context</artifactId>
+      <groupId>org.springframework</groupId>
+      <version>${spring.version}</version>
+    </dependency>
 
-        <dependency><!-- sqlSessionFactory 만들때 없으면 에러남 -->
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>2.2</version>
-        </dependency>	
-        <dependency>
-	      <groupId>org.apache.tiles</groupId>
-	      <artifactId>tiles-core</artifactId>
-	      <version>2.2.2</version>
-        </dependency>
-        <dependency>
-	      <groupId>org.apache.tiles</groupId>
-	      <artifactId>tiles-jsp</artifactId>
-	      <version>2.2.2</version>
-        </dependency>
-        <dependency>
-	      <groupId>org.apache.tiles</groupId>
-	      <artifactId>tiles-servlet</artifactId>
-	      <version>2.2.2</version>
-        </dependency>
-       <dependency>
-         <groupId>commons-io</groupId>
-         <artifactId>commons-io</artifactId>
-         <version>2.4</version>
-       </dependency>
-       <dependency>
-         <groupId>commons-fileupload</groupId>
-         <artifactId>commons-fileupload</artifactId>
-         <version>1.3.1</version>
-       </dependency>
-      <!-- jquery 라이브러리 --> 
-      <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>jquery</artifactId>
-        <version>2.2.1</version>
-      </dependency>   
-      
-	    
-	    <!-- 썸내일 기능 -->
-        <dependency>
-         <groupId>net.coobird</groupId> 
-         <artifactId>thumbnailator</artifactId> 
-         <version>0.4.8</version> 
-        </dependency> 
-        
-        <!-- json -->
-        <dependency>
-		    <groupId>net.sf.json-lib</groupId>
-		    <artifactId>json-lib</artifactId>
-		    <version>2.4</version>
-		    <classifier>jdk15</classifier>    
-		</dependency>
-		
-		
-				<!-- AOP -->
-		<dependency>
-		  <groupId>org.springframework</groupId>
-		  <artifactId>spring-aop</artifactId>
-		  <version>${org.springframework-version}</version>
-	  </dependency>
+    <dependency>
+      <artifactId>spring-webmvc</artifactId>
+      <groupId>org.springframework</groupId>
+      <version>${spring.version}</version>
+    </dependency>
 
-	<!-- AspectJ -->
-	<dependency>
-	    <groupId>org.aspectj</groupId>
-	    <artifactId>aspectjrt</artifactId>
-	    <version>${org.aspectj-version}</version>
-	</dependency>
- 
-	<dependency>
-	    <groupId>org.aspectj</groupId>
-	    <artifactId>aspectjweaver</artifactId>
-	    <version>${org.aspectj-version}</version>
-	</dependency>
-	 
-	<dependency>
-	    <groupId>org.aspectj</groupId>
-	    <artifactId>aspectjtools</artifactId>
-	    <version>${org.aspectj-version}</version>
-	</dependency>
-	</dependencies>
-    <build>
-        <plugins>       
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <compilerArgument>-Xlint:all</compilerArgument>
-                    <showWarnings>true</showWarnings>
-                    <showDeprecation>true</showDeprecation>
-                </configuration>
-            </plugin>         
-        </plugins>
-    </build>
-    
-    <!-- 오라클 드라이버 라이센스 얻어오는 구문 -->
-    <repositories>
-       <repository>
-           <id>mesir-repo</id>
-           <url>http://mesir.googlecode.com/svn/trunk/mavenrepo</url>
-       </repository>
-      </repositories>    
+    <dependency>
+      <artifactId>spring-jdbc</artifactId>
+      <groupId>org.springframework</groupId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Lombok -->
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <scope>provided</scope>
+      <version>${lombok.version}</version>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <artifactId>log4j-slf4j2-impl</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <version>${log4j.version}</version>
+    </dependency>
+
+    <!-- Servlet -->
+    <dependency>
+      <artifactId>javax.servlet-api</artifactId>
+      <groupId>javax.servlet</groupId>
+      <scope>provided</scope>
+      <version>${javax.servlet-api.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <groupId>javax.servlet.jsp</groupId>
+      <scope>provided</scope>
+      <version>${javax.servlet.jsp-api.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>jstl</artifactId>
+      <groupId>javax.servlet</groupId>
+      <scope>${jstl-scope.type}</scope>
+      <version>${jstl.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>java-time-jsptags</artifactId>
+      <groupId>net.sargue</groupId>
+      <version>${java-time-jsptags-javax.version}</version>
+    </dependency>
+
+
+    <!-- JDBC 설정하기 -->
+    <dependency>
+      <artifactId>ojdbc11</artifactId>
+      <groupId>com.oracle.database.jdbc</groupId>
+      <version>${ojdbc.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>hsqldb</artifactId>
+      <groupId>org.hsqldb</groupId>
+      <scope>runtime</scope>
+      <version>${hsqldb.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <artifactId>mysql-connector-j</artifactId>
+      <groupId>com.mysql</groupId>
+      <version>${mysql-connector-j.version}</version>
+    </dependency>
+
+    <!-- MyBatis 설정관련 라이브러리 -->
+    <dependency>
+      <artifactId>commons-beanutils</artifactId>
+      <groupId>commons-beanutils</groupId>
+      <version>${commons-beanutils.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>mybatis</artifactId>
+      <groupId>org.mybatis</groupId>
+      <version>${mybatis.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>mybatis-spring</artifactId>
+      <groupId>org.mybatis</groupId>
+      <version>${mybatis-spring.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <artifactId>tiles-jsp</artifactId>
+      <groupId>org.apache.tiles</groupId>
+      <version>${tiles.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>commons-io</artifactId>
+      <groupId>commons-io</groupId>
+      <version>${commons-io.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>commons-fileupload</artifactId>
+      <groupId>commons-fileupload</groupId>
+      <version>${commons-fileupload.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>jquery</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>${webjars-jquery.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>webjars-locator</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>${webjars-locator.version}</version>
+    </dependency>
+
+
+    <!-- 썸네일 기능 -->
+    <dependency>
+      <artifactId>thumbnailator</artifactId>
+      <groupId>net.coobird</groupId>
+      <version>${thumbnailator.version}</version>
+    </dependency>
+
+    <!-- jackson -->
+    <dependency>
+      <artifactId>jackson-databind</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <version>${jackson-databind.version}</version>
+    </dependency>
+
+
+    <!-- AOP -->
+    <dependency>
+      <artifactId>spring-aop</artifactId>
+      <groupId>org.springframework</groupId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- AspectJ -->
+    <dependency>
+      <artifactId>aspectjweaver</artifactId>
+      <groupId>org.aspectj</groupId>
+      <version>${aspectj.version}</version>
+    </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <artifactId>junit-jupiter</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <scope>test</scope>
+      <version>${junit.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>hamcrest</artifactId>
+      <groupId>org.hamcrest</groupId>
+      <scope>test</scope>
+      <version>${hamcrest.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>mockito-core</artifactId>
+      <groupId>org.mockito</groupId>
+      <scope>test</scope>
+      <version>${mockito.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>assertj-core</artifactId>
+      <groupId>org.assertj</groupId>
+      <scope>test</scope>
+      <version>${assertj.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-test</artifactId>
+      <groupId>org.springframework</groupId>
+      <scope>test</scope>
+      <version>${spring.version}</version>
+    </dependency>
+  </dependencies>
+
+  <modelVersion>4.0.0</modelVersion>
+  <name>bookshop-study</name>
+  <packaging>war</packaging>
+  <parent>
+    <artifactId>taowjp-study-parent</artifactId>
+    <groupId>com.spring</groupId>
+    <relativePath>../pom.xml</relativePath>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <properties>
+    <jetty-context-path>/</jetty-context-path>
+    <jetty.version>${jetty-javax.version}</jetty.version>
+    <spring.version>${spring5.version}</spring.version>
+  </properties>
+
+  <version>1.0.0-BUILD-SNAPSHOT</version>
+
 </project>
