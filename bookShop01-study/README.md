@@ -12,3 +12,24 @@
 
 * 일괄로 변환해서 utf8 임시파일을 만드는 스크립트 작성
   * [changeEnc.sh](changeEnc.sh)
+
+
+
+## Oracle DB 데이터 입력
+
+* [oracle-script](oracle-script)
+
+
+
+## 서버 실행
+
+* Jetty 서버 실행
+  ```
+  mvn clean jetty:run
+  ```
+
+* **메인 페이지 URL**
+  * `http://localhost:8090/main/main.do`
+
+
+> * 일단 화면 뜨는 것과 몇몇 기능 동작을 확인했다.

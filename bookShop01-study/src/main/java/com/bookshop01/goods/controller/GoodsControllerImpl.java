@@ -71,7 +71,7 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 
     // TODO: OBJECT_MAPPER 는 나중에 공통 클래스로 정리하자..
     String jsonInfo = OBJECT_MAPPER.writeValueAsString(Map.of("keyword", keywordList));
-    log.info("jsonInfo: {}", jsonInfo);
+    LOGGER.info("jsonInfo: {}", jsonInfo);
     return jsonInfo;
   }
 
