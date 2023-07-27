@@ -19,7 +19,7 @@
 ```
 C:\sqlplus> CHCP 65001
 C:\sqlplus> SET NLS_LANG=KOREAN_KOREA.AL32UTF8
-C:\sqlplus> sqplus scott@localhost:1521
+C:\sqlplus> sqlplus scott@localvmdb.oracle_xe_18c:1521
 ```
 
 1. 실행전에 NLS_LANG을 설정해줘야했음.
@@ -30,7 +30,7 @@ C:\sqlplus> sqplus scott@localhost:1521
 ### 스크립트 실행
 
 ```
-SQL> @@C:\git\006895-the-art-of-java-web-programming\bookShop01-study\docs\shopping_table_schema.sql
+SQL> @@C:\git\006895-the-art-of-java-web-programming\bookShop01-study\oracle-script\shopping_table_schema.sql
 ```
 
 접속완료 한후 위와 같은 식으로 스크립트의 절대경로를 입력해서 실행 시켜줄 수 있음.
