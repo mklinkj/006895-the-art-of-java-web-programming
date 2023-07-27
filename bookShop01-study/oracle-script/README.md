@@ -10,7 +10,7 @@
 
 위의 3개 압축 파일 받아다 한곳에 풀었음.
 
-그러면 sqlplus를 사용할 수 있음.
+그러면 SQL*Plus를 사용할 수 있음.
 
 
 
@@ -78,3 +78,9 @@ SET SQLBLANKLINES ON
 INSERT INTO T_GOODS_DETAIL_IMAGE (IMAGE_ID,GOODS_ID,FILENAME,REG_ID,FILETYPE,CREDATE) VALUES (346,356,'마인_상세1.jpg','admin','detail_image1',TO_DATE('18/10/23','RR/MM/DD'));
 ```
 
+
+#### SQL 스크립트를 JDBC 연결을 통해 실행시킬 수 있는 도구가 이미 있다면.. 
+그것을 사용하는게 편할 것 같다.
+SQL*Plus에서 사용하는 구문을 제거한 sql파일도 별도로 추가했다.
+
+* [shopping_table_schema-jdbc.sql](shopping_table_schema-jdbc.sql)
