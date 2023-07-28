@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("adminGoodsDAO")
+@Repository
 public class AdminGoodsDAOImpl implements AdminGoodsDAO {
   @Autowired private SqlSession sqlSession;
 
@@ -37,10 +37,8 @@ public class AdminGoodsDAOImpl implements AdminGoodsDAO {
   }
 
   @Override
-  public GoodsVO selectGoodsDetail(int goods_id) throws DataAccessException {
-    GoodsVO goodsBean = new GoodsVO();
-    goodsBean = (GoodsVO) sqlSession.selectOne("mapper.admin.goods.selectGoodsDetail", goods_id);
-    return goodsBean;
+  public GoodsVO selectGoodsDetail(int goodsId) throws DataAccessException {
+    return sqlSession.selectOne("mapper.admin.goods.selectGoodsDetail", goodsId);
   }
 
   @Override

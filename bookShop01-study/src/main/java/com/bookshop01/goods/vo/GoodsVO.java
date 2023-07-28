@@ -1,7 +1,9 @@
 package com.bookshop01.goods.vo;
 
 import java.sql.Date;
+import lombok.ToString;
 
+@ToString
 public class GoodsVO {
   private int goods_id;
   private String goods_title;

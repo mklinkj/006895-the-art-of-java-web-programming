@@ -1,6 +1,8 @@
 # 수정 / 개선 사항
 
 > 보이는대로 수정 및 개선해보자..
+>
+> 한 이슈마다 커밋을 한번씩 하는게 나을 것 같다. 몰아서 하는 것보단 그게 알아보기 편할 듯..👍
 
 
 
@@ -38,7 +40,7 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
   위의 필드를 컨트롤러 메서드들에서 사용하고 있음.
 
-  👺 이러면 유저마다 다른 메서들을 호출할 때, 동시성 문제가 생길 텐데, 관련 부분은 메서드내에서 새로 객체 생성하도록 수정했다.
+  👺 이러면 유저마다 다른 메서드 들을 호출하는 상황일 때는, 동시성 문제가 반드시 생길 텐데, 관련 부분은 메서드내에서 새로 객체 생성하도록 수정했다.
 
 * MemberController에도 DB에서 불러온 MemberVO 객체를 컨트롤러 필드에 저장하는 코드가 있음. 😅
 
@@ -50,4 +52,25 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 * [x] VO에 붙은 `@Component` 어노테이션 제거
 * [x] Controller에서 VO객체를 필드로 사용하는 관련 부분 정리
+
+
+
+---
+
+## 테스트가 쉽도록 스프링 컨텍스트 XML 설정파일들은 resources 이하로 옮김
+
+* JUnit으로 실행할 때, 스프링 컨텍스트 XML파일이 `src/main/resources` 이하로 옮긴다.
+
+**TODO:**
+
+- [x] mybatis-context.xml 을 root-context.xml 으로 이름을 바꿔서 src/main/resources/ 이하 경로로 이동 
+  - servlet-context.xml 도 resources로 옮기자!
+- [x] servlet-context.xml에서 일괄적으로 컴포넌트 스캔을 하는데, 
+  * servlet-context.xml에서는 `@Controller` 만 스캔
+  * root-context.xml에서는 `@Controller` 만 제외하고 스캔
+- [x] AdminGoodsDAO에 대한 단순 테스트 메서드 추가하여 실행확인
+
+
+
+
 

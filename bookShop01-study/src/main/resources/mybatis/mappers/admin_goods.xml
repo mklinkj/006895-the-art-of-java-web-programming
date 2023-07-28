@@ -193,7 +193,7 @@
     where
     recNum between (#{section}-1)*100+ (#{pageNum}-1)*10+1 and (#{section}-1)*100+(#{pageNum})*10
   </select>
-  <select id="selectGoodsDetail" parameterType="String" resultMap="goodsResult">
+  <select id="selectGoodsDetail" parameterType="int" resultMap="goodsResult">
 	    <![CDATA[
     select g.*, to_char(g.goods_published_date, 'YYYY-MM-DD') as goods_published_date, d.fileName
     from t_shopping_goods g,
