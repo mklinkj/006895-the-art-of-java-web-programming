@@ -33,7 +33,7 @@
     <Logger level="info" name="org.springframework.context"/>
     <Logger level="info" name="org.springframework.web"/>
 
-    <!-- 메퍼는 코드정리가 좀 된 후에 TRACE로 추가하자.. -->
+    <!-- 메퍼는 코드 정리가 좀 된 후에 TRACE로 추가하자! -->
     <!--<Logger name="mapper 패키지" level="TRACE"/>-->
 
     <Root level="debug">

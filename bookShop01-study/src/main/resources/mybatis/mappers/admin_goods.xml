@@ -43,22 +43,22 @@
 					  			      #{goods_title},
 					  			      #{goods_writer},
 
-					  			      #{goods_publisher },
+					  			      #{goods_publisher},
 					  			      #{goods_price},
 					  			      #{goods_sales_price},
 					  			      #{goods_point},
 					  			      #{goods_published_date},
 
 					  			      #{goods_total_page},
-					  			      #{goods_isbn },
-					  			      #{goods_delivery_price },
-					  			      #{goods_delivery_date },
-					  			      #{goods_status },
+					  			      #{goods_isbn},
+					  			      #{goods_delivery_price},
+					  			      #{goods_delivery_date},
+					  			      #{goods_status},
 					  			      #{goods_writer_intro},
 
 									      #{goods_intro},
-					  			      #{goods_publisher_comment },
-					  			      #{goods_recommendation },
+					  			      #{goods_publisher_comment},
+					  			      #{goods_recommendation},
 					  			      #{goods_contents_order:VARCHAR}
 					 			 )
 		]]>
@@ -155,8 +155,8 @@
                  goods_writer,
                  goods_publisher,
                  goods_sales_price,
-                 to_char(goods_creDate, 'YYYY-MM-DD')        as goods_creDate,
-                 to_char(goods_published_date, 'YYYY-MM-DD') as goods_published_date
+                 TO_CHAR(goods_creDate, 'YYYY-MM-DD')        as goods_creDate,
+                 TO_CHAR(goods_published_date, 'YYYY-MM-DD') as goods_published_date
           from (select goods_id,
                        goods_title,
                        goods_writer,

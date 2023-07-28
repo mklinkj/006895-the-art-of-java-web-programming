@@ -1,8 +1,5 @@
 package com.bookshop01.order.vo;
 
-import org.springframework.stereotype.Component;
-
-@Component("orderVO")
 public class OrderVO {
   private int order_seq_num;
   private String member_id;
