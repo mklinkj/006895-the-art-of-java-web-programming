@@ -15,9 +15,9 @@
 
 
 
-## Oracle DB 데이터 입력
+## DB별 데이터 입력 스크립트 정리
 
-* [oracle-script](oracle-script)
+* [sql-script](sql-script)
 
 
 
