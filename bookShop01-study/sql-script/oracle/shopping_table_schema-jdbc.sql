@@ -118,32 +118,7 @@ DROP TABLE t_shopping_cart;
 	"CART_GOODS_QTY" NUMBER(4,0) DEFAULT 1
    ) ;
    
-DROP SEQUENCE ORDER_SEQ_NUM;
-DROP SEQUENCE SEQ_GOODS_ID;
-DROP SEQUENCE SEQ_IMAGE_ID;
-DROP SEQUENCE SEQ_ORDER_ID;
---------------------------------------------------------
---  DDL for Sequence ORDER_SEQ_NUM
---------------------------------------------------------
 
-   CREATE SEQUENCE  "ORDER_SEQ_NUM"  MINVALUE 0 MAXVALUE 10000000 INCREMENT BY 1 START WITH 400 CACHE 20 NOORDER  NOCYCLE ;
---------------------------------------------------------
---  DDL for Sequence SEQ_GOODS_ID
---------------------------------------------------------
-
-   CREATE SEQUENCE  "SEQ_GOODS_ID"  MINVALUE 100 MAXVALUE 1000000 INCREMENT BY 1 START WITH 400 CACHE 20 ORDER  NOCYCLE ;
---------------------------------------------------------
---  DDL for Sequence SEQ_IMAGE_ID
---------------------------------------------------------
-
-   CREATE SEQUENCE  "SEQ_IMAGE_ID"  MINVALUE 1 MAXVALUE 11111111 INCREMENT BY 1 START WITH 400 NOCACHE  NOORDER  NOCYCLE ;
---------------------------------------------------------
---  DDL for Sequence SEQ_ORDER_ID
---------------------------------------------------------
-
-   CREATE SEQUENCE  "SEQ_ORDER_ID"  MINVALUE 0 MAXVALUE 10000000 INCREMENT BY 1 START WITH 400 NOCACHE  ORDER  NOCYCLE ;
-
-   
 
 INSERT INTO T_GOODS_DETAIL_IMAGE (IMAGE_ID,GOODS_ID,FILENAME,REG_ID,FILETYPE,CREDATE) VALUES (346,394,'무작정 따라가기 홍콩 마카오.jpg','admin','main_image',TO_DATE('18/10/16','RR/MM/DD'));
 INSERT INTO T_GOODS_DETAIL_IMAGE (IMAGE_ID,GOODS_ID,FILENAME,REG_ID,FILETYPE,CREDATE) VALUES (347,394,'무작정 따라가기 홍콩 마카오_상세.jpg','admin','detail_image1',TO_DATE('18/10/16','RR/MM/DD'));
@@ -363,3 +338,31 @@ INSERT INTO T_SHOPPING_ORDER (ORDER_SEQ_NUM,ORDER_ID,MEMBER_ID,GOODS_ID,ORDERER_
 INSERT INTO T_SHOPPING_ORDER (ORDER_SEQ_NUM,ORDER_ID,MEMBER_ID,GOODS_ID,ORDERER_NAME,GOODS_TITLE,ORDER_GOODS_QTY,GOODS_SALES_PRICE,GOODS_FILENAME,RECEIVER_NAME,RECEIVER_HP1,RECEIVER_HP2,RECEIVER_HP3,RECEIVER_TEL1,RECEIVER_TEL2,RECEIVER_TEL3,DELIVERY_ADDRESS,DELIVERY_METHOD,DELIVERY_MESSAGE,GIFT_WRAPPING,PAY_METHOD,CARD_COM_NAME,CARD_PAY_MONTH,PAY_ORDERER_HP_NUM,DELIVERY_STATE,PAY_ORDER_TIME,ORDERER_HP) VALUES (90,94,'lee',354,'이병승','모두의 딥러닝',1,21600,'모두의 딥러닝_메인.jpg','이병승','010','2222','3333','02','1111','2222','우편번호:13547<br>도로명 주소:경기 성남시 분당구 고기로 25 (동원동)<br>[지번 주소:경기 성남시 분당구 동원동 79-1]<br>럭키빌딩 101호','일반택배',null,'no','신용카드<Br>카드사:삼성<br>할부개월수:일시불','삼성','일시불','해당없음','cancel_order',TO_DATE('18/10/27','RR/MM/DD'),'010-2222-3333');
 
 
+
+
+DROP SEQUENCE ORDER_SEQ_NUM;
+DROP SEQUENCE SEQ_GOODS_ID;
+DROP SEQUENCE SEQ_IMAGE_ID;
+DROP SEQUENCE SEQ_ORDER_ID;
+--------------------------------------------------------
+--  DDL for Sequence ORDER_SEQ_NUM
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "ORDER_SEQ_NUM"  MINVALUE 0 MAXVALUE 10000000 INCREMENT BY 1 START WITH 400 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence SEQ_GOODS_ID
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "SEQ_GOODS_ID"  MINVALUE 100 MAXVALUE 1000000 INCREMENT BY 1 START WITH 400 CACHE 20 ORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence SEQ_IMAGE_ID
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "SEQ_IMAGE_ID"  MINVALUE 1 MAXVALUE 11111111 INCREMENT BY 1 START WITH 400 NOCACHE  NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence SEQ_ORDER_ID
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "SEQ_ORDER_ID"  MINVALUE 0 MAXVALUE 10000000 INCREMENT BY 1 START WITH 400 NOCACHE  ORDER  NOCYCLE ;
+
+   
