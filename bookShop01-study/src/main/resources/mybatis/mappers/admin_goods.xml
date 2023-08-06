@@ -5,19 +5,19 @@
 
 <mapper namespace="mapper.admin.goods">
   <!-- 리절트 맵 정의 -->
-  <delete id="deleteGoodsImage" parameterType="String">
-    delete
-    from t_goods_detail_image
-    where image_id = #{image_id}
+  <delete id="deleteGoodsImage" parameterType="int">
+    DELETE
+      FROM t_goods_detail_image
+     WHERE image_id = #{imageId}
   </delete>
 
-  <insert id="insertNewGoods" parameterType="java.util.Map">
-    <selectKey keyProperty="goods_id" order="BEFORE" resultType="String">
-      select seq_goods_id.nextval from dual
+  <insert id="insertNewGoods" parameterType="map">
+    <selectKey keyProperty="goods_id" order="BEFORE" resultType="int">
+      SELECT SEQ_GOODS_ID.nextval FROM DUAL
     </selectKey>
 
     <![CDATA[
-		   insert into t_shopping_goods(
+		   INSERT INTO t_shopping_goods(
 		                goods_id,
 		                goods_sort,
                     goods_title,
@@ -37,7 +37,7 @@
 										goods_publisher_comment,
 										goods_recommendation,
 			              goods_contents_order)
-					  			values(
+					  			VALUES (
 					  			      #{goods_id},
 					  			      #{goods_sort},
 					  			      #{goods_title},
@@ -66,15 +66,15 @@
 
   <insert id="insertGoodsImageFile" parameterType="imageFileVO">
     <selectKey keyProperty="image_id" order="BEFORE" resultType="int">
-      select seq_image_id.nextval from dual
+      SELECT seq_image_id.nextval FROM dual
     </selectKey>
     <![CDATA[
-		   insert into t_goods_detail_image (image_id,
+		   INSERT INTO t_goods_detail_image (image_id,
 		                                     goods_id,
 																				 fileName,
 																				 fileType,
 																				 reg_id)
-											   					values(#{image_id},
+											   					VALUES(#{image_id},
 											   					 			 #{goods_id},
 											   							 	 #{fileName},
 											   								 #{fileType},
@@ -148,38 +148,38 @@
 
   <select id="selectNewGoodsList" parameterType="java.util.Map" resultMap="goodsResult">
 	    <![CDATA[
-    select *
-    from (select rowNum                                      as recNum,
+    SELECT *
+    FROM (SELECT rowNum                                      AS recNum,
                  goods_id,
                  goods_title,
                  goods_writer,
                  goods_publisher,
                  goods_sales_price,
-                 TO_CHAR(goods_creDate, 'YYYY-MM-DD')        as goods_creDate,
-                 TO_CHAR(goods_published_date, 'YYYY-MM-DD') as goods_published_date
-          from (select goods_id,
+                 TO_CHAR(goods_creDate, 'YYYY-MM-DD')        AS goods_creDate,
+                 TO_CHAR(goods_published_date, 'YYYY-MM-DD') AS goods_published_date
+          FROM (SELECT goods_id,
                        goods_title,
                        goods_writer,
                        goods_publisher,
                        goods_sales_price,
                        goods_creDate,
                        goods_published_date
-                from t_shopping_goods
-                where to_char(goods_creDate, 'YYYY-MM-DD') between #{beginDate} and #{endDate}
-                order by goods_creDate desc))
-    where recNum between (#{section} - 1) * 100 + (#{pageNum} - 1) * 10 + 1 and (#{section} - 1) * 100 + (#{pageNum}) * 10
+                FROM t_shopping_goods
+                WHERE TO_CHAR(goods_creDate, 'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
+                ORDER BY goods_creDate desc))
+    WHERE recNum BETWEEN (#{section} - 1) * 100 + (#{pageNum} - 1) * 10 + 1 AND (#{section} - 1) * 100 + (#{pageNum}) * 10
     ]]>
 	</select>
 
 
-  <select id="selectOrderGoodsList" parameterType="java.util.Map" resultMap="orderGoodsResult">
-    select * from (
-    select rowNum as recNum,t.*
-    from (
-    select * from t_shopping_order
-    where to_char(pay_order_time,'yyyy-mm-dd') between #{beginDate} and #{endDate}
+  <select id="selectOrderGoodsList" parameterType="map" resultMap="orderGoodsResult">
+    SELECT * FROM (
+    SELECT rowNum AS recNum,t.*
+    FROM (
+    SELECT * FROM t_shopping_order
+    WHERE TO_CHAR(pay_order_time,'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
     <if test="search_type=='orderer_id'">
-      AND orderer_id=#{search_word}
+      AND member_id=#{search_word}
     </if>
     <if test="search_type=='orderer_name'">
       AND orderer_name=#{search_word}
@@ -187,35 +187,35 @@
     <if test="search_type=='orderer_hp_num'">
       AND pay_orderer_hp_num=#{search_word}
     </if>
-    order by PAY_ORDER_TIME desc
+    ORDER BY PAY_ORDER_TIME DESC
     ) t
     )
-    where
-    recNum between (#{section}-1)*100+ (#{pageNum}-1)*10+1 and (#{section}-1)*100+(#{pageNum})*10
+    WHERE
+    recNum BETWEEN (#{section}-1)*100+ (#{pageNum}-1)*10+1 AND (#{section}-1)*100+(#{pageNum})*10
   </select>
   <select id="selectGoodsDetail" parameterType="int" resultMap="goodsResult">
 	    <![CDATA[
-    select g.*, to_char(g.goods_published_date, 'YYYY-MM-DD') as goods_published_date, d.fileName
-    from t_shopping_goods g,
+    SELECT g.*, TO_CHAR(g.goods_published_date, 'YYYY-MM-DD') AS goods_published_date, d.fileName
+    FROM t_shopping_goods g,
          t_goods_detail_image d
-    where g.goods_id = d.goods_id
-      and d.filetype = 'main_image'
-      and g.goods_id = #{goods_id}
-    order by g.goods_id
+    WHERE g.goods_id = d.goods_id
+      AND d.filetype = 'main_image'
+      AND g.goods_id = #{goods_id}
+    ORDER BY g.goods_id
     ]]>
 	</select>
 
 
-  <select id="selectGoodsImageFileList" parameterType="String" resultMap="imageResult">
-	    <![CDATA[
-    select *
-    from t_goods_detail_image
-    where goods_id = #{goods_id}
-    order by image_id asc
+  <select id="selectGoodsImageFileList" parameterType="int" resultMap="imageResult">
+    <![CDATA[
+    SELECT *
+      FROM t_goods_detail_image
+     WHERE goods_id = #{goods_id}
+     ORDER BY image_id ASC
     ]]>
 	</select>
-  <update id="updateGoodsInfo" parameterType="java.util.HashMap">
-    update t_shopping_goods
+  <update id="updateGoodsInfo" parameterType="map">
+    UPDATE t_shopping_goods
     <set>
       <if test=" goods_sort!='' and goods_sort!=null">
         goods_sort=#{goods_sort},
@@ -232,7 +232,7 @@
       <if test=" goods_price!='' and goods_price!=null">
         goods_price=#{goods_price},
       </if>
-      <if test=" goods_published_date!='' and goods_published_date!=null">
+      <if test=" goods_published_date!=null">
         goods_published_date=#{goods_published_date},
       </if>
       <if test=" goods_sales_price!='' and goods_sales_price!=null">
@@ -241,8 +241,8 @@
       <if test=" goods_point!='' and goods_point!=null">
         goods_point=#{goods_point},
       </if>
-      <if test=" goods_page_total!='' and goods_page_total!=null">
-        goods_page_total=#{goods_page_total},
+      <if test=" goods_total_page !='' and goods_total_page != null">
+        goods_total_page=#{goods_total_page},
       </if>
       <if test=" goods_isbn!='' and goods_isbn!=null">
         goods_isbn=#{goods_isbn},
@@ -250,7 +250,7 @@
       <if test=" goods_delivery_price!='' and goods_delivery_price!=null">
         goods_delivery_price=#{goods_delivery_price},
       </if>
-      <if test=" goods_delivery_date!='' and goods_delivery_date!=null">
+      <if test=" goods_delivery_date!=null">
         goods_delivery_date=#{goods_delivery_date},
       </if>
       <if test=" goods_status!='' and goods_status!=null">
@@ -262,30 +262,30 @@
       <if test=" goods_intro!='' and goods_intro!=null">
         goods_intro=#{goods_intro},
       </if>
-      <if test=" publisher_comment!='' and publisher_comment!=null">
-        publisher_comment=#{publisher_comment},
+      <if test=" goods_publisher_comment!='' and goods_publisher_comment!=null">
+        goods_publisher_comment=#{goods_publisher_comment},
       </if>
-      <if test=" recommendation!='' and recommendation!=null">
-        recommendation=#{recommendation},
+      <if test=" goods_recommendation!='' and goods_recommendation!=null">
+        goods_recommendation=#{goods_recommendation},
       </if>
       <if test=" goods_contents_order!='' and goods_contents_order!=null">
         goods_contents_order=#{goods_contents_order:VARCHAR}
       </if>
     </set>
-    where
+    WHERE
     goods_id=#{goods_id}
 
   </update>
 
   <update id="updateGoodsImage" parameterType="imageFileVO">
-    update t_goods_detail_image
-    set fileName=#{fileName}
-    where goods_id = #{goods_id}
-      and image_id = #{image_id}
+    UPDATE t_goods_detail_image
+    SET fileName=#{fileName}
+    WHERE goods_id = #{goods_id}
+      AND image_id = #{image_id}
   </update>
 
-  <update id="updateOrderGoods" parameterType="java.util.HashMap">
-    update t_shopping_order
+  <update id="updateOrderGoods" parameterType="map">
+    UPDATE t_shopping_order
     <set>
       <if test=" delivery_state!='' and delivery_state!=null">
         delivery_state=#{delivery_state},
@@ -294,7 +294,7 @@
         delivery_address=#{delivery_address},
       </if>
     </set>
-    where
+    WHERE
     order_id=#{order_id}
 
   </update>

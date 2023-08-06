@@ -19,9 +19,9 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
   @Autowired private AdminGoodsDAO adminGoodsDAO;
 
   @Override
-  public int addNewGoods(Map newGoodsMap) throws Exception {
+  public int addNewGoods(Map newGoodsMap) {
     int goods_id = adminGoodsDAO.insertNewGoods(newGoodsMap);
-    ArrayList<ImageFileVO> imageFileList = (ArrayList) newGoodsMap.get("imageFileList");
+    List<ImageFileVO> imageFileList = (ArrayList) newGoodsMap.get("imageFileList");
     for (ImageFileVO imageFileVO : imageFileList) {
       imageFileVO.setGoods_id(goods_id);
     }
@@ -57,7 +57,9 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
 
   @Override
   public void modifyGoodsImage(List<ImageFileVO> imageFileList) throws Exception {
-    adminGoodsDAO.updateGoodsImage(imageFileList);
+    for (ImageFileVO imageFile : imageFileList) {
+      adminGoodsDAO.updateGoodsImage(imageFile);
+    }
   }
 
   @Override

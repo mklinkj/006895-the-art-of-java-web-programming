@@ -51,12 +51,13 @@ public class AdminGoodsController extends BaseController {
     String beginDate = null, endDate = null;
 
     String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
+    // yyyy-MM-dd 형식 문자열이 입력된다.
     beginDate = tempDate[0];
     endDate = tempDate[1];
     dateMap.put("beginDate", beginDate);
     dateMap.put("endDate", endDate);
 
-    Map<String, Object> condMap = new HashMap<String, Object>();
+    Map<String, Object> condMap = new HashMap<>();
     if (section == null) {
       section = "1";
     }

@@ -31,7 +31,7 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 **CartController 가 정말 이상하게 되어있는데..**
 
-* 싱글톤으로 만들어진 CartVO, MemberVO를 Autowired로 받음
+* 몇몇 컨트롤러에서 싱글톤으로 만들어진 CartVO, MemberVO를 Autowired로 받음
 
   ```java
   @Autowired private CartVO cartVO;
@@ -59,7 +59,7 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 ## 테스트가 쉽도록 스프링 컨텍스트 XML 설정파일들은 resources 이하로 옮김
 
-* JUnit으로 실행할 때, 스프링 컨텍스트 XML파일이 `src/main/resources` 이하로 옮긴다.
+* JUnit으로 실행할 때 편의를 위해서, 스프링 컨텍스트 설정 XML파일들을 `src/main/resources` 이하로 옮긴다.
 
 **TODO:**
 
@@ -72,5 +72,35 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 
 
+---
+
+## AdminGoodsDAOImpl 클래스 정리
+
+**TODO:** 
+
+* [x] DataAccessException 를 던지는 선언은 모두 지운다.
+  * 어차피 런타임 예외라 일부러 메서드 선언에 명시할 필요가 없음.
+* [x] 일단은 제네릭 파라미터를 모두 추가하자!
+  * 어떤 타입인지 명확한 것은 기입하도록하고, 알수없는 것은 ?로 기입.
+  * 🤔 메서드 중에 Map을 파라미터 인자로 전달하는 부분들이 있는데, 이미 GoodsVO가 있기 때문에 그걸 활용하면 될 것 같은데... 이 부분은 점진적으로 바꾸자.
+  
+* [x] AdminGoodsDAOImpl에 있는 메서드들의 간단한 테스트 코드는 전부 추가해보자.
 
 
+
+
+
+
+
+
+
+
+
+
+
+---
+
+## 중간중간 의견들...
+
+* 이 작업들을... 질질 끌지말고 해야할텐데... 😂
+* 이게 완료 되면, 다른 DDD 예제의 상점 프로젝트도 이해가 잘 될듯 하다.

@@ -15,8 +15,8 @@
     <Logger level="info" name="org.springframework.context"/>
     <Logger level="info" name="org.springframework.web"/>
 
-    <!-- 메퍼는 코드정리가 좀 된 후에 TRACE로 추가하자.. -->
-    <!--<Logger name="mapper 패키지" level="TRACE"/>-->
+    <!-- 실제 매퍼 인터페이스 패키지와 일치되진 않더라도 Mapper의 네임스페이스를 로깅이름으로 걸어도 잘 처리된다. -->
+    <Logger name="mapper.admin.goods" level="TRACE"/>
 
     <Root level="info">
       <AppenderRef ref="console"/>

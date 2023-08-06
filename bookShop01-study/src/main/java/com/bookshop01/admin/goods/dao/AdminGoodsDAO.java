@@ -5,28 +5,27 @@ import com.bookshop01.goods.vo.ImageFileVO;
 import com.bookshop01.order.vo.OrderVO;
 import java.util.List;
 import java.util.Map;
-import org.springframework.dao.DataAccessException;
 
 public interface AdminGoodsDAO {
-  int insertNewGoods(Map newGoodsMap) throws DataAccessException;
+  int insertNewGoods(Map<String, ?> newGoodsMap);
 
-  List<GoodsVO> selectNewGoodsList(Map condMap) throws DataAccessException;
+  List<GoodsVO> selectNewGoodsList(Map<String, ?> condMap);
 
-  GoodsVO selectGoodsDetail(int goods_id) throws DataAccessException;
+  GoodsVO selectGoodsDetail(int goodsId);
 
-  List selectGoodsImageFileList(int goods_id) throws DataAccessException;
+  List<ImageFileVO> selectGoodsImageFileList(int goodsId);
 
-  void insertGoodsImageFile(List fileList) throws DataAccessException;
+  void insertGoodsImageFile(List<ImageFileVO> fileList);
 
-  void updateGoodsInfo(Map goodsMap) throws DataAccessException;
+  void updateGoodsInfo(Map<String, ?> goodsMap);
 
-  void updateGoodsImage(List<ImageFileVO> imageFileList) throws DataAccessException;
+  void updateGoodsImage(ImageFileVO imageFileList);
 
-  void deleteGoodsImage(int image_id) throws DataAccessException;
+  void deleteGoodsImage(int imageId);
 
-  void deleteGoodsImage(List fileList) throws DataAccessException;
+  void deleteGoodsImage(List<ImageFileVO> fileList);
 
-  List<OrderVO> selectOrderGoodsList(Map condMap) throws DataAccessException;
+  List<OrderVO> selectOrderGoodsList(Map<String, ?> condMap);
 
-  void updateOrderGoods(Map orderMap) throws DataAccessException;
+  void updateOrderGoods(Map<String, ?> orderMap);
 }

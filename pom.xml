@@ -57,8 +57,8 @@
     <commons-io.version>2.12.0</commons-io.version>
 
     <!-- webjars -->
-    <webjars-jquery.version>3.6.4</webjars-jquery.version>
-    <webjars-bootstrap.version>5.3.0</webjars-bootstrap.version>
+    <webjars-jquery.version>3.7.0</webjars-jquery.version>
+    <webjars-bootstrap.version>5.3.1</webjars-bootstrap.version>
     <webjars-locator.version>0.47</webjars-locator.version>
     <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 
