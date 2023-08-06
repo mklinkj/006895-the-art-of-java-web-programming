@@ -4,36 +4,35 @@ import com.bookshop01.admin.member.service.AdminMemberService;
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.member.vo.MemberVO;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/admin/member")
 public class AdminMemberController extends BaseController {
-  @Autowired private AdminMemberService adminMemberService;
+  private final AdminMemberService adminMemberService;
 
   @RequestMapping(
       value = "/adminMemberMain.do",
       method = {RequestMethod.POST, RequestMethod.GET})
   public ModelAndView adminGoodsMain(
-      @RequestParam Map<String, String> dateMap,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam Map<String, String> dateMap, HttpServletRequest request) {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
 
     String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
-    String section = dateMap.get("section");
+    String section =
+        dateMap.get("section"); // TODO: View에서는 chapter로 쓰고 쿼리에서는 section으로 쓰고 있었다. 😓 정리를 해야할 듯..
     String pageNum = dateMap.get("pageNum");
     String beginDate = null, endDate = null;
 
@@ -43,7 +42,7 @@ public class AdminMemberController extends BaseController {
     dateMap.put("beginDate", beginDate);
     dateMap.put("endDate", endDate);
 
-    HashMap<String, Object> condMap = new HashMap<String, Object>();
+    HashMap<String, Object> condMap = new HashMap<>();
     if (section == null) {
       section = "1";
     }
@@ -54,11 +53,11 @@ public class AdminMemberController extends BaseController {
     condMap.put("pageNum", pageNum);
     condMap.put("beginDate", beginDate);
     condMap.put("endDate", endDate);
-    ArrayList<MemberVO> member_list = adminMemberService.listMember(condMap);
+    List<MemberVO> member_list = adminMemberService.listMember(condMap);
     mav.addObject("member_list", member_list);
 
-    String beginDate1[] = beginDate.split("-");
-    String endDate2[] = endDate.split("-");
+    String[] beginDate1 = beginDate.split("-");
+    String[] endDate2 = endDate.split("-");
     mav.addObject("beginYear", beginDate1[0]);
     mav.addObject("beginMonth", beginDate1[1]);
     mav.addObject("beginDay", beginDate1[2]);
@@ -74,8 +73,7 @@ public class AdminMemberController extends BaseController {
   @RequestMapping(
       value = "/memberDetail.do",
       method = {RequestMethod.POST, RequestMethod.GET})
-  public ModelAndView memberDetail(HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
+  public ModelAndView memberDetail(HttpServletRequest request) {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
     String member_id = request.getParameter("member_id");
@@ -89,8 +87,8 @@ public class AdminMemberController extends BaseController {
       method = {RequestMethod.POST, RequestMethod.GET})
   public void modifyMemberInfo(HttpServletRequest request, HttpServletResponse response)
       throws Exception {
-    HashMap<String, String> memberMap = new HashMap<String, String>();
-    String val[] = null;
+    HashMap<String, String> memberMap = new HashMap<>();
+    String[] val;
     PrintWriter pw = response.getWriter();
     String member_id = request.getParameter("member_id");
     String mod_type = request.getParameter("mod_type");
@@ -136,8 +134,7 @@ public class AdminMemberController extends BaseController {
   @RequestMapping(
       value = "/deleteMember.do",
       method = {RequestMethod.POST})
-  public ModelAndView deleteMember(HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
+  public ModelAndView deleteMember(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView();
     HashMap<String, String> memberMap = new HashMap<String, String>();
     String member_id = request.getParameter("member_id");

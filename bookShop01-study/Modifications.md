@@ -88,7 +88,19 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 
 
+---
 
+## AdminMemberDAOImpl 클래스 정리
+
+### TODO: 
+
+- [x] admin_member.xml 정리
+  - 이 파일도 테이블 명이 갱신되지 않은 부분이 있다. 😓, 진짜 IDE의 자동 감지 도움 없으면 찾기 힘들것 같음...
+  - mybatis 조건 검사할 때.. null을 먼저 검사하고 and로 이어서 ''를 검사하는게 맞을 것 같은데... ''를 먼저 검사하는 부분이 있음.
+
+- [x] AdminMemberDAOImpl 메서드의 테스트 코드 작성
+- [x] section, chapter를 혼용되게 쓴부분이 있음. 그래서 회원목록을 볼 수 없음. section 기준으로 맞춤.
+- [x] 관련 컨트롤러 서비스의 기타 정리
 
 
 

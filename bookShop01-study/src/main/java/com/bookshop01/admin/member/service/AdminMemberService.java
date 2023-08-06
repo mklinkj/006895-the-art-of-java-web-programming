@@ -1,13 +1,13 @@
 package com.bookshop01.admin.member.service;
 
 import com.bookshop01.member.vo.MemberVO;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface AdminMemberService {
-  ArrayList<MemberVO> listMember(HashMap condMap) throws Exception;
+  List<MemberVO> listMember(Map<String, ?> condMap);
 
-  MemberVO memberDetail(String member_id) throws Exception;
+  MemberVO memberDetail(String member_id);
 
-  void modifyMemberInfo(HashMap memberMap) throws Exception;
+  void modifyMemberInfo(Map<String, ?> memberMap);
 }

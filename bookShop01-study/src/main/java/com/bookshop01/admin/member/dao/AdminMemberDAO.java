@@ -1,14 +1,14 @@
 package com.bookshop01.admin.member.dao;
 
 import com.bookshop01.member.vo.MemberVO;
-import java.util.ArrayList;
 import java.util.HashMap;
-import org.springframework.dao.DataAccessException;
+import java.util.List;
+import java.util.Map;
 
 public interface AdminMemberDAO {
-  ArrayList<MemberVO> listMember(HashMap condMap) throws DataAccessException;
+  List<MemberVO> listMember(Map<String, ?> condMap);
 
-  MemberVO memberDetail(String member_id) throws DataAccessException;
+  MemberVO memberDetail(String memberId);
 
-  void modifyMemberInfo(HashMap memberMap) throws DataAccessException;
+  void modifyMemberInfo(Map<String, ?> memberMap);
 }

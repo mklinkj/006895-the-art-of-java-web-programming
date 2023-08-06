@@ -1,30 +1,27 @@
 package com.bookshop01.admin.member.dao;
 
 import com.bookshop01.member.vo.MemberVO;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("adminMemberDao")
+@RequiredArgsConstructor
+@Repository
 public class AdminMemberDAOImpl implements AdminMemberDAO {
-  @Autowired private SqlSession sqlSession;
+  private final SqlSession sqlSession;
 
-  public ArrayList<MemberVO> listMember(HashMap condMap) throws DataAccessException {
-    ArrayList<MemberVO> memberList =
-        (ArrayList) sqlSession.selectList("mapper.admin.member.listMember", condMap);
-    return memberList;
+  @Override
+  public List<MemberVO> listMember(Map<String, ?> condMap) {
+    return sqlSession.selectList("mapper.admin.member.listMember", condMap);
   }
 
-  public MemberVO memberDetail(String member_id) throws DataAccessException {
-    MemberVO memberBean =
-        (MemberVO) sqlSession.selectOne("mapper.admin.member.memberDetail", member_id);
-    return memberBean;
+  public MemberVO memberDetail(String memberId) {
+    return sqlSession.selectOne("mapper.admin.member.memberDetail", memberId);
   }
 
-  public void modifyMemberInfo(HashMap memberMap) throws DataAccessException {
+  public void modifyMemberInfo(Map<String, ?> memberMap) {
     sqlSession.update("mapper.admin.member.modifyMemberInfo", memberMap);
   }
 }
