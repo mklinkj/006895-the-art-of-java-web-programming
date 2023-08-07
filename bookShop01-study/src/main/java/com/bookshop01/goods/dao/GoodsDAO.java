@@ -3,16 +3,15 @@ package com.bookshop01.goods.dao;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
 import java.util.List;
-import org.springframework.dao.DataAccessException;
 
 public interface GoodsDAO {
-  List<GoodsVO> selectGoodsList(String goodsStatus) throws DataAccessException;
+  List<GoodsVO> selectGoodsList(String goodsStatus);
 
-  List<String> selectKeywordSearch(String keyword) throws DataAccessException;
+  List<String> selectKeywordSearch(String keyword);
 
-  GoodsVO selectGoodsDetail(String goods_id) throws DataAccessException;
+  GoodsVO selectGoodsDetail(Integer goodsId);
 
-  List<ImageFileVO> selectGoodsDetailImage(String goods_id) throws DataAccessException;
+  List<ImageFileVO> selectGoodsDetailImage(Integer goodsId);
 
-  List<GoodsVO> selectGoodsBySearchWord(String searchWord) throws DataAccessException;
+  List<GoodsVO> selectGoodsBySearchWord(String searchWord);
 }

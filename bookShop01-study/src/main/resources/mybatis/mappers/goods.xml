@@ -36,60 +36,58 @@
   </resultMap>
 
 
-  <select id="selectGoodsList" parameterType="String" resultMap="goodsResult">
-        <![CDATA[
-    select t.*
-    from (select g.*, d.fileName
-          from t_shopping_goods g,
-               t_goods_detail_image d
-          where g.goods_id = d.goods_id
-            and d.filetype = 'main_image'
-            and goods_status = #{goodsStatus}
-          order by g.goods_creDate desc) t
-    where rowNum < 16
+  <select id="selectGoodsList" parameterType="string" resultMap="goodsResult">
+    <![CDATA[
+    SELECT t.*
+    FROM (SELECT g.*, d.fileName
+            FROM t_shopping_goods g,
+                 t_goods_detail_image d
+           WHERE g.goods_id = d.goods_id
+             AND d.filetype = 'main_image'
+             AND goods_status = #{goodsStatus}
+           ORDER BY g.goods_creDate DESC) t
+    WHERE rowNum < 16
     ]]>
 	</select>
 
-  <select id="selectGoodsDetail" parameterType="String" resultMap="goodsResult">
-	    <![CDATA[
-    select g.*, d.fileName
-    from t_shopping_goods g,
-         t_goods_detail_image d
-    where g.goods_id = d.goods_id
-      and d.filetype = 'main_image'
-      and g.goods_id = #{goods_id}
-    order by g.goods_id
+  <select id="selectGoodsDetail" parameterType="int" resultMap="goodsResult">
+    <![CDATA[
+    SELECT g.*, d.fileName
+      FROM t_shopping_goods g,
+           t_goods_detail_image d
+     WHERE g.goods_id = d.goods_id
+       AND d.filetype = 'main_image'
+       AND g.goods_id = #{goods_id}
+     ORDER BY g.goods_id
     ]]>
 	</select>
-  <select id="selectGoodsDetailImage" parameterType="String" resultMap="imageResult">
-	    <![CDATA[
-    select *
-    from t_goods_detail_image
-    where fileType!='main_image'
-				and goods_id=#{goods_id}
-    ]]>
-	</select>
-
-  <select id="selectGoodsBySearchWord" parameterType="String" resultMap="goodsResult">
-     <![CDATA[
-    select g.*, d.fileName
-    from t_shopping_goods g,
-         t_goods_detail_image d
-    where g.goods_id = d.goods_id
-      and d.filetype = 'main_image'
-      and g.goods_title like '%' || #{searchWord} || '%'
-    order by g.goods_creDate desc
+  <select id="selectGoodsDetailImage" parameterType="int" resultMap="imageResult">
+    <![CDATA[
+    SELECT *
+      FROM t_goods_detail_image
+     WHERE fileType!='main_image'
+		   AND goods_id=#{goods_id}
     ]]>
 	</select>
 
-  <select id="selectKeywordSearch" parameterType="String" resultType="String">
-	    <![CDATA[
-    select goods_title
-    from t_shopping_goods
-    where goods_title like '%' || #{keyword} || '%'
-    order by goods_creDate desc
+  <select id="selectGoodsBySearchWord" parameterType="string" resultMap="goodsResult">
+    <![CDATA[
+    SELECT g.*, d.fileName
+      FROM t_shopping_goods g,
+           t_goods_detail_image d
+     WHERE g.goods_id = d.goods_id
+       AND d.filetype = 'main_image'
+       AND g.goods_title LIKE '%' || #{searchWord} || '%'
+     ORDER BY g.goods_creDate DESC
     ]]>
 	</select>
 
-
+  <select id="selectKeywordSearch" parameterType="string" resultType="string">
+    <![CDATA[
+    SELECT goods_title
+      FROM t_shopping_goods
+     WHERE goods_title LIKE '%' || #{keyword} || '%'
+     ORDER BY goods_creDate DESC
+    ]]>
+	</select>
 </mapper>

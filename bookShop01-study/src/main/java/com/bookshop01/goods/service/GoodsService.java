@@ -8,7 +8,7 @@ public interface GoodsService {
 
   Map<String, List<GoodsVO>> listGoods() throws Exception;
 
-  Map goodsDetail(String _goods_id) throws Exception;
+  Map<String, ?> goodsDetail(Integer goodsId) throws Exception;
 
   List<String> keywordSearch(String keyword) throws Exception;
 

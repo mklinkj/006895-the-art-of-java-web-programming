@@ -122,8 +122,6 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
     location.href = "${contextPath}//admin/order/adminOrderMain.do";
     ```
 
-    
-
 - [x] 미사용 css제거 및 정리
 
   * 부분 주제와는 관련은 없으나, 콘솔에 404오류 뜨는게 어지러워서... 수정하도록 하자!
@@ -170,6 +168,38 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
   이 부분의 404 오류는 그냥 냅둬야겠다.
 
 ---
+
+## 상품(goods) 패키지 이하 코드 테스트 / 수정
+
+### TODO:
+
+- [x] 좌측 메뉴목록의 `IT/인터넷` 클릭시 /goods/goodsList.do 로 이동하려하는데, 컨트롤러 메서드 및 JSP 페이지가 없다. 이부분은 링크를 제거해두자. 
+
+  * side.jsp
+    ```jsp
+    <li><a href="${contextPath}/goods/goodsList.do">IT/인터넷</a></li>
+    ```
+
+- [x] 상품 아이디가 DB타입이 Oracle Number인데.. Controller > Service > Repository 까지 String으로 줄줄이 쓰는 부분이 있음.
+
+  * ID가 분명히 숫자만 들어가야하니, DB타입에 맞게 쓰는게 나을 것 같은데...
+  * 임시로 컨트롤러에서 서비스 호출하는 부분에만 Integer로 변환하는 코드를 넣어주자, 컨트롤러는 좀 나중에 변경하고...
+
+- [x] GoodsDAOImpl 테스트 코드 작성
+
+  
+
+---
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -2,48 +2,38 @@ package com.bookshop01.goods.dao;
 
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
-import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("goodsDAO")
+@RequiredArgsConstructor
+@Repository
 public class GoodsDAOImpl implements GoodsDAO {
-  @Autowired private SqlSession sqlSession;
+  private final SqlSession sqlSession;
 
   @Override
-  public List<GoodsVO> selectGoodsList(String goodsStatus) throws DataAccessException {
-    List<GoodsVO> goodsList =
-        (ArrayList) sqlSession.selectList("mapper.goods.selectGoodsList", goodsStatus);
-    return goodsList;
+  public List<GoodsVO> selectGoodsList(String goodsStatus) {
+    return sqlSession.selectList("mapper.goods.selectGoodsList", goodsStatus);
   }
 
   @Override
-  public List<String> selectKeywordSearch(String keyword) throws DataAccessException {
-    List<String> list =
-        (ArrayList) sqlSession.selectList("mapper.goods.selectKeywordSearch", keyword);
-    return list;
+  public List<String> selectKeywordSearch(String keyword) {
+    return sqlSession.selectList("mapper.goods.selectKeywordSearch", keyword);
   }
 
   @Override
-  public ArrayList selectGoodsBySearchWord(String searchWord) throws DataAccessException {
-    ArrayList list =
-        (ArrayList) sqlSession.selectList("mapper.goods.selectGoodsBySearchWord", searchWord);
-    return list;
+  public List<GoodsVO> selectGoodsBySearchWord(String searchWord) {
+    return sqlSession.selectList("mapper.goods.selectGoodsBySearchWord", searchWord);
   }
 
   @Override
-  public GoodsVO selectGoodsDetail(String goods_id) throws DataAccessException {
-    GoodsVO goodsVO = (GoodsVO) sqlSession.selectOne("mapper.goods.selectGoodsDetail", goods_id);
-    return goodsVO;
+  public GoodsVO selectGoodsDetail(Integer goodsId) {
+    return sqlSession.selectOne("mapper.goods.selectGoodsDetail", goodsId);
   }
 
   @Override
-  public List<ImageFileVO> selectGoodsDetailImage(String goods_id) throws DataAccessException {
-    List<ImageFileVO> imageList =
-        (ArrayList) sqlSession.selectList("mapper.goods.selectGoodsDetailImage", goods_id);
-    return imageList;
+  public List<ImageFileVO> selectGoodsDetailImage(Integer goodsId) {
+    return sqlSession.selectList("mapper.goods.selectGoodsDetailImage", goodsId);
   }
 }

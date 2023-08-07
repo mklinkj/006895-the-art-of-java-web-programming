@@ -1,17 +1,18 @@
 package com.bookshop01.goods.controller;
 
+import static com.bookshop01.common.util.ObjectMapperHelper.objectMapper;
+
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.goods.service.GoodsService;
 import com.bookshop01.goods.vo.GoodsVO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,23 +20,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 @RequestMapping(value = "/goods")
 public class GoodsController extends BaseController {
-  @Autowired private GoodsService goodsService;
-
-  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+  private final GoodsService goodsService;
 
   @RequestMapping(value = "/goodsDetail.do", method = RequestMethod.GET)
   public ModelAndView goodsDetail(
-      @RequestParam("goods_id") String goods_id,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam("goods_id") String goods_id, HttpServletRequest request) throws Exception {
     String viewName = (String) request.getAttribute("viewName");
     HttpSession session = request.getSession();
-    Map goodsMap = goodsService.goodsDetail(goods_id);
+    Map<String, ?> goodsMap = goodsService.goodsDetail(Integer.valueOf(goods_id));
     ModelAndView mav = new ModelAndView(viewName);
     mav.addObject("goodsMap", goodsMap);
     GoodsVO goodsVO = (GoodsVO) goodsMap.get("goodsVO");
@@ -48,39 +45,25 @@ public class GoodsController extends BaseController {
       method = RequestMethod.GET,
       produces = "application/text; charset=utf8")
   public @ResponseBody String keywordSearch(
-      @RequestParam("keyword") String keyword,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam("keyword") String keyword, HttpServletResponse response) throws Exception {
     response.setContentType("text/html;charset=utf-8");
     response.setCharacterEncoding("utf-8");
-    // System.out.println(keyword);
-    if (keyword == null || keyword.equals("")) return null;
+
+    if (keyword == null || keyword.isEmpty()) {
+      return null;
+    }
 
     keyword = keyword.toUpperCase();
     List<String> keywordList = goodsService.keywordSearch(keyword);
 
-    /*
-    // 최종 완성될 JSONObject 선언(전체)
-    JSONObject jsonObject = new JSONObject();
-    jsonObject.put("keyword", keywordList);
-
-    String jsonInfo = jsonObject.toString();
-    // System.out.println(jsonInfo);
-    */
-
-    // TODO: OBJECT_MAPPER 는 나중에 공통 클래스로 정리하자..
-    String jsonInfo = OBJECT_MAPPER.writeValueAsString(Map.of("keyword", keywordList));
+    String jsonInfo = objectMapper().writeValueAsString(Map.of("keyword", keywordList));
     LOGGER.info("jsonInfo: {}", jsonInfo);
     return jsonInfo;
   }
 
   @RequestMapping(value = "/searchGoods.do", method = RequestMethod.GET)
   public ModelAndView searchGoods(
-      @RequestParam("searchWord") String searchWord,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam("searchWord") String searchWord, HttpServletRequest request) throws Exception {
     String viewName = (String) request.getAttribute("viewName");
     List<GoodsVO> goodsList = goodsService.searchGoods(searchWord);
     ModelAndView mav = new ModelAndView(viewName);
@@ -91,12 +74,12 @@ public class GoodsController extends BaseController {
   private void addGoodsInQuick(String goods_id, GoodsVO goodsVO, HttpSession session) {
     boolean already_existed = false;
     List<GoodsVO> quickGoodsList; // 최근 본 상품 저장 ArrayList
-    quickGoodsList = (ArrayList<GoodsVO>) session.getAttribute("quickGoodsList");
+    quickGoodsList = (List<GoodsVO>) session.getAttribute("quickGoodsList");
 
     if (quickGoodsList != null) {
       if (quickGoodsList.size() < 4) { // 미리본 상품 리스트에 상품개수가 세개 이하인 경우
         for (int i = 0; i < quickGoodsList.size(); i++) {
-          GoodsVO _goodsBean = (GoodsVO) quickGoodsList.get(i);
+          GoodsVO _goodsBean = quickGoodsList.get(i);
           if (goods_id.equals(_goodsBean.getGoods_id())) {
             already_existed = true;
             break;
@@ -108,7 +91,7 @@ public class GoodsController extends BaseController {
       }
 
     } else {
-      quickGoodsList = new ArrayList<GoodsVO>();
+      quickGoodsList = new ArrayList<>();
       quickGoodsList.add(goodsVO);
     }
     session.setAttribute("quickGoodsList", quickGoodsList);

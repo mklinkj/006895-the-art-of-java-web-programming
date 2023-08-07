@@ -8,6 +8,7 @@ import java.util.Date;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/** 날짜 타입 변환 유틸리티 */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateUtils {
   public static Date toDate(LocalDateTime localDateTime) {
