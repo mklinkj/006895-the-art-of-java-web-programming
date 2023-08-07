@@ -137,11 +137,10 @@
         success: function (data, textStatus) {
           if (data.trim() == 'mod_success') {
             alert("주문 정보를 수정했습니다.");
-            location.href = "${contextPath}//admin/order/adminOrderMain.do";
+            location.href = "${contextPath}/admin/order/adminOrderMain.do";
           } else if (data.trim() == 'failed') {
             alert("다시 시도해 주세요.");
           }
-
         },
         error: function (data, textStatus) {
           alert("에러가 발생했습니다." + data);

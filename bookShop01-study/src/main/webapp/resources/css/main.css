@@ -1,6 +1,11 @@
 @font-face {
 	font-family: NanumGothic;
-	src: local("?"), url(../imgs/nanum.woff) format("woff"), url(../imgs/nanum.ttf) format("truetype");
+	src: local("?");
+	/*
+		TODO: 프로젝트에 나눔고딕 폰트가 포함되어있지는 않다.
+	    시스템에 설치하고 있어서 일부로 프로젝트에 포함할 필요는 없을 것 같음.
+	*/
+	/*src: local("?"), url(../imgs/nanum.woff) format("woff"), url(../imgs/nanum.ttf) format("truetype");*/
 }
 * {
 	margin: 0px; padding: 0px; vertical-align: middle;

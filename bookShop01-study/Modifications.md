@@ -74,7 +74,7 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 ---
 
-## AdminGoodsDAOImpl 클래스 정리
+## AdminGoodsDAOImpl 관련 클래스 정리
 
 **TODO:** 
 
@@ -90,7 +90,7 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 ---
 
-## AdminMemberDAOImpl 클래스 정리
+## AdminMemberDAOImpl 관련 클래스 정리
 
 ### TODO: 
 
@@ -100,9 +100,76 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 - [x] AdminMemberDAOImpl 메서드의 테스트 코드 작성
 - [x] section, chapter를 혼용되게 쓴부분이 있음. 그래서 회원목록을 볼 수 없음. section 기준으로 맞춤.
-- [x] 관련 컨트롤러 서비스의 기타 정리
+- [x] 관련 컨트롤러, 서비스, 기타 등등 정리
 
 
+
+---
+
+## AdminOrderDAOImpl 관련 클래스 정리
+
+### TODO: 
+
+- [x] AdminOrderDAOImpl 테스트 코드 작성
+
+  - 기타 관련 상위 코드 수정
+
+- [x] 관리자의 주문 조회 목록 페이지에서 배송수정을 수행하면 데이터는 잘 바뀌지만 최종 리다이렉트가 잘못된 주소로 가는 문제 수정 
+
+  * 확인해보니 JSP 파일의 리다이렉트 코드에 슬래시가 하나 더 포함되어있었다.
+
+    ```js
+    location.href = "${contextPath}//admin/order/adminOrderMain.do";
+    ```
+
+    
+
+- [x] 미사용 css제거 및 정리
+
+  * 부분 주제와는 관련은 없으나, 콘솔에 404오류 뜨는게 어지러워서... 수정하도록 하자!
+
+    ```
+    smartphone.css
+    tablet.css  
+    ```
+
+    위의 css파일도 프로젝트에 존재하지 않음 > 제거함
+
+  * `webapp/resources/imgs`에  나눔고딕 폰트가 있어야했으나... 없다 주석처리했다.
+
+    ```css
+    @font-face {
+    	font-family: NanumGothic;
+    	src: local("?");
+    	/*
+    		TODO: 프로젝트에 나눔고딕 폰트가 포함되어있지는 않다.
+    	    시스템에 설치하고 있어서 일부로 프로젝트에 포함할 필요는 없을 것 같음.
+    	*/
+    	/*src: local("?"), url(../imgs/nanum.woff) format("woff"), url(../imgs/nanum.ttf) format("truetype");*/
+    }
+    ```
+
+    그런데 나는 시스템에 나눔고딕을 설치해두고 있어서, 폰트가 나눔고딕으로 정상 출력되고 있다.
+
+- [ ] 포함되지 않은 이미지들... (그냥 두자.. 수정없음)
+
+  ```
+  GET http://localhost:8090/resources/imgs/body_back.gif 404 (Not Found)
+  main.css:1     GET http://localhost:8090/resources/imgs/vline_grey.gif 404 (Not Found)
+  main.css:1     GET http://localhost:8090/resources/imgs/nav_back.jpg 404 (Not Found)
+  main.css:1     GET http://localhost:8090/resources/imgs/sticky_line.gif 404 (Not Found)
+  main.css:1     GET http://localhost:8090/resources/imgs/notice_h2.gif 404 (Not Found)
+  main.css:1     GET http://localhost:8090/resources/imgs/notice_li.gif 404 (Not Found)
+  main.css:1     GET http://localhost:8090/resources/imgs/foot_line.gif 404 (Not Found)
+  main.css:1     GET http://localhost:8090/resources/imgs/foo_back.gif 404 (Not Found)
+  favicon.ico:1     GET http://localhost:8090/favicon.ico 404 (Not Found)
+  ```
+
+  `favicon.ico`는 그냥 넣으면 되긴하는데..  프로젝트 자체에 imgs라는 디렉토리가 `webapp/resources` 이하에 없다.
+
+  이 부분의 404 오류는 그냥 냅둬야겠다.
+
+---
 
 
 

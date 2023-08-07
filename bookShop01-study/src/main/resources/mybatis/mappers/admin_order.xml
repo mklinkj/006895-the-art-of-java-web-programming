@@ -68,53 +68,51 @@
     <result column="namujiAddress" property="namujiAddress"/>
     <result column="joinDate" property="joinDate"/>
   </resultMap>
-  <select id="selectNewOrderList" parameterType="java.util.HashMap" resultMap="orderResult">
-    select * from (
-    select rowNum as recNum,t.*
-    from (
-    select * from t_shopping_order
-    where to_char(pay_order_time,'yyyy-mm-dd') between #{beginDate} and #{endDate}
-    <if test="search_type=='orderer_id'">
-      AND orderer_id=#{search_word}
-    </if>
-    <if test="search_type=='orderer_name'">
-      AND orderer_name=#{search_word}
-    </if>
-    <if test="search_type=='orderer_hp_num'">
-      AND pay_orderer_hp_num=#{search_word}
-    </if>
-    order by pay_order_time desc
-    ) t
+  <select id="selectNewOrderList" parameterType="map" resultMap="orderResult">
+    SELECT * FROM (
+      SELECT rowNum AS recNum
+           , t.*
+       FROM (
+        SELECT * FROM t_shopping_order
+         WHERE TO_CHAR(pay_order_time,'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
+        <if test="search_type=='orderer_id'">
+          AND member_id=#{search_word}
+        </if>
+        <if test="search_type=='orderer_name'">
+          AND orderer_name=#{search_word}
+        </if>
+        <if test="search_type=='orderer_hp_num'">
+          AND pay_orderer_hp_num=#{search_word}
+        </if>
+        ORDER BY pay_order_time DESC
+      ) t
     )
-    where
-    recNum between (#{section}-1)*100+ (#{pageNum}-1)*10+1 and (#{section}-1)*100+(#{pageNum})*10
+    WHERE recNum BETWEEN (#{section}-1)*100+ (#{pageNum}-1)*10+1 AND (#{section}-1)*100+(#{pageNum})*10
   </select>
 
   <select id="selectOrderDetail" parameterType="int" resultMap="orderResult">
-	    <![CDATA[
-    select *
-    from t_shopping_order
-    where order_id = #{order_id}
+    <![CDATA[
+    SELECT *
+      FROM t_shopping_order
+     WHERE order_id = #{order_id}
     ]]>
 	</select>
 
-  <select id="selectOrderer" parameterType="String" resultMap="memberResult">
-	    <![CDATA[
-    select *
-    from t_shopping_member
-    where member_id = #{member_id}
+  <select id="selectOrderer" parameterType="string" resultMap="memberResult">
+    <![CDATA[
+    SELECT *
+      FROM t_shopping_member
+     WHERE member_id = #{member_id}
     ]]>
 	</select>
 
-  <update id="updateDeliveryState" parameterType="java.util.Map">
-    update t_shopping_order
+  <update id="updateDeliveryState" parameterType="map">
+    UPDATE t_shopping_order
     <set>
-      <if test=" delivery_state!='' and delivery_state!=null">
+      <if test=" delivery_state!=null and delivery_state!='' ">
         delivery_state=#{delivery_state}
       </if>
     </set>
-    where
-    order_id=#{order_id}
+    WHERE order_id=#{order_id}
   </update>
 </mapper>
-

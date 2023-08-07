@@ -34,7 +34,7 @@ public class AdminMemberController extends BaseController {
     String section =
         dateMap.get("section"); // TODO: View에서는 chapter로 쓰고 쿼리에서는 section으로 쓰고 있었다. 😓 정리를 해야할 듯..
     String pageNum = dateMap.get("pageNum");
-    String beginDate = null, endDate = null;
+    String beginDate, endDate;
 
     String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
     beginDate = tempDate[0];
@@ -87,41 +87,46 @@ public class AdminMemberController extends BaseController {
       method = {RequestMethod.POST, RequestMethod.GET})
   public void modifyMemberInfo(HttpServletRequest request, HttpServletResponse response)
       throws Exception {
-    HashMap<String, String> memberMap = new HashMap<>();
+    Map<String, String> memberMap = new HashMap<>();
     String[] val;
     PrintWriter pw = response.getWriter();
     String member_id = request.getParameter("member_id");
     String mod_type = request.getParameter("mod_type");
     String value = request.getParameter("value");
-    if (mod_type.equals("member_birth")) {
-      val = value.split(",");
-      memberMap.put("member_birth_y", val[0]);
-      memberMap.put("member_birth_m", val[1]);
-      memberMap.put("member_birth_d", val[2]);
-      memberMap.put("member_birth_gn", val[3]);
-    } else if (mod_type.equals("tel")) {
-      val = value.split(",");
-      memberMap.put("tel1", val[0]);
-      memberMap.put("tel2", val[1]);
-      memberMap.put("tel3", val[2]);
-
-    } else if (mod_type.equals("hp")) {
-      val = value.split(",");
-      memberMap.put("hp1", val[0]);
-      memberMap.put("hp2", val[1]);
-      memberMap.put("hp3", val[2]);
-      memberMap.put("smssts_yn", val[3]);
-    } else if (mod_type.equals("email")) {
-      val = value.split(",");
-      memberMap.put("email1", val[0]);
-      memberMap.put("email2", val[1]);
-      memberMap.put("emailsts_yn", val[2]);
-    } else if (mod_type.equals("address")) {
-      val = value.split(",");
-      memberMap.put("zipcode", val[0]);
-      memberMap.put("roadAddress", val[1]);
-      memberMap.put("jibunAddress", val[2]);
-      memberMap.put("namujiAddress", val[3]);
+    switch (mod_type) {
+      case "member_birth" -> {
+        val = value.split(",");
+        memberMap.put("member_birth_y", val[0]);
+        memberMap.put("member_birth_m", val[1]);
+        memberMap.put("member_birth_d", val[2]);
+        memberMap.put("member_birth_gn", val[3]);
+      }
+      case "tel" -> {
+        val = value.split(",");
+        memberMap.put("tel1", val[0]);
+        memberMap.put("tel2", val[1]);
+        memberMap.put("tel3", val[2]);
+      }
+      case "hp" -> {
+        val = value.split(",");
+        memberMap.put("hp1", val[0]);
+        memberMap.put("hp2", val[1]);
+        memberMap.put("hp3", val[2]);
+        memberMap.put("smssts_yn", val[3]);
+      }
+      case "email" -> {
+        val = value.split(",");
+        memberMap.put("email1", val[0]);
+        memberMap.put("email2", val[1]);
+        memberMap.put("emailsts_yn", val[2]);
+      }
+      case "address" -> {
+        val = value.split(",");
+        memberMap.put("zipcode", val[0]);
+        memberMap.put("roadAddress", val[1]);
+        memberMap.put("jibunAddress", val[2]);
+        memberMap.put("namujiAddress", val[3]);
+      }
     }
 
     memberMap.put("member_id", member_id);
@@ -136,7 +141,7 @@ public class AdminMemberController extends BaseController {
       method = {RequestMethod.POST})
   public ModelAndView deleteMember(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView();
-    HashMap<String, String> memberMap = new HashMap<String, String>();
+    Map<String, String> memberMap = new HashMap<>();
     String member_id = request.getParameter("member_id");
     String del_yn = request.getParameter("del_yn");
     memberMap.put("del_yn", del_yn);

@@ -2,36 +2,30 @@ package com.bookshop01.admin.order.dao;
 
 import com.bookshop01.member.vo.MemberVO;
 import com.bookshop01.order.vo.OrderVO;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("adminOrderDAO")
+@RequiredArgsConstructor
+@Repository
 public class AdminOrderDAOImpl implements AdminOrderDAO {
-  @Autowired private SqlSession sqlSession;
+  private final SqlSession sqlSession;
 
-  public ArrayList<OrderVO> selectNewOrderList(Map condMap) throws DataAccessException {
-    ArrayList<OrderVO> orderList =
-        (ArrayList) sqlSession.selectList("mapper.admin.order.selectNewOrderList", condMap);
-    return orderList;
+  public List<OrderVO> selectNewOrderList(Map<String, ?> condMap) {
+    return sqlSession.selectList("mapper.admin.order.selectNewOrderList", condMap);
   }
 
-  public void updateDeliveryState(Map deliveryMap) throws DataAccessException {
+  public void updateDeliveryState(Map<String, ?> deliveryMap) {
     sqlSession.update("mapper.admin.order.updateDeliveryState", deliveryMap);
   }
 
-  public ArrayList<OrderVO> selectOrderDetail(int order_id) throws DataAccessException {
-    ArrayList<OrderVO> orderList =
-        (ArrayList) sqlSession.selectList("mapper.admin.order.selectOrderDetail", order_id);
-    return orderList;
+  public List<OrderVO> selectOrderDetail(int orderId) {
+    return sqlSession.selectList("mapper.admin.order.selectOrderDetail", orderId);
   }
 
-  public MemberVO selectOrderer(String member_id) throws DataAccessException {
-    MemberVO orderer =
-        (MemberVO) sqlSession.selectOne("mapper.admin.order.selectOrderer", member_id);
-    return orderer;
+  public MemberVO selectOrderer(String memberId) {
+    return sqlSession.selectOne("mapper.admin.order.selectOrderer", memberId);
   }
 }

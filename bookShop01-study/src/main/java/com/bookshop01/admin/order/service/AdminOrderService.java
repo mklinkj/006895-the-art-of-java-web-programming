@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminOrderService {
-  List<OrderVO> listNewOrder(Map condMap) throws Exception;
+  List<OrderVO> listNewOrder(Map<String, ?> condMap) throws Exception;
 
-  void modifyDeliveryState(Map deliveryMap) throws Exception;
+  void modifyDeliveryState(Map<String, ?> deliveryMap) throws Exception;
 
-  Map orderDetail(int order_id) throws Exception;
+  Map<String, ?> orderDetail(int orderId) throws Exception;
 }

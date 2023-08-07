@@ -7,37 +7,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/admin/order")
 public class AdminOrderController extends BaseController {
-  @Autowired private AdminOrderService adminOrderService;
+  private final AdminOrderService adminOrderService;
 
   @RequestMapping(
       value = "/adminOrderMain.do",
       method = {RequestMethod.GET, RequestMethod.POST})
   public ModelAndView adminOrderMain(
-      @RequestParam Map<String, String> dateMap,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam Map<String, String> dateMap, HttpServletRequest request) throws Exception {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
 
     String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
     String section = dateMap.get("section");
     String pageNum = dateMap.get("pageNum");
-    String beginDate = null, endDate = null;
+    String beginDate, endDate;
 
     String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
     beginDate = tempDate[0];
@@ -76,32 +73,23 @@ public class AdminOrderController extends BaseController {
   @RequestMapping(
       value = "/modifyDeliveryState.do",
       method = {RequestMethod.POST})
-  public ResponseEntity modifyDeliveryState(
-      @RequestParam Map<String, String> deliveryMap,
-      HttpServletRequest request,
-      HttpServletResponse response)
+  @ResponseBody // TODO: 이 어노테이션을 써주지 않아도 동작은 하지만 써줘야 명확한 것 같은데...
+  public ResponseEntity modifyDeliveryState(@RequestParam Map<String, String> deliveryMap)
       throws Exception {
     adminOrderService.modifyDeliveryState(deliveryMap);
 
-    String message = null;
-    ResponseEntity resEntity = null;
-    HttpHeaders responseHeaders = new HttpHeaders();
-    message = "mod_success";
-    resEntity = new ResponseEntity(message, responseHeaders, HttpStatus.OK);
-    return resEntity;
+    String message = "mod_success";
+    return new ResponseEntity(message, HttpStatus.OK);
   }
 
   @RequestMapping(
       value = "/orderDetail.do",
       method = {RequestMethod.GET, RequestMethod.POST})
   public ModelAndView orderDetail(
-      @RequestParam("order_id") int order_id,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam("order_id") int order_id, HttpServletRequest request) throws Exception {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
-    Map orderMap = adminOrderService.orderDetail(order_id);
+    Map<String, ?> orderMap = adminOrderService.orderDetail(order_id);
     mav.addObject("orderMap", orderMap);
     return mav;
   }
