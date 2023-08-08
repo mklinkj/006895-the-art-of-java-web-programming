@@ -1,30 +1,41 @@
 package com.bookshop01.member.service;
 
+import static com.bookshop01.common.util.StringUtils.isNullOrBlank;
+
 import com.bookshop01.member.dao.MemberDAO;
 import com.bookshop01.member.vo.MemberVO;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("memberService")
+@RequiredArgsConstructor
+@Service
 @Transactional(propagation = Propagation.REQUIRED)
 public class MemberServiceImpl implements MemberService {
-  @Autowired private MemberDAO memberDAO;
+  private final MemberDAO memberDAO;
 
   @Override
-  public MemberVO login(Map loginMap) throws Exception {
+  public MemberVO login(Map<String, String> loginMap) {
     return memberDAO.login(loginMap);
   }
 
   @Override
-  public void addMember(MemberVO memberVO) throws Exception {
+  public void addMember(MemberVO memberVO) {
+    // TODO: Y, N을 enum 처리할지? 생각을 해보자...😅😅😅
+    if (isNullOrBlank(memberVO.getSmssts_yn())) {
+      memberVO.setSmssts_yn("N");
+    }
+
+    if (isNullOrBlank(memberVO.getEmailsts_yn())) {
+      memberVO.setEmailsts_yn("N");
+    }
     memberDAO.insertNewMember(memberVO);
   }
 
   @Override
-  public String overlapped(String id) throws Exception {
+  public boolean overlapped(String id) {
     return memberDAO.selectOverlappedID(id);
   }
 }

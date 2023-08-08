@@ -2,29 +2,27 @@ package com.bookshop01.member.dao;
 
 import com.bookshop01.member.vo.MemberVO;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("memberDAO")
+@RequiredArgsConstructor
+@Repository
 public class MemberDAOImpl implements MemberDAO {
-  @Autowired private SqlSession sqlSession;
+  private final SqlSession sqlSession;
 
   @Override
-  public MemberVO login(Map loginMap) throws DataAccessException {
-    MemberVO member = (MemberVO) sqlSession.selectOne("mapper.member.login", loginMap);
-    return member;
+  public MemberVO login(Map<String, String> loginMap) {
+    return sqlSession.selectOne("mapper.member.login", loginMap);
   }
 
   @Override
-  public void insertNewMember(MemberVO memberVO) throws DataAccessException {
+  public void insertNewMember(MemberVO memberVO) {
     sqlSession.insert("mapper.member.insertNewMember", memberVO);
   }
 
   @Override
-  public String selectOverlappedID(String id) throws DataAccessException {
-    String result = sqlSession.selectOne("mapper.member.selectOverlappedID", id);
-    return result;
+  public boolean selectOverlappedID(String id) {
+    return ((Integer) sqlSession.selectOne("mapper.member.selectOverlappedID", id)) > 0;
   }
 }

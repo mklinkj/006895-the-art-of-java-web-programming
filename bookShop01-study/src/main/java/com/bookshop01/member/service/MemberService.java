@@ -4,9 +4,9 @@ import com.bookshop01.member.vo.MemberVO;
 import java.util.Map;
 
 public interface MemberService {
-  MemberVO login(Map loginMap) throws Exception;
+  MemberVO login(Map<String, String> loginMap);
 
-  void addMember(MemberVO memberVO) throws Exception;
+  void addMember(MemberVO memberVO);
 
-  String overlapped(String id) throws Exception;
+  boolean overlapped(String id);
 }

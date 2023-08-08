@@ -7,50 +7,53 @@
   <!-- 리절트 맵 정의 -->
   <insert id="insertNewMember" parameterType="memberVO">
   <![CDATA[
-    insert into t_shopping_member(member_id,
-                                  member_pw,
-                                  member_name,
-                                  member_gender,
-                                  member_birth_y,
-                                  member_birth_m,
-                                  member_birth_d,
-                                  member_birth_gn,
-                                  tel1,
-                                  tel2,
-                                  tel3,
-                                  hp1,
-                                  hp2,
-                                  hp3,
-                                  smssts_yn,
-                                  email1,
-                                  email2,
-                                  emailsts_yn,
-                                  zipcode,
-                                  roadAddress,
-                                  jibunAddress,
-                                  namujiAddress)
-    values (#{member_id},
-            #{member_pw},
-            #{member_name},
-            #{member_gender},
-            #{member_birth_y},
-            #{member_birth_m},
-            #{member_birth_d},
-            #{member_birth_gn},
-            #{tel1},
-            #{tel2},
-            #{tel3},
-            #{hp1},
-            #{hp2},
-            #{hp3},
-            #{smssts_yn},
-            #{email1},
-            #{email2},
-            #{emailsts_yn},
-            #{zipcode},
-            #{roadAddress},
-            #{jibunAddress},
-            #{namujiAddress})
+    INSERT INTO t_shopping_member(
+        member_id,
+        member_pw,
+        member_name,
+        member_gender,
+        member_birth_y,
+        member_birth_m,
+        member_birth_d,
+        member_birth_gn,
+        tel1,
+        tel2,
+        tel3,
+        hp1,
+        hp2,
+        hp3,
+        smssts_yn,
+        email1,
+        email2,
+        emailsts_yn,
+        zipcode,
+        roadAddress,
+        jibunAddress,
+        namujiAddress
+    ) VALUES (
+        #{member_id},
+        #{member_pw},
+        #{member_name},
+        #{member_gender},
+        #{member_birth_y},
+        #{member_birth_m},
+        #{member_birth_d},
+        #{member_birth_gn},
+        #{tel1},
+        #{tel2},
+        #{tel3},
+        #{hp1},
+        #{hp2},
+        #{hp3},
+        #{smssts_yn},
+        #{email1},
+        #{email2},
+        #{emailsts_yn},
+        #{zipcode},
+        #{roadAddress},
+        #{jibunAddress},
+        #{namujiAddress}
+    )
     ]]>
   </insert>
 
@@ -84,18 +87,18 @@
     <result column="joinDate" property="joinDate"/>
   </resultMap>
 
-  <select id="selectOverlappedID" parameterType="String" resultType="String">
-    select decode(count(*), 1, 'true', 0, 'false')
-    from t_shopping_member
-    where member_id = #{id}
+  <select id="selectOverlappedID" parameterType="string" resultType="int">
+    SELECT COUNT(*)
+      FROM t_shopping_member
+     WHERE member_id = #{id}
   </select>
 
-  <select id="login" parameterType="java.util.Map" resultType="memberVO">
-	    <![CDATA[
-    select *
-    from t_shopping_member
-    where member_id = #{member_id}
-      and member_pw = #{member_pw}
+  <select id="login" parameterType="map" resultType="memberVO">
+    <![CDATA[
+    SELECT *
+      FROM t_shopping_member
+     WHERE member_id = #{member_id}
+       AND member_pw = #{member_pw}
     ]]>
 	</select>
 </mapper>

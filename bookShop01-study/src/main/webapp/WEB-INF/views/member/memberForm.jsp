@@ -9,8 +9,6 @@
   <meta charset="utf-8">
   <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
   <script>
-
-
     function execDaumPostcode() {
       new daum.Postcode({
         oncomplete: function (data) {
@@ -219,9 +217,9 @@
       </tr>
       <tr class="dot_line">
         <td class="fixed_join">이메일<br>(e-mail)</td>
-        <td><input size="10px" type="text" name="email1"/> @ <input size="10px" type="text"
-                                                                    name="email2"/>
-          <select name="email2" onChange="" title="직접입력">
+        <td><input size="10px" type="text" name="email1"/> @
+          <input name="email2" size="10px" type="text" />
+          <select class="email_domain_select_box" onChange="" title="직접입력">
             <option value="non">직접입력</option>
             <option value="hanmail.net">hanmail.net</option>
             <option value="naver.com">naver.com</option>
@@ -267,5 +265,18 @@
     </table>
   </div>
 </form>
+<script>
+  const $emailDomainObj = $('form').find('input[name=email2]')
+  $('.email_domain_select_box').change(function () {
+    const domain = $(this).val();
+    if (domain !== 'non') {
+      $emailDomainObj.val(domain);
+      $emailDomainObj.attr('readonly', true);
+    } else {
+      $emailDomainObj.val('');
+      $emailDomainObj.removeAttr('readonly');
+    }
+  });
+</script>
 </body>
 </html>

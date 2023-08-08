@@ -246,9 +246,57 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
 
 ## 회원(member) 패키지 이하 코드 테스트 / 수정
 
+- [x] 대략적인 코드 정리
 
+- [x] MemberDAOImpl 테스트 코드 작성
 
+- [x] 이메일 도메인 정보 끝에 `,non` 이 붙는 이유는?
 
+  * 이메일 도메인 부분을 저장하는 input text와, 이메일 도메인을 선택하는 select box의 name 속성이 `email2`로 동일하게 되어있다. 
+
+  * 일단 단순하게 수정했다. (가입할 때만 사용하는 JSP: `memberForm.jsp`)
+
+    * select box에 있는 name 속성은 제거하고, input text의 name만 유지한다.
+
+    * 해당 select가 바뀔 때..  직접 입력이 아니면 그 값을 자동으로 input text에 넣고 input text의 readonly를 true 설정한다.
+
+      ```js
+        const $emailDomainObj = $('form').find('input[name=email2]')
+        $('.email_domain_select_box').change(function () {
+          const domain = $(this).val();
+          if (domain !== 'non') {
+            $emailDomainObj.val(domain);
+            $emailDomainObj.attr('readonly', true);
+          } else {
+            $emailDomainObj.val('');
+            $emailDomainObj.removeAttr('readonly');
+          }
+        });
+      ```
+
+      ```js
+      // jQuery 사용하지 않는다면...
+      const emailDomainObj = document.querySelector('form input[name=email2]');
+        document.querySelector('.email_domain_select_box').addEventListener('change', function () {
+          const domain = this.value;
+          if (domain !== 'non') {
+            emailDomainObj.value = domain;
+            emailDomainObj.setAttribute('readonly', true);
+          } else {
+            emailDomainObj.value = '';
+            emailDomainObj.removeAttribute('readonly');
+          }
+        });
+      ```
+
+      생각나는데로 막적어서... 좀 잘모르겠다.
+
+- [x] 이메일, 핸드폰 수신여부 동작이 일관적이지 않다. Y, N 코드를 사용하려한 것 같은데... 
+  * 오류가 나므로 기본 상태가 반드시 수신을 한 상태로 회원 가입을 해야함 😅
+  * 선택을 안하면 `smssts_yn=null`,  `emailsts_yn=null`  이 속성이 null 인채로 DB 저장을 하려해서 오류가 생김.
+    * 선택을 안한 상태를 'N' 으로 처리되도록 해줘야할 것 같은데...
+    * 이거는 DB의 DEFAULT 처리 값을 'N'으로 테이블 정의를 수정할까 하다가... MemberServiceImpl의 addMember 메서드에 조건을 넣었음.
+      - [ ] 좀 더 개선 하는 것은 좀 나중에 하자....😅
 
 
 

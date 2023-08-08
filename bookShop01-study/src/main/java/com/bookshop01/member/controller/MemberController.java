@@ -7,7 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +19,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/member")
 public class MemberController extends BaseController {
-  @Autowired private MemberService memberService;
+  private final MemberService memberService;
 
   @RequestMapping(value = "/login.do", method = RequestMethod.POST)
   public ModelAndView login(
-      @RequestParam Map<String, String> loginMap,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam Map<String, String> loginMap, HttpServletRequest request) {
     ModelAndView mav = new ModelAndView();
     MemberVO memberVO = memberService.login(loginMap);
     if (memberVO != null && memberVO.getMember_id() != null) {
       HttpSession session = request.getSession();
-      session = request.getSession();
       session.setAttribute("isLogOn", true);
       session.setAttribute("memberInfo", memberVO);
 
@@ -53,8 +52,7 @@ public class MemberController extends BaseController {
   }
 
   @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
-  public ModelAndView logout(HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
+  public ModelAndView logout(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView();
     HttpSession session = request.getSession();
     session.setAttribute("isLogOn", false);
@@ -64,15 +62,15 @@ public class MemberController extends BaseController {
   }
 
   @RequestMapping(value = "/addMember.do", method = RequestMethod.POST)
-  public ResponseEntity addMember(
+  public ResponseEntity<String> addMember(
       @ModelAttribute("memberVO") MemberVO _memberVO,
       HttpServletRequest request,
       HttpServletResponse response)
       throws Exception {
     response.setContentType("text/html; charset=UTF-8");
     request.setCharacterEncoding("utf-8");
-    String message = null;
-    ResponseEntity resEntity = null;
+    String message;
+
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.add("Content-Type", "text/html; charset=utf-8");
     try {
@@ -87,19 +85,14 @@ public class MemberController extends BaseController {
       message += " alert('작업 중 오류가 발생했습니다. 다시 시도해 주세요');";
       message += " location.href='" + request.getContextPath() + "/member/memberForm.do';";
       message += " </script>";
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
-    resEntity = new ResponseEntity(message, responseHeaders, HttpStatus.OK);
-    return resEntity;
+    return new ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/overlapped.do", method = RequestMethod.POST)
-  public ResponseEntity overlapped(
-      @RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
-    ResponseEntity resEntity = null;
-    String result = memberService.overlapped(id);
-    resEntity = new ResponseEntity(result, HttpStatus.OK);
-    return resEntity;
+  public ResponseEntity<Boolean> overlapped(@RequestParam("id") String id) {
+    boolean result = memberService.overlapped(id);
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 }

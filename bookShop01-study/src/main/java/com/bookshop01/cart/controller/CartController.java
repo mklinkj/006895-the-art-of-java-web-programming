@@ -59,7 +59,7 @@ public class CartController extends BaseController {
     cartVO.setGoods_id(goods_id);
     cartVO.setMember_id(member_id);
     boolean isAlreadyExisted = cartService.findCartGoods(cartVO);
-    LOGGER.info("isAlreadyExisted: ,{}", isAlreadyExisted);
+    LOGGER.info("isAlreadyExisted: {}", isAlreadyExisted);
     if (isAlreadyExisted) {
       return "already_existed";
     } else {
