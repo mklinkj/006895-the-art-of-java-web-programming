@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,21 +18,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/order")
 public class OrderController extends BaseController {
-  @Autowired private OrderService orderService;
+  private final OrderService orderService;
 
   @RequestMapping(value = "/orderEachGoods.do", method = RequestMethod.POST)
   public ModelAndView orderEachGoods(
-      @ModelAttribute("orderVO") OrderVO _orderVO,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @ModelAttribute("orderVO") OrderVO _orderVO, HttpServletRequest request) throws Exception {
 
     request.setCharacterEncoding("utf-8");
     HttpSession session = request.getSession();
-    session = request.getSession();
 
     Boolean isLogOn = (Boolean) session.getAttribute("isLogOn");
     String action = (String) session.getAttribute("action");
@@ -69,10 +65,7 @@ public class OrderController extends BaseController {
 
   @RequestMapping(value = "/orderAllCartGoods.do", method = RequestMethod.POST)
   public ModelAndView orderAllCartGoods(
-      @RequestParam("cart_goods_qty") String[] cart_goods_qty,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam("cart_goods_qty") String[] cart_goods_qty, HttpServletRequest request) {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
     HttpSession session = request.getSession();
@@ -109,10 +102,7 @@ public class OrderController extends BaseController {
 
   @RequestMapping(value = "/payToOrderGoods.do", method = RequestMethod.POST)
   public ModelAndView payToOrderGoods(
-      @RequestParam Map<String, String> receiverMap,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam Map<String, String> receiverMap, HttpServletRequest request) {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
 
@@ -124,7 +114,7 @@ public class OrderController extends BaseController {
     List<OrderVO> myOrderList = (List<OrderVO>) session.getAttribute("myOrderList");
 
     for (int i = 0; i < myOrderList.size(); i++) {
-      OrderVO orderVO = (OrderVO) myOrderList.get(i);
+      OrderVO orderVO = myOrderList.get(i);
       orderVO.setMember_id(member_id);
       orderVO.setOrderer_name(orderer_name);
       orderVO.setReceiver_name(receiverMap.get("receiver_name"));

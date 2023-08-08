@@ -1,49 +1,46 @@
 package com.bookshop01.order.dao;
 
 import com.bookshop01.order.vo.OrderVO;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("orderDAO")
+@RequiredArgsConstructor
+@Repository
 public class OrderDAOImpl implements OrderDAO {
-  @Autowired private SqlSession sqlSession;
+  private final SqlSession sqlSession;
 
-  public List<OrderVO> listMyOrderGoods(OrderVO orderVO) throws DataAccessException {
-    List<OrderVO> orderGoodsList = new ArrayList<OrderVO>();
-    orderGoodsList = (ArrayList) sqlSession.selectList("mapper.order.selectMyOrderList", orderVO);
-    return orderGoodsList;
+  @Override
+  public List<OrderVO> listMyOrderGoods(OrderVO orderVO) {
+    return sqlSession.selectList(
+        "mapper.order.selectMyOrderList",
+        Map.of("orderVO", orderVO, "baseTime", LocalDateTime.now()));
   }
 
-  public void insertNewOrder(List<OrderVO> myOrderList) throws DataAccessException {
-    int order_id = selectOrderID();
-    for (int i = 0; i < myOrderList.size(); i++) {
-      OrderVO orderVO = (OrderVO) myOrderList.get(i);
-      orderVO.setOrder_id(order_id);
-      sqlSession.insert("mapper.order.insertNewOrder", orderVO);
+  @Override
+  public void insertNewOrder(List<OrderVO> myOrderList) {
+    // 나의 주문들에 대해 새로운 주문 ID를 부여
+    final int newOrderId = selectOrderID();
+    for (OrderVO myOrder : myOrderList) {
+      myOrder.setOrder_id(newOrderId);
+      sqlSession.insert("mapper.order.insertNewOrder", myOrder);
     }
   }
 
-  public OrderVO findMyOrder(String order_id) throws DataAccessException {
-    OrderVO orderVO = (OrderVO) sqlSession.selectOne("mapper.order.selectMyOrder", order_id);
-    return orderVO;
+  @Override
+  public OrderVO findMyOrder(Integer orderId) {
+    return sqlSession.selectOne("mapper.order.selectMyOrder", orderId);
   }
 
-  public void removeGoodsFromCart(OrderVO orderVO) throws DataAccessException {
-    sqlSession.delete("mapper.order.deleteGoodsFromCart", orderVO);
+  @Override
+  public void removeGoodsFromCart(Integer goodsId) {
+    sqlSession.delete("mapper.order.deleteGoodsFromCart", goodsId);
   }
 
-  public void removeGoodsFromCart(List<OrderVO> myOrderList) throws DataAccessException {
-    for (int i = 0; i < myOrderList.size(); i++) {
-      OrderVO orderVO = (OrderVO) myOrderList.get(i);
-      sqlSession.delete("mapper.order.deleteGoodsFromCart", orderVO);
-    }
-  }
-
-  private int selectOrderID() throws DataAccessException {
+  private int selectOrderID() {
     return sqlSession.selectOne("mapper.order.selectOrderID");
   }
 }

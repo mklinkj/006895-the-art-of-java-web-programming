@@ -34,11 +34,11 @@
     <td>
       <h2>${item.order_goods_qty }개<h2>
     </td>
-    <td><h2>${item.order_goods_qty *item.goods_sales_price}원 (10% 할인)</h2></td>
+    <td><h2>${item.order_goods_qty * item.goods_sales_price}원 (10% 할인)</h2></td>
     <td><h2>0원</h2></td>
     <td><h2>${1500 *item.order_goods_qty }원</h2></td>
     <td>
-      <h2>${item.order_goods_qty *item.goods_sales_price}원</h2>
+      <h2>${item.order_goods_qty * item.goods_sales_price}원</h2>
     </td>
   </TR>
   </c:forEach>

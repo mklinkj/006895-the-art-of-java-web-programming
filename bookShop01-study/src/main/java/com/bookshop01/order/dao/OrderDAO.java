@@ -2,14 +2,13 @@ package com.bookshop01.order.dao;
 
 import com.bookshop01.order.vo.OrderVO;
 import java.util.List;
-import org.springframework.dao.DataAccessException;
 
 public interface OrderDAO {
-  List<OrderVO> listMyOrderGoods(OrderVO orderBean) throws DataAccessException;
+  List<OrderVO> listMyOrderGoods(OrderVO orderBean);
 
-  void insertNewOrder(List<OrderVO> myOrderList) throws DataAccessException;
+  void insertNewOrder(List<OrderVO> myOrderList);
 
-  OrderVO findMyOrder(String order_id) throws DataAccessException;
+  OrderVO findMyOrder(Integer orderId);
 
-  void removeGoodsFromCart(List<OrderVO> myOrderList) throws DataAccessException;
+  void removeGoodsFromCart(Integer goodsId);
 }

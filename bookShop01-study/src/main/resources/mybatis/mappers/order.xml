@@ -5,68 +5,69 @@
 
 <mapper namespace="mapper.order">
   <!-- 리절트 맵 정의 -->
-  <delete id="deleteGoodsFromCart" parameterType="orderVO">
-    delete
-    from t_shopping_cart
-    where goods_id = #{goods_id}
+  <delete id="deleteGoodsFromCart" parameterType="int">
+    DELETE
+      FROM t_shopping_cart
+     WHERE goods_id = #{goods_id}
   </delete>
 
   <insert id="insertNewOrder" parameterType="orderVO">
     <selectKey keyProperty="order_seq_num" order="BEFORE" resultType="int">
-      select order_seq_num.nextval from dual
+      SELECT order_seq_num.nextval FROM dual
     </selectKey>
-    <![CDATA[
-			insert into t_shopping_order(order_seq_num,
-			                            order_id,
-										  member_id,
-									    goods_id,
-									    goods_title,
-									    goods_fileName,
-									    order_goods_qty,
-									    goods_sales_price,
-									    orderer_name,
-									    receiver_name,
-									    receiver_hp1,
-					                    receiver_hp2,
-					                    receiver_hp3,
-					                    receiver_tel1,
-					                    receiver_tel2,
-					                    receiver_tel3,
-					                    delivery_address,
-					                    delivery_message,
-						                delivery_method,
-						                gift_wrapping,
-						                pay_method,
-						                card_com_name,
-						                card_pay_month,
-						                orderer_hp,
-						                pay_orderer_hp_num)
-							     values(#{order_seq_num},
-							            #{order_id},
-									    #{member_id},
-									    #{goods_id},
-									    #{goods_title},
-									    #{goods_fileName},
-									    #{order_goods_qty},
-									    #{goods_sales_price},
-									    #{orderer_name},
-									    #{receiver_name},
-									    #{receiver_hp1},
-					                    #{receiver_hp2},
-					                    #{receiver_hp3},
-					                    #{receiver_tel1},
-					                    #{receiver_tel2},
-					                    #{receiver_tel3},
-					                    #{delivery_address},
-					                    #{delivery_message},
-						                #{delivery_method},
-						                #{gift_wrapping},
-						                #{pay_method},
-						                #{card_com_name},
-						                #{card_pay_month},
-						                #{orderer_hp},
-						                #{pay_orderer_hp_num})
-    	]]>
+			INSERT INTO t_shopping_order(
+			    order_seq_num,
+			    order_id,
+          member_id,
+          goods_id,
+          goods_title,
+          goods_fileName,
+          order_goods_qty,
+          goods_sales_price,
+          orderer_name,
+          receiver_name,
+          receiver_hp1,
+          receiver_hp2,
+          receiver_hp3,
+          receiver_tel1,
+          receiver_tel2,
+          receiver_tel3,
+          delivery_address,
+          delivery_message,
+          delivery_method,
+          gift_wrapping,
+          pay_method,
+          card_com_name,
+          card_pay_month,
+          orderer_hp,
+          pay_orderer_hp_num
+      ) VALUES (
+          #{order_seq_num},
+          #{order_id},
+          #{member_id},
+          #{goods_id},
+          #{goods_title},
+          #{goods_fileName},
+          #{order_goods_qty},
+          #{goods_sales_price},
+          #{orderer_name},
+          #{receiver_name},
+          #{receiver_hp1},
+          #{receiver_hp2},
+          #{receiver_hp3},
+          #{receiver_tel1},
+          #{receiver_tel2},
+          #{receiver_tel3},
+          #{delivery_address},
+          #{delivery_message},
+          #{delivery_method},
+          #{gift_wrapping},
+          #{pay_method},
+          #{card_com_name},
+          #{card_pay_month},
+          #{orderer_hp},
+          #{pay_orderer_hp_num}
+      )
   </insert>
   <resultMap id="orderGoodsResult" type="OrderVO">
     <result column="order_seq_num" property="order_seq_num"/>
@@ -106,29 +107,27 @@
   </resultMap>
 
   <select id="selectOrderID" resultType="int">
-	    <![CDATA[
-    select seq_order_id.nextval
-    from dual
-    ]]>
+    SELECT seq_order_id.nextval
+      FROM dual
 	</select>
 
-  <select id="selectMyOrder" parameterType="String" resultMap="orderGoodsResult">
-	    <![CDATA[
-    select *
-    from t_shopping_order
-    where to_char(pay_order_time, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
-      and order_id = #{order_id}
-    order by pay_order_time desc
+  <select id="selectMyOrder" parameterType="int" resultMap="orderGoodsResult">
+    <![CDATA[
+    SELECT *
+      FROM t_shopping_order
+     WHERE TO_CHAR(pay_order_time, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+       AND order_id = #{order_id}
+     ORDER BY pay_order_time DESC
     ]]>
 	</select>
 
   <select id="selectMyOrderList" parameterType="orderVO" resultMap="orderGoodsResult">
 	  <![CDATA[
-    select *
-    from t_shopping_order
-    where to_char(pay_order_time, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
-      and member_id = #{member_id}
-    order by pay_order_time desc
+    SELECT *
+      FROM t_shopping_order
+     WHERE TO_CHAR(pay_order_time, 'YYYY-MM-DD') = TO_CHAR(#{baseTime}, 'YYYY-MM-DD')
+       AND member_id = #{orderVO.member_id}
+     ORDER BY pay_order_time DESC
     ]]>
 	</select>
 
