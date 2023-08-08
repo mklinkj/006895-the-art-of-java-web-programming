@@ -24,7 +24,7 @@ public class MainController extends BaseController {
   @RequestMapping(
       value = "/main/main.do",
       method = {RequestMethod.GET, RequestMethod.POST})
-  public void main(Model model, HttpSession session) {
+  public void mainPage(Model model, HttpSession session) {
     session.setAttribute("side_menu", "user"); // TODO: 세션 사용하지 않게 수정해야함.
 
     Map<String, List<GoodsVO>> goodsMap = goodsService.listGoods();

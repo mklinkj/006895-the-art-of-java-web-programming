@@ -33,7 +33,7 @@ class MainControllerTests {
   }
 
   @Test
-  void testMain() throws Exception {
+  void mainPage() throws Exception {
     MvcResult result =
         mockMvc
             .perform(get("/main/main.do"))
