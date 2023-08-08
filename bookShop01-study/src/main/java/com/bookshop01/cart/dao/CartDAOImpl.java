@@ -3,48 +3,43 @@ package com.bookshop01.cart.dao;
 import com.bookshop01.cart.vo.CartVO;
 import com.bookshop01.goods.vo.GoodsVO;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("cartDAO")
+@RequiredArgsConstructor
+@Repository
 public class CartDAOImpl implements CartDAO {
-  @Autowired private SqlSession sqlSession;
+  private final SqlSession sqlSession;
 
-  public List<CartVO> selectCartList(CartVO cartVO) throws DataAccessException {
-    List<CartVO> cartList = (List) sqlSession.selectList("mapper.cart.selectCartList", cartVO);
-    return cartList;
+  public List<CartVO> selectCartList(String memberId) {
+    return sqlSession.selectList("mapper.cart.selectCartList", memberId);
   }
 
-  public List<GoodsVO> selectGoodsList(List<CartVO> cartList) throws DataAccessException {
-
-    List<GoodsVO> myGoodsList;
-    myGoodsList = sqlSession.selectList("mapper.cart.selectGoodsList", cartList);
-    return myGoodsList;
+  public List<GoodsVO> selectGoodsList(List<Integer> goodsIdList) {
+    return sqlSession.selectList("mapper.cart.selectGoodsList", goodsIdList);
   }
 
-  public boolean selectCountInCart(CartVO cartVO) throws DataAccessException {
-    String result = sqlSession.selectOne("mapper.cart.selectCountInCart", cartVO);
-    return Boolean.parseBoolean(result);
+  public boolean selectCountInCart(CartVO cartVO) {
+    int count = sqlSession.selectOne("mapper.cart.selectCountInCart", cartVO);
+    return count > 0;
   }
 
-  public void insertGoodsInCart(CartVO cartVO) throws DataAccessException {
-    int cart_id = selectMaxCartId();
+  public void insertGoodsInCart(CartVO cartVO) {
+    final int cart_id = selectMaxCartId();
     cartVO.setCart_id(cart_id);
     sqlSession.insert("mapper.cart.insertGoodsInCart", cartVO);
   }
 
-  public void updateCartGoodsQty(CartVO cartVO) throws DataAccessException {
+  public void updateCartGoodsQty(CartVO cartVO) {
     sqlSession.insert("mapper.cart.updateCartGoodsQty", cartVO);
   }
 
-  public void deleteCartGoods(int cart_id) throws DataAccessException {
-    sqlSession.delete("mapper.cart.deleteCartGoods", cart_id);
+  public void deleteCartGoods(int cartId) {
+    sqlSession.delete("mapper.cart.deleteCartGoods", cartId);
   }
 
-  private int selectMaxCartId() throws DataAccessException {
-    int cart_id = sqlSession.selectOne("mapper.cart.selectMaxCartId");
-    return cart_id;
+  private int selectMaxCartId() {
+    return sqlSession.selectOne("mapper.cart.selectMaxCartId");
   }
 }

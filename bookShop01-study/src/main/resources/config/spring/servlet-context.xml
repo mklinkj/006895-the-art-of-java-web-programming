@@ -51,5 +51,7 @@
   <!-- 멀티파트 리졸버 -->
   <resources location="/resources/" mapping="/resources/**"/>
 
+  <!-- 루트 경로 접근시 상점 메인 페이지로 이동 -->
+  <mvc:redirect-view-controller path="/" redirect-url="/main/main.do" />
 
 </beans:beans>

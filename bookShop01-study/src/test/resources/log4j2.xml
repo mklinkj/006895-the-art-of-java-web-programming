@@ -21,6 +21,7 @@
     <Logger name="mapper.admin.order" level="TRACE"/>
     <Logger name="mapper.goods" level="TRACE"/>
     <Logger name="mapper.order" level="TRACE"/>
+    <Logger name="mapper.cart" level="TRACE"/>
 
     <Root level="info">
       <AppenderRef ref="console"/>

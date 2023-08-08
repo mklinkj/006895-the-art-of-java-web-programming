@@ -6,22 +6,21 @@
 <mapper namespace="mapper.cart">
   <!-- 리절트 맵 정의 -->
   <delete id="deleteCartGoods" parameterType="int">
-	    <![CDATA[
-    delete
-    from t_shopping_cart
-    where cart_id = #{cart_id}
-    ]]>
+    DELETE
+      FROM t_shopping_cart
+     WHERE cart_id = #{cartId}
 	</delete>
 
   <insert id="insertGoodsInCart" parameterType="cartVO">
-	    <![CDATA[
-    insert into t_shopping_cart(cart_id,
-                                goods_id,
-                                member_id)
-    values (#{cart_id},
-            #{goods_id},
-            #{member_id})
-    ]]>
+    INSERT INTO t_shopping_cart(
+      cart_id,
+      goods_id,
+      member_id
+    ) VALUES (
+      #{cart_id},
+      #{goods_id},
+      #{member_id}
+    )
 	</insert>
 
   <resultMap id="cartResult" type="CartVO">
@@ -54,48 +53,49 @@
     <result column="goods_intro" property="goods_intro"/>
   </resultMap>
 
-  <select id="selectCountInCart" parameterType="cartVO" resultType="String">
-	    <![CDATA[
-    select decode(count(*), 0, 'false', 'true')
-    from t_shopping_cart
-    where goods_id = #{goods_id}
-      and member_id = #{member_id}
+  <select id="selectCountInCart" parameterType="cartVO" resultType="int">
+    <![CDATA[
+    SELECT COUNT(*)
+      FROM t_shopping_cart
+     WHERE goods_id = #{goods_id}
+       AND member_id = #{member_id}
     ]]>
 	</select>
 
   <select id="selectCartList" parameterType="cartVO" resultMap="cartResult">
-	    <![CDATA[
-    select cart_id, goods_id, member_id, cart_goods_qty, creDate
-    from t_shopping_cart
-    where member_id = #{member_id}
+    <![CDATA[
+    SELECT cart_id, goods_id, member_id, cart_goods_qty, creDate
+      FROM t_shopping_cart
+     WHERE member_id = #{member_id}
     ]]>
 	</select>
 
-  <select id="selectGoodsList" parameterType="java.util.Map" resultMap="goodsResult">
+  <select id="selectGoodsList" parameterType="map" resultMap="goodsResult">
     <![CDATA[
-          select g.*,d.fileName from t_shopping_goods g, t_goods_detail_image d
-          where g.goods_id=d.goods_id
-          and d.filetype='main_image'
-           and g.goods_id in
+          SELECT g.*,d.fileName
+            FROM t_shopping_goods g, t_goods_detail_image d
+           WHERE g.goods_id=d.goods_id
+             AND d.filetype='main_image'
+             AND g.goods_id IN
       ]]>
-    <foreach close=")" collection="list" item="item" open="(" separator=",">
-      #{item.goods_id}
+    <foreach close=")" collection="list" item="goodsId" open="(" separator=",">
+      #{goodsId}
     </foreach>
-    order by g.goods_creDate desc
+    ORDER BY g.goods_creDate DESC
   </select>
   <select id="selectMaxCartId" resultType="int">
-	    <![CDATA[
-    select nvl(max(cart_id), 0) + 1
-    from t_shopping_cart
+    <![CDATA[
+    SELECT NVL(MAX(cart_id), 0) + 1
+      FROM t_shopping_cart
     ]]>
 	</select>
 
   <update id="updateCartGoodsQty" parameterType="cartVO">
-	    <![CDATA[
-    update t_shopping_cart
-    set cart_goods_qty=#{cart_goods_qty}
-    where member_id = #{member_id}
-      and goods_id = #{goods_id}
+	  <![CDATA[
+    UPDATE t_shopping_cart
+       SET cart_goods_qty=#{cart_goods_qty}
+     WHERE member_id = #{member_id}
+       AND goods_id = #{goods_id}
     ]]>
 	</update>
 

@@ -58,6 +58,10 @@
             imagePopup('open', '.layer01');
           } else if (data.trim() == 'already_existed') {
             alert("이미 카트에 등록된 상품입니다.");
+          } else if (data.trim() == 'required_login') {
+            alert('장바구니에 상품을 추가하려면, 로그인을 해주세요.');
+            location.href = '/member/loginForm.do';
+            return;
           }
 
         },

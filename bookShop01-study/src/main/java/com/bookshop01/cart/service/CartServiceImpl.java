@@ -6,43 +6,45 @@ import com.bookshop01.goods.vo.GoodsVO;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("cartService")
+@RequiredArgsConstructor
+@Service
 @Transactional(propagation = Propagation.REQUIRED)
 public class CartServiceImpl implements CartService {
-  @Autowired private CartDAO cartDAO;
+  private final CartDAO cartDAO;
 
-  public Map<String, List> myCartList(CartVO cartVO) throws Exception {
-    Map<String, List> cartMap = new HashMap<String, List>();
-    List<CartVO> myCartList = cartDAO.selectCartList(cartVO);
-    if (myCartList.size() == 0) { // 카트에 저장된 상품이없는 경우
+  public Map<String, List<?>> myCartList(CartVO cartVO) {
+    Map<String, List<?>> cartMap = new HashMap<>();
+    List<CartVO> myCartList = cartDAO.selectCartList(cartVO.getMember_id());
+    if (myCartList.isEmpty()) { // 카트에 저장된 상품이 없는 경우
       return null;
     }
-    List<GoodsVO> myGoodsList = cartDAO.selectGoodsList(myCartList);
+    List<GoodsVO> myGoodsList =
+        cartDAO.selectGoodsList(myCartList.stream().map(CartVO::getGoods_id).toList());
     cartMap.put("myCartList", myCartList);
     cartMap.put("myGoodsList", myGoodsList);
     return cartMap;
   }
 
-  public boolean findCartGoods(CartVO cartVO) throws Exception {
+  public boolean findCartGoods(CartVO cartVO) {
     return cartDAO.selectCountInCart(cartVO);
   }
 
-  public void addGoodsInCart(CartVO cartVO) throws Exception {
+  public void addGoodsInCart(CartVO cartVO) {
     cartDAO.insertGoodsInCart(cartVO);
   }
 
-  public boolean modifyCartQty(CartVO cartVO) throws Exception {
+  public boolean modifyCartQty(CartVO cartVO) {
     boolean result = true;
     cartDAO.updateCartGoodsQty(cartVO);
     return result;
   }
 
-  public void removeCartGoods(int cart_id) throws Exception {
-    cartDAO.deleteCartGoods(cart_id);
+  public void removeCartGoods(int cartId) {
+    cartDAO.deleteCartGoods(cartId);
   }
 }
