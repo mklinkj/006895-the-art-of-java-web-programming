@@ -29,7 +29,7 @@ public class GoodsServiceImpl implements GoodsService {
     return goodsMap;
   }
 
-  public Map<String, ?> goodsDetail(Integer goodsId) throws Exception {
+  public Map<String, ?> goodsDetail(Integer goodsId) {
     Map<String, Object> goodsMap = new HashMap<>();
     GoodsVO goodsVO = goodsDAO.selectGoodsDetail(goodsId);
     goodsMap.put("goodsVO", goodsVO);

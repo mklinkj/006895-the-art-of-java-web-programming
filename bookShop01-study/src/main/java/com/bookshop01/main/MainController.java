@@ -5,35 +5,29 @@ import com.bookshop01.goods.service.GoodsService;
 import com.bookshop01.goods.vo.GoodsVO;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
-@Controller("mainController")
+@Slf4j
+@RequiredArgsConstructor
+@Controller
 @EnableAspectJAutoProxy
 public class MainController extends BaseController {
-  @Autowired private GoodsService goodsService;
+  private final GoodsService goodsService;
 
   @RequestMapping(
       value = "/main/main.do",
-      method = {RequestMethod.POST, RequestMethod.GET})
-  public ModelAndView main(HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
-    HttpSession session;
-    ModelAndView mav = new ModelAndView();
-    String viewName = (String) request.getAttribute("viewName");
-    mav.setViewName(viewName);
+      method = {RequestMethod.GET, RequestMethod.POST})
+  public void main(Model model, HttpSession session) {
+    session.setAttribute("side_menu", "user"); // TODO: 세션 사용하지 않게 수정해야함.
 
-    session = request.getSession();
-    session.setAttribute("side_menu", "user");
     Map<String, List<GoodsVO>> goodsMap = goodsService.listGoods();
-    mav.addObject("goodsMap", goodsMap);
-    return mav;
+    model.addAttribute("goodsMap", goodsMap);
   }
 }

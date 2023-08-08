@@ -6,11 +6,11 @@ import java.util.Map;
 
 public interface GoodsService {
 
-  Map<String, List<GoodsVO>> listGoods() throws Exception;
+  Map<String, List<GoodsVO>> listGoods();
 
-  Map<String, ?> goodsDetail(Integer goodsId) throws Exception;
+  Map<String, ?> goodsDetail(Integer goodsId);
 
-  List<String> keywordSearch(String keyword) throws Exception;
+  List<String> keywordSearch(String keyword);
 
-  List<GoodsVO> searchGoods(String searchWord) throws Exception;
+  List<GoodsVO> searchGoods(String searchWord);
 }
