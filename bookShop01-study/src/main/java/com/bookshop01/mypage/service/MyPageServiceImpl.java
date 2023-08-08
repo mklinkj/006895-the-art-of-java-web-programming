@@ -5,39 +5,40 @@ import com.bookshop01.mypage.dao.MyPageDAO;
 import com.bookshop01.order.vo.OrderVO;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("myPageService")
+@RequiredArgsConstructor
+@Service
 @Transactional(propagation = Propagation.REQUIRED)
 public class MyPageServiceImpl implements MyPageService {
-  @Autowired private MyPageDAO myPageDAO;
+  private final MyPageDAO myPageDAO;
 
-  public List<OrderVO> listMyOrderGoods(String member_id) throws Exception {
-    return myPageDAO.selectMyOrderGoodsList(member_id);
+  public List<OrderVO> listMyOrderGoods(String memberId) {
+    return myPageDAO.selectMyOrderGoodsList(memberId);
   }
 
-  public List findMyOrderInfo(String order_id) throws Exception {
-    return myPageDAO.selectMyOrderInfo(order_id);
+  public List<OrderVO> findMyOrderInfo(Integer orderId) {
+    return myPageDAO.selectMyOrderInfo(orderId);
   }
 
-  public List<OrderVO> listMyOrderHistory(Map dateMap) throws Exception {
+  public List<OrderVO> listMyOrderHistory(Map<String, String> dateMap) {
     return myPageDAO.selectMyOrderHistoryList(dateMap);
   }
 
-  public MemberVO modifyMyInfo(Map memberMap) throws Exception {
-    String member_id = (String) memberMap.get("member_id");
+  public MemberVO modifyMyInfo(Map<String, String> memberMap) {
+    String memberId = memberMap.get("member_id");
     myPageDAO.updateMyInfo(memberMap);
-    return myPageDAO.selectMyDetailInfo(member_id);
+    return myPageDAO.selectMyDetailInfo(memberId);
   }
 
-  public void cancelOrder(String order_id) throws Exception {
-    myPageDAO.updateMyOrderCancel(order_id);
+  public void cancelOrder(Integer orderId) {
+    myPageDAO.updateMyOrderCancel(orderId);
   }
 
-  public MemberVO myDetailInfo(String member_id) throws Exception {
-    return myPageDAO.selectMyDetailInfo(member_id);
+  public MemberVO myDetailInfo(String memberId) {
+    return myPageDAO.selectMyDetailInfo(memberId);
   }
 }

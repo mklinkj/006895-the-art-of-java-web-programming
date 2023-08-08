@@ -4,43 +4,36 @@ import com.bookshop01.member.vo.MemberVO;
 import com.bookshop01.order.vo.OrderVO;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-@Repository("myPageDAO")
+@RequiredArgsConstructor
+@Repository
 public class MyPageDAOImpl implements MyPageDAO {
-  @Autowired private SqlSession sqlSession;
+  private final SqlSession sqlSession;
 
-  public List<OrderVO> selectMyOrderGoodsList(String member_id) throws DataAccessException {
-    List<OrderVO> orderGoodsList =
-        (List) sqlSession.selectList("mapper.mypage.selectMyOrderGoodsList", member_id);
-    return orderGoodsList;
+  public List<OrderVO> selectMyOrderGoodsList(String memberId) {
+    return sqlSession.selectList("mapper.mypage.selectMyOrderGoodsList", memberId);
   }
 
-  public List selectMyOrderInfo(String order_id) throws DataAccessException {
-    List myOrderList = (List) sqlSession.selectList("mapper.mypage.selectMyOrderInfo", order_id);
-    return myOrderList;
+  public List<OrderVO> selectMyOrderInfo(Integer orderId) {
+    return sqlSession.selectList("mapper.mypage.selectMyOrderInfo", orderId);
   }
 
-  public List<OrderVO> selectMyOrderHistoryList(Map dateMap) throws DataAccessException {
-    List<OrderVO> myOrderHistList =
-        (List) sqlSession.selectList("mapper.mypage.selectMyOrderHistoryList", dateMap);
-    return myOrderHistList;
+  public List<OrderVO> selectMyOrderHistoryList(Map<String, String> dateMap) {
+    return sqlSession.selectList("mapper.mypage.selectMyOrderHistoryList", dateMap);
   }
 
-  public void updateMyInfo(Map memberMap) throws DataAccessException {
+  public void updateMyInfo(Map<String, String> memberMap) {
     sqlSession.update("mapper.mypage.updateMyInfo", memberMap);
   }
 
-  public MemberVO selectMyDetailInfo(String member_id) throws DataAccessException {
-    MemberVO memberVO =
-        (MemberVO) sqlSession.selectOne("mapper.mypage.selectMyDetailInfo", member_id);
-    return memberVO;
+  public MemberVO selectMyDetailInfo(String memberId) {
+    return sqlSession.selectOne("mapper.mypage.selectMyDetailInfo", memberId);
   }
 
-  public void updateMyOrderCancel(String order_id) throws DataAccessException {
-    sqlSession.update("mapper.mypage.updateMyOrderCancel", order_id);
+  public void updateMyOrderCancel(Integer orderId) {
+    sqlSession.update("mapper.mypage.updateMyOrderCancel", orderId);
   }
 }

@@ -23,6 +23,7 @@
     <Logger name="mapper.order"           level="TRACE"/>
     <Logger name="mapper.cart"            level="TRACE"/>
     <Logger name="mapper.member"          level="TRACE"/>
+    <Logger name="mapper.mypage"          level="TRACE"/>
 
     <Root level="info">
       <AppenderRef ref="console"/>

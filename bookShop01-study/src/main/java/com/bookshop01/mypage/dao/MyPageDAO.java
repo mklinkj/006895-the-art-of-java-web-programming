@@ -4,18 +4,17 @@ import com.bookshop01.member.vo.MemberVO;
 import com.bookshop01.order.vo.OrderVO;
 import java.util.List;
 import java.util.Map;
-import org.springframework.dao.DataAccessException;
 
 public interface MyPageDAO {
-  List<OrderVO> selectMyOrderGoodsList(String member_id) throws DataAccessException;
+  List<OrderVO> selectMyOrderGoodsList(String memberId);
 
-  List selectMyOrderInfo(String order_id) throws DataAccessException;
+  List<OrderVO> selectMyOrderInfo(Integer orderId);
 
-  List<OrderVO> selectMyOrderHistoryList(Map dateMap) throws DataAccessException;
+  List<OrderVO> selectMyOrderHistoryList(Map<String, String> dateMap);
 
-  void updateMyInfo(Map memberMap) throws DataAccessException;
+  void updateMyInfo(Map<String, String> memberMap);
 
-  MemberVO selectMyDetailInfo(String member_id) throws DataAccessException;
+  MemberVO selectMyDetailInfo(String memberId);
 
-  void updateMyOrderCancel(String order_id) throws DataAccessException;
+  void updateMyOrderCancel(Integer orderId);
 }

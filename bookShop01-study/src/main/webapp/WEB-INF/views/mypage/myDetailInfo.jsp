@@ -170,7 +170,7 @@
         }
         value_hp2 = hp2.value;
         value_hp3 = hp3.value;
-        value_smssts_yn = smssts_yn.checked;
+        value_smssts_yn = (smssts_yn.checked) ? 'Y' : 'N';
         value = value_hp1 + "," + value_hp2 + ", " + value_hp3 + "," + value_smssts_yn;
       } else if (attribute == 'email') {
         var email1 = frm_mod_member.email1;
@@ -179,7 +179,7 @@
 
         value_email1 = email1.value;
         value_email2 = email2.value;
-        value_emailsts_yn = emailsts_yn.checked;
+        value_emailsts_yn = (emailsts_yn.checked) ? 'Y' : 'N';
         value = value_email1 + "," + value_email2 + "," + value_emailsts_yn;
         //alert(value);
       } else if (attribute == 'address') {
@@ -385,7 +385,7 @@
           - <input type="text" name="hp2" size=4 value="${memberInfo.hp2 }">
           - <input type="text" name="hp3" size=4 value="${memberInfo.hp3 }"><br> <br>
           <c:choose>
-            <c:when test="${memberInfo.smssts_yn=='true' }">
+            <c:when test="${memberInfo.smssts_yn=='Y' }">
               <input type="checkbox" name="smssts_yn" value="Y" checked/> 쇼핑몰에서 발송하는 SMS 소식을 수신합니다.
             </c:when>
             <c:otherwise>
@@ -417,7 +417,7 @@
             <option value="freechal.com">freechal.com</option>
           </select><Br><br>
           <c:choose>
-            <c:when test="${memberInfo.emailsts_yn=='true' }">
+            <c:when test="${memberInfo.emailsts_yn=='Y' }">
               <input type="checkbox" name="emailsts_yn" value="Y"
                      checked/> 쇼핑몰에서 발송하는 e-mail을 수신합니다.
             </c:when>

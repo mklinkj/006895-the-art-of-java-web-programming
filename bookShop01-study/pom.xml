@@ -18,6 +18,7 @@
     <jetty-context-path>/</jetty-context-path>
     <jetty.version>${jetty-javax.version}</jetty.version>
     <spring.version>${spring5.version}</spring.version>
+    <jstl-scope.type>compile</jstl-scope.type>
   </properties>
 
   <version>1.0.0-BUILD-SNAPSHOT</version>

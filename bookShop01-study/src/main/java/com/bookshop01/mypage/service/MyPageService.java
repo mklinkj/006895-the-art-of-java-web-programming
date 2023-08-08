@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface MyPageService {
-  List<OrderVO> listMyOrderGoods(String member_id) throws Exception;
+  List<OrderVO> listMyOrderGoods(String memberId);
 
-  List findMyOrderInfo(String order_id) throws Exception;
+  List<OrderVO> findMyOrderInfo(Integer orderId);
 
-  List<OrderVO> listMyOrderHistory(Map dateMap) throws Exception;
+  List<OrderVO> listMyOrderHistory(Map<String, String> dateMap);
 
-  MemberVO modifyMyInfo(Map memberMap) throws Exception;
+  MemberVO modifyMyInfo(Map<String, String> memberMap);
 
-  void cancelOrder(String order_id) throws Exception;
+  void cancelOrder(Integer orderId);
 
-  MemberVO myDetailInfo(String member_id) throws Exception;
+  MemberVO myDetailInfo(String memberId);
 }
