@@ -3,12 +3,12 @@
   "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
   "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-  <definition extends="baseLayout" name="/member/loginForm">
+  <definition extends="baseLayout" name="member/loginForm">
     <put-attribute name="title" value="로그인 페이지"/>
     <put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp"/>
   </definition>
 
-  <definition extends="baseLayout" name="/member/memberForm">
+  <definition extends="baseLayout" name="member/memberForm">
     <put-attribute name="title" value="회원 가입 페이지"/>
     <put-attribute name="body" value="/WEB-INF/views/member/memberForm.jsp"/>
   </definition>

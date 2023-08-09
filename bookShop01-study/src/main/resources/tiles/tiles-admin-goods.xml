@@ -9,7 +9,7 @@
     <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
     <put-attribute name="body"      value="/WEB-INF/views/admin/goods/adminGoodsMain.jsp"/>
   </definition>
-  <definition extends="baseLayout" name="/admin/goods/addNewGoodsForm">
+  <definition extends="baseLayout" name="admin/goods/addNewGoodsForm">
     <put-attribute name="title"     value="새 상품 추가 페이지"/>
     <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
     <put-attribute name="body"      value="/WEB-INF/views/admin/goods/addNewGoodsForm.jsp"/>

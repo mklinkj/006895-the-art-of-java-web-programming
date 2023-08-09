@@ -3,8 +3,16 @@ package com.bookshop01.common.base;
 import static com.bookshop01.common.constants.Constants.DATE_FORMAT_YYYY_MM_DD;
 
 import java.time.LocalDate;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 public abstract class BaseController {
+
+  @RequestMapping(
+      value = "/*.do",
+      method = {RequestMethod.POST, RequestMethod.GET})
+  protected void viewForm() {}
+
   protected String calcSearchPeriod(String fixedSearchPeriod) {
     LocalDate endDate = LocalDate.now();
     LocalDate beginDate;

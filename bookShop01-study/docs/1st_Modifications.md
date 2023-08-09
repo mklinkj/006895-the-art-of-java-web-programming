@@ -392,9 +392,10 @@ WARN  org.apache.tiles.request.locale.PostfixedApplicationResource - No supporte
 ### BaseController
 
 * viewForm()
-  * [x] 제거
-    * `/*.do` 로 매핑 되어있고, 내용은 그냥 ViewName 얻어서 반환하는 내용인데, 컨트롤러에서 void 메서드 사용한 것과 별 차이가 없어보인다. 제거하자..
-
+  * [x] 동작 방식 변경
+    * `/*.do` 로 매핑 되어있고, 내용은 그냥 ViewName 얻어서 반환하는 내용인데, 컨트롤러에서 void 메서드 사용방식으로 변경
+    * tiles에서도 주소를 바꿔주었다. 컨트롤러에서도 모두 정리되면 ViewName 인터셉터 제거가 가능해진다.
+  
 * CURR_IMAGE_REPO_PATH
   * [x] 경로값 프로퍼티 파일에 저장해두고 로드하는 방식으로 수정
 
