@@ -363,7 +363,21 @@ Service 또는 Repository라면 필요에 따라 인터페이스와 구현체로
     >
     > 보통 운영서버에서는 웹서버가 1대가 아니고 여러대로 운영하는데, 세션을 사용하게되면 여러 웹서버간 세션 공유를 어떻게 할지... 고민이 생기게된다...😂
   
-    - [x] side_menu 관리 세션에서 제거
+    - [x] side_menu 제어 값을 세션에서 제거
+  
+      
+
+
+
+### tiles 경고 로그 수정
+
+```
+WARN  org.apache.tiles.request.locale.PostfixedApplicationResource - No supported matching language for locale "admin_goods". Using file:/{레파지토리 루트}/bookShop01-study/target/bookshop-study-1.0.0-BUILD-SNAPSHOT/WEB-INF/classes/tiles/tiles_admin_goods.xml as a non-localized resource path. see TILES-571
+```
+
+* tiles XML 설정 파일 이름에 `_`이 포함될 경우 마지막 밑줄 다음의 문자를 locale 처럼 인식하려는 동작을 보인다.
+* [x] tiles XML 파일 명에 포함된 밑줄을 다른 문자로 바꿔주면 간단하게 해결됨.
+  * `tiles_admin_goods.xml` 를  `tiles-admin-goods.xml`으로 파일 이름 변경
 
 
 
