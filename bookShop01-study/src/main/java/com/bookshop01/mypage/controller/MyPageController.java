@@ -28,10 +28,8 @@ public class MyPageController extends BaseController {
   @RequestMapping(value = "/myPageMain.do", method = RequestMethod.GET)
   public ModelAndView myPageMain(
       @RequestParam(required = false, value = "message") String message,
-      HttpServletRequest request) {
-    HttpSession session = request.getSession();
-    session.setAttribute("side_menu", "my_page"); // 마이페이지 사이드 메뉴로 설정한다.
-
+      HttpServletRequest request,
+      HttpSession session) {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
     MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");

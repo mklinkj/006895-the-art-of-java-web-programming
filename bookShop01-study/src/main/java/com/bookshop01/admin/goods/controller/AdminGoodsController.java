@@ -35,20 +35,14 @@ public class AdminGoodsController extends BaseController {
       value = "/adminGoodsMain.do",
       method = {RequestMethod.POST, RequestMethod.GET})
   public ModelAndView adminGoodsMain(
-      @RequestParam Map<String, String> dateMap,
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      @RequestParam Map<String, String> dateMap, HttpServletRequest request) throws Exception {
     String viewName = (String) request.getAttribute("viewName");
     ModelAndView mav = new ModelAndView(viewName);
-    HttpSession session = request.getSession();
-    session = request.getSession();
-    session.setAttribute("side_menu", "admin_mode"); // 마이페이지 사이드 메뉴로 설정한다.
 
     String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
     String section = dateMap.get("section");
     String pageNum = dateMap.get("pageNum");
-    String beginDate = null, endDate = null;
+    String beginDate, endDate;
 
     String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
     // yyyy-MM-dd 형식 문자열이 입력된다.

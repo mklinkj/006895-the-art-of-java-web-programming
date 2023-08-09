@@ -5,16 +5,19 @@
 
 <tiles-definitions>
   <definition extends="baseLayout" name="/admin/goods/adminGoodsMain">
-    <put-attribute name="title" value="관리자 메인 페이지"/>
-    <put-attribute name="body" value="/WEB-INF/views/admin/goods/adminGoodsMain.jsp"/>
+    <put-attribute name="title"     value="관리자 메인 페이지"/>
+    <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
+    <put-attribute name="body"      value="/WEB-INF/views/admin/goods/adminGoodsMain.jsp"/>
   </definition>
   <definition extends="baseLayout" name="/admin/goods/addNewGoodsForm">
-    <put-attribute name="title" value="새 상품 추가 페이지"/>
-    <put-attribute name="body" value="/WEB-INF/views/admin/goods/addNewGoodsForm.jsp"/>
+    <put-attribute name="title"     value="새 상품 추가 페이지"/>
+    <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
+    <put-attribute name="body"      value="/WEB-INF/views/admin/goods/addNewGoodsForm.jsp"/>
   </definition>
   <definition extends="baseLayout" name="/admin/goods/modifyGoodsForm">
-    <put-attribute name="title" value="상품 수정 페이지"/>
-    <put-attribute name="body" value="/WEB-INF/views/admin/goods/modifyGoodsForm.jsp"/>
+    <put-attribute name="title"     value="상품 수정 페이지"/>
+    <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
+    <put-attribute name="body"      value="/WEB-INF/views/admin/goods/modifyGoodsForm.jsp"/>
   </definition>
 </tiles-definitions>
 

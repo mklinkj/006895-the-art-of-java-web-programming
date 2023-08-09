@@ -6,13 +6,15 @@
 <tiles-definitions>
   <!-- 회원관리 -->
   <definition extends="baseLayout" name="/admin/member/adminMemberMain">
-    <put-attribute name="title" value="회원 관리 페이지"/>
-    <put-attribute name="body" value="/WEB-INF/views/admin/member/adminMemberMain.jsp"/>
+    <put-attribute name="title"       value="회원 관리 페이지"/>
+    <put-attribute name="side_nav"    value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
+    <put-attribute name="body"        value="/WEB-INF/views/admin/member/adminMemberMain.jsp"/>
   </definition>
 
   <definition extends="baseLayout" name="/admin/member/memberDetail">
-    <put-attribute name="title" value="회원 상세 페이지"/>
-    <put-attribute name="body" value="/WEB-INF/views/admin/member/memberDetail.jsp"/>
+    <put-attribute name="title"       value="회원 상세 페이지"/>
+    <put-attribute name="side_nav"    value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
+    <put-attribute name="body"        value="/WEB-INF/views/admin/member/memberDetail.jsp"/>
   </definition>
 
 

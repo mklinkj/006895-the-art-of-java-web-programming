@@ -56,7 +56,8 @@
     </header>
     <div class="clear"></div>
     <aside>
-      <tiles:insertAttribute name="side"/>
+      <tiles:insertAttribute name="side_nav"/>
+      <tiles:insertAttribute name="side_common"/>
     </aside>
     <article>
       <tiles:insertAttribute name="body"/>

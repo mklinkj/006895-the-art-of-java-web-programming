@@ -5,7 +5,6 @@ import com.bookshop01.goods.service.GoodsService;
 import com.bookshop01.goods.vo.GoodsVO;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -24,9 +23,7 @@ public class MainController extends BaseController {
   @RequestMapping(
       value = "/main/main.do",
       method = {RequestMethod.GET, RequestMethod.POST})
-  public void mainPage(Model model, HttpSession session) {
-    session.setAttribute("side_menu", "user"); // TODO: 세션 사용하지 않게 수정해야함.
-
+  public void mainPage(Model model) {
     Map<String, List<GoodsVO>> goodsMap = goodsService.listGoods();
     model.addAttribute("goodsMap", goodsMap);
   }
