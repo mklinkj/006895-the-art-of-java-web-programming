@@ -25,19 +25,19 @@ public class LoggingAdvice {
     LOGGER.info("-------------------------------------");
 
     // 전달되는 모든 파라미터들을 Object의 배열로 가져옵니다.
-    LOGGER.info("1:" + Arrays.toString(jp.getArgs()));
+    LOGGER.info("1:{}", Arrays.toString(jp.getArgs()));
 
     // 해당 Advice의 타입을 알아냅니다.
-    LOGGER.info("2:" + jp.getKind());
+    LOGGER.info("2:{}", jp.getKind());
 
     // 실행하는 대상 객체의 메소드에 대한 정보를 알아낼 때 사용합니다.
-    LOGGER.info("3:" + jp.getSignature().getName());
+    LOGGER.info("3:{}", jp.getSignature().getName());
 
     // target 객체를 알아낼 때 사용합니다.
-    LOGGER.info("4:" + jp.getTarget().toString());
+    LOGGER.info("4:{}", jp.getTarget().toString());
 
     // Advice를 행하는 객체를 알아낼 때 사용합니다.
-    LOGGER.info("5:" + jp.getThis().toString());
+    LOGGER.info("5:{}", jp.getThis().toString());
   }
 
   @After(
@@ -48,19 +48,19 @@ public class LoggingAdvice {
     LOGGER.info("-------------------------------------");
 
     // 전달되는 모든 파라미터들을 Object의 배열로 가져옵니다.
-    LOGGER.info("1:" + Arrays.toString(jp.getArgs()));
+    LOGGER.info("1:{}", Arrays.toString(jp.getArgs()));
 
     // 해당 Advice의 타입을 알아냅니다.
-    LOGGER.info("2:" + jp.getKind());
+    LOGGER.info("2:{}", jp.getKind());
 
     // 실행하는 대상 객체의 메소드에 대한 정보를 알아낼 때 사용합니다.
-    LOGGER.info("3:" + jp.getSignature().getName());
+    LOGGER.info("3:{}", jp.getSignature().getName());
 
     // target 객체를 알아낼 때 사용합니다.
-    LOGGER.info("4:" + jp.getTarget().toString());
+    LOGGER.info("4:{}", jp.getTarget().toString());
 
     // Advice를 행하는 객체를 알아낼 때 사용합니다
-    LOGGER.info("5:" + jp.getThis().toString());
+    LOGGER.info("5:{}", jp.getThis().toString());
   }
 
   // target 메소드의 동작 시간을 측정합니다.

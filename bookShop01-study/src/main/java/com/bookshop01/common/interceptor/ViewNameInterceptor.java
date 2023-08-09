@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+/** TODO: 컨트롤러가 정리되면 이 인터셉터는 제거하도록 하자. */
 public class ViewNameInterceptor extends HandlerInterceptorAdapter {
   @Override
   public boolean preHandle(

@@ -387,15 +387,35 @@ WARN  org.apache.tiles.request.locale.PostfixedApplicationResource - No supporte
 
 ## 공통(common) 패키지 이하 코드 테스트 / 수정
 
+- [x] 대략적인 코드 정리
+
+### BaseController
+
+* viewForm()
+  * [x] 제거
+    * `/*.do` 로 매핑 되어있고, 내용은 그냥 ViewName 얻어서 반환하는 내용인데, 컨트롤러에서 void 메서드 사용한 것과 별 차이가 없어보인다. 제거하자..
+
+* CURR_IMAGE_REPO_PATH
+  * [x] 경로값 프로퍼티 파일에 저장해두고 로드하는 방식으로 수정
+
+- [x] 테스트 코드 작성
+  - [x] upload의 경우는 사용처가 AdminGoodsController 밖에 없어서 거기로 옮겨둠.
+    - [ ] AdminGoodsController 클래스의 내을 보니 엄청나게 복잡한데... 다음 이터레이션에서 정리하면서 서비스 단으로 내려야할 것 같다.
 
 
+### FileDownloadController
 
+- [x] 테스트 코드 작성
 
+  
 
+### ViewNameInterceptor
 
+* [ ] 뷰이름을 얻는 인터셉터는 컨트롤러 들이 정리되고 테스트가 추가되면 완전히 제거할 예정.
 
+### LoggingAdvice
 
-
+* 특별히 고칠 부분은 없다. 로그만 출력하는 어드바이스라서 테스트도 따로 안만들어도 될 것 같다.
 
 
 
@@ -407,3 +427,14 @@ WARN  org.apache.tiles.request.locale.PostfixedApplicationResource - No supporte
 
 * 이 작업들을... 질질 끌지말고 해야할텐데... 😂
 * 이게 완료 되면, 다른 DDD 예제의 상점 프로젝트도 이해가 잘 될듯 하다.
+
+
+
+---
+
+## 1차 테스트 / 수정 최종의견
+
+* 정리를 많이 하면서 보았을 때, 잘못된 부분도 보이고 코드가 꽤 어지러웠다..😓
+  * VO를 컴포넌트 빈으로 설정하고 컨트롤러의 맴버 필드로 사용한 내용은 정말 고쳐져야할 듯하다. 👺
+
+* **2차 테스트 / 수정**부터는 천천히 하도록하고, 서비스하고 컨트롤러 위주로 테스트를 추가해가며 수정해보자.

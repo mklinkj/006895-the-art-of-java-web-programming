@@ -2,19 +2,22 @@ package com.bookshop01.admin.goods.controller;
 
 import com.bookshop01.admin.goods.service.AdminGoodsService;
 import com.bookshop01.common.base.BaseController;
+import com.bookshop01.common.util.ProjectDataUtils;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
 import com.bookshop01.member.vo.MemberVO;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +25,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/admin/goods")
 public class AdminGoodsController extends BaseController {
-  private static final String CURR_IMAGE_REPO_PATH = "C:\\shopping\\file_repo";
-  @Autowired private AdminGoodsService adminGoodsService;
+  private final String currImageRepoPath = ProjectDataUtils.getProperty("image_repo_path");
+  private final AdminGoodsService adminGoodsService;
 
   @RequestMapping(
       value = "/adminGoodsMain.do",
@@ -117,8 +122,8 @@ public class AdminGoodsController extends BaseController {
       if (imageFileList != null && imageFileList.size() != 0) {
         for (ImageFileVO imageFileVO : imageFileList) {
           imageFileName = imageFileVO.getFileName();
-          File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
-          File destDir = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id);
+          File srcFile = new File(currImageRepoPath + "\\" + "temp" + "\\" + imageFileName);
+          File destDir = new File(currImageRepoPath + "\\" + goods_id);
           FileUtils.moveFileToDirectory(srcFile, destDir, true);
         }
       }
@@ -133,7 +138,7 @@ public class AdminGoodsController extends BaseController {
       if (imageFileList != null && imageFileList.size() != 0) {
         for (ImageFileVO imageFileVO : imageFileList) {
           imageFileName = imageFileVO.getFileName();
-          File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
+          File srcFile = new File(currImageRepoPath + "\\" + "temp" + "\\" + imageFileName);
           srcFile.delete();
         }
       }
@@ -232,8 +237,8 @@ public class AdminGoodsController extends BaseController {
         adminGoodsService.modifyGoodsImage(imageFileList);
         for (ImageFileVO imageFileVO : imageFileList) {
           imageFileName = imageFileVO.getFileName();
-          File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
-          File destDir = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id);
+          File srcFile = new File(currImageRepoPath + "\\" + "temp" + "\\" + imageFileName);
+          File destDir = new File(currImageRepoPath + "\\" + goods_id);
           FileUtils.moveFileToDirectory(srcFile, destDir, true);
         }
       }
@@ -241,7 +246,7 @@ public class AdminGoodsController extends BaseController {
       if (imageFileList != null && imageFileList.size() != 0) {
         for (ImageFileVO imageFileVO : imageFileList) {
           imageFileName = imageFileVO.getFileName();
-          File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
+          File srcFile = new File(currImageRepoPath + "\\" + "temp" + "\\" + imageFileName);
           srcFile.delete();
         }
       }
@@ -285,8 +290,8 @@ public class AdminGoodsController extends BaseController {
         adminGoodsService.addNewGoodsImage(imageFileList);
         for (ImageFileVO imageFileVO : imageFileList) {
           imageFileName = imageFileVO.getFileName();
-          File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
-          File destDir = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id);
+          File srcFile = new File(currImageRepoPath + "\\" + "temp" + "\\" + imageFileName);
+          File destDir = new File(currImageRepoPath + "\\" + goods_id);
           FileUtils.moveFileToDirectory(srcFile, destDir, true);
         }
       }
@@ -294,7 +299,7 @@ public class AdminGoodsController extends BaseController {
       if (imageFileList != null && imageFileList.size() != 0) {
         for (ImageFileVO imageFileVO : imageFileList) {
           imageFileName = imageFileVO.getFileName();
-          File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
+          File srcFile = new File(currImageRepoPath + "\\" + "temp" + "\\" + imageFileName);
           srcFile.delete();
         }
       }
@@ -315,10 +320,42 @@ public class AdminGoodsController extends BaseController {
 
     adminGoodsService.removeGoodsImage(image_id);
     try {
-      File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id + "\\" + imageFileName);
+      File srcFile = new File(currImageRepoPath + "\\" + goods_id + "\\" + imageFileName);
       srcFile.delete();
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  protected List<ImageFileVO> upload(MultipartHttpServletRequest multipartRequest)
+      throws Exception {
+    List<ImageFileVO> fileList = new ArrayList<>();
+    Iterator<String> fileNames = multipartRequest.getFileNames();
+    while (fileNames.hasNext()) {
+      ImageFileVO imageFileVO = new ImageFileVO();
+      String fileName = fileNames.next();
+      imageFileVO.setFileType(fileName);
+      MultipartFile mFile = multipartRequest.getFile(fileName);
+      String originalFileName = mFile.getOriginalFilename();
+      imageFileVO.setFileName(originalFileName);
+      fileList.add(imageFileVO);
+
+      File file = new File(currImageRepoPath + File.separator + fileName);
+      if (mFile.getSize() != 0) { // File Null Check
+        if (!file.exists()) { // 경로상에 파일이 존재하지 않을 경우
+          if (file.getParentFile().mkdirs()) { // 경로에 해당하는 디렉토리들을 생성
+            file.createNewFile(); // 이후 파일 생성
+          }
+        }
+        mFile.transferTo(
+            new File(
+                currImageRepoPath
+                    + File.separator
+                    + "temp"
+                    + File.separator
+                    + originalFileName)); // 임시로 저장된 multipartFile을 실제 파일로 전송
+      }
+    }
+    return fileList;
   }
 }

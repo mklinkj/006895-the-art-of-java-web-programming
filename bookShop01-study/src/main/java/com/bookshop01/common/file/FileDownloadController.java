@@ -1,17 +1,19 @@
 package com.bookshop01.common.file;
 
+import com.bookshop01.common.util.ProjectDataUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import javax.servlet.http.HttpServletResponse;
 import net.coobird.thumbnailator.Thumbnails;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class FileDownloadController {
-  private static String CURR_IMAGE_REPO_PATH = "C:\\shopping\\file_repo";
+  private final String currImageRepoPath = ProjectDataUtils.getProperty("image_repo_path");
 
   @RequestMapping("/download")
   protected void download(
@@ -20,11 +22,11 @@ public class FileDownloadController {
       HttpServletResponse response)
       throws Exception {
     OutputStream out = response.getOutputStream();
-    String filePath = CURR_IMAGE_REPO_PATH + "\\" + goods_id + "\\" + fileName;
+    String filePath = currImageRepoPath + File.separator + goods_id + File.separator + fileName;
     File image = new File(filePath);
 
-    response.setHeader("Cache-Control", "no-cache");
-    response.addHeader("Content-disposition", "attachment; fileName=" + fileName);
+    response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache");
+    response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=" + fileName);
     FileInputStream in = new FileInputStream(image);
     byte[] buffer = new byte[1024 * 8];
     while (true) {
@@ -44,7 +46,7 @@ public class FileDownloadController {
       HttpServletResponse response)
       throws Exception {
     OutputStream out = response.getOutputStream();
-    String filePath = CURR_IMAGE_REPO_PATH + "\\" + goods_id + "\\" + fileName;
+    String filePath = currImageRepoPath + File.separator + goods_id + File.separator + fileName;
     File image = new File(filePath);
 
     if (image.exists()) {
