@@ -98,7 +98,7 @@ class AdminGoodsDAOTests {
     int goodsId = adminGoodsDAO.insertNewGoods(newGoodsMap);
 
     // 시퀀스 생성시 설정한 시작 값이 400부터 이긴함.
-    assertThat(goodsId).isGreaterThan(400);
+    assertThat(goodsId).isGreaterThanOrEqualTo(400);
   }
 
   @Transactional
