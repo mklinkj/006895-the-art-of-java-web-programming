@@ -239,7 +239,7 @@
       <p>${fn:replace(goods.goods_intro,crcn,br)}</p>
       <c:forEach var="image" items="${imageList }">
         <img
-            src="${contextPath}/download.do?goods_id=${goods.goods_id}&fileName=${image.fileName}">
+            src="${contextPath}/download?goods_id=${goods.goods_id}&fileName=${image.fileName}">
       </c:forEach>
     </div>
     <div class="tab_content" id="tab2">

@@ -474,7 +474,7 @@
               </td>
               <td>
                 <img id="preview${itemNum.count }" width=200 height=200
-                     src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.fileName}"/>
+                     src="${contextPath}/download?goods_id=${item.goods_id}&fileName=${item.fileName}"/>
               </td>
               <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -502,7 +502,7 @@
                 </td>
                 <td>
                   <img id="preview${itemNum.count }" width=200 height=200
-                       src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.fileName}">
+                       src="${contextPath}/download?goods_id=${item.goods_id}&fileName=${item.fileName}">
                 </td>
                 <td>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -525,7 +525,7 @@
             <tr align="center">
               <td colspan="3">
                 <div id="d_file">
-                  <%-- <img  id="preview${itemNum.count }"   width=200 height=200 src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.fileName}" /> --%>
+                  <%-- <img  id="preview${itemNum.count }"   width=200 height=200 src="${contextPath}/download?goods_id=${item.goods_id}&fileName=${item.fileName}" /> --%>
                 </div>
               </td>
             </tr>
