@@ -31,13 +31,15 @@ public class DateUtils {
     } else {
       beginDate =
           switch (fixedSearchPeriod) {
+            case "today" -> endDate;
             case "one_week" -> endDate.minusWeeks(1);
             case "two_week" -> endDate.minusWeeks(2);
             case "one_month" -> endDate.minusMonths(1);
             case "two_month" -> endDate.minusMonths(2);
             case "three_month" -> endDate.minusMonths(3);
             case "four_month" -> endDate.minusMonths(4);
-            default -> throw new IllegalStateException("잘못된 기간 검색 타입: " + fixedSearchPeriod);
+            default -> throw new IllegalStateException(
+                "잘못된 기간 검색 타입: %s".formatted(fixedSearchPeriod));
           };
     }
     return beginDate.format(DATE_FORMAT_YYYY_MM_DD) + "," + endDate.format(DATE_FORMAT_YYYY_MM_DD);

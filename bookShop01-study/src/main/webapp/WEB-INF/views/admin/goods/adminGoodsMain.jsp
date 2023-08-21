@@ -9,11 +9,11 @@
 <head>
   <meta charset="utf-8">
   <script>
-    function search_goods_list(fixeSearchPeriod) {
+    function search_goods_list(fixedSearchPeriod) {
       var formObj = document.createElement("form");
       var i_fixedSearch_period = document.createElement("input");
       i_fixedSearch_period.name = "fixedSearchPeriod";
-      i_fixedSearch_period.value = searchPeriod;
+      i_fixedSearch_period.value = fixedSearchPeriod;
       formObj.appendChild(i_fixedSearch_period);
       document.body.appendChild(formObj);
       formObj.method = "get";
@@ -88,18 +88,14 @@
   </script>
 </head>
 <body>
-<H3>상품 조회</H3>
-<form method="post">
-  <TABLE cellpadding="10" cellspacing="10">
-    <TBODY>
-    <TR>
-      <TD>
-        <input type="radio" name="r_search" checked/> 등록일로조회 &nbsp;&nbsp;&nbsp;
-        <input type="radio" name="r_search"/>상세조회 &nbsp;&nbsp;&nbsp;
-      </TD>
-    </TR>
-    <TR>
-      <TD>
+<h3>상품 조회</h3>
+  <table cellpadding="10" cellspacing="10">
+    <tbody>
+    <tr>
+      <td>등록일로 조회</td>
+    </tr>
+    <tr>
+      <td>
         <select name="curYear">
           <c:forEach var="i" begin="0" end="5">
             <c:choose>
@@ -158,29 +154,37 @@
           <img src="${contextPath}/resources/image/btn_search_4_month.jpg">
         </a>
         &nbsp;까지 조회
-      </TD>
-    </TR>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+<form method="get" action="${contextPath}/admin/goods/adminGoodsMain.do">
+  <table cellpadding="10" cellspacing="10">
+    <tbody>
+    <tr>
+      <td>상세 조회</td>
+    </tr>
     <tr>
       <td>
-        <select name="search_condition" disabled>
-          <option value="전체" checked>전체</option>
-          <option value="제품번호">상품번호</option>
-          <option value="제품이름">상품이름</option>
-          <option value="제조사">제조사</option>
+        <select name="search_type" >
+          <option value="total" <c:if test="${empty search_type}">selected</c:if>>전체(상품 이름 + 저자)</option>
+          <option value="goods_id" <c:if test="${search_type eq 'goods_id'}">selected</c:if>>상품번호</option>
+          <option value="goods_title" <c:if test="${search_type eq 'goods_title'}">selected</c:if>>상품이름</option>
+          <option value="goods_writer" <c:if test="${search_type eq 'goods_writer'}">selected</c:if>>저자</option>
         </select>
-        <input type="text" size="30" disabled/>
-        <input type="button" value="조회" disabled/>
+        <input name="search_word" type="text" size="30" value="${search_word}"/>
+        <input type="submit" value="조회"/>
       </td>
     </tr>
     <tr>
       <td>
-        조회한 기간:<input type="text" size="4" value="${beginYear}"/>년
-        <input type="text" size="4" value="${beginMonth}"/>월
-        <input type="text" size="4" value="${beginDay}"/>일
+        조회한 기간:<input name="beginYear" type="text" size="4" value="${beginYear}"/>년
+        <input name="beginMonth" type="text" size="4" value="${beginMonth}"/>월
+        <input name="beginDay" type="text" size="4" value="${beginDay}"/>일
         &nbsp; ~
-        <input type="text" size="4" value="${endYear }"/>년
-        <input type="text" size="4" value="${endMonth }"/>월
-        <input type="text" size="4" value="${endDay }"/>일
+        <input name="endYear" type="text" size="4" value="${endYear }"/>년
+        <input name="endMonth" type="text" size="4" value="${endMonth }"/>월
+        <input name="endDay" type="text" size="4" value="${endDay }"/>일
       </td>
     </tr>
     </TBODY>
@@ -252,7 +256,7 @@
       </c:if>
       <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section}&pageNum=${page}">${(section-1)*10 +page } </a>
       <c:if test="${page ==10 }">
-      <a href="${contextPath}/admin/goods/adminGooodsMain.do?chapter=${section+1}&pageNum=${section*10+1}">&nbsp;
+      <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section+1}&pageNum=${section*10+1}">&nbsp;
         next</a>
       </c:if>
       </c:forEach>

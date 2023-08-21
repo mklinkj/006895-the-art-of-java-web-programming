@@ -147,7 +147,6 @@
   </resultMap>
 
   <select id="selectNewGoodsList" parameterType="java.util.Map" resultMap="goodsResult">
-	    <![CDATA[
     SELECT *
     FROM (SELECT rowNum                                      AS recNum,
                  goods_id,
@@ -166,9 +165,26 @@
                        goods_published_date
                 FROM t_shopping_goods
                 WHERE TO_CHAR(goods_creDate, 'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
-                ORDER BY goods_creDate desc))
+                <if test=" search_word != null and search_word != '' ">
+                  <if test=" search_type=='total'">
+                    AND (
+                        goods_title LIKE '%' || #{search_word} || '%'
+                        OR goods_writer=#{search_word}
+                    )
+                  </if>
+                  <if test=" search_type=='goods_id' ">
+                    AND goods_id=#{search_word}
+                  </if>
+                  <if test=" search_type=='goods_title'">
+                    AND goods_title LIKE '%' || #{search_word} || '%'
+                  </if>
+                  <if test="search_type=='goods_writer'">
+                    AND goods_writer=#{search_word}
+                  </if>
+                </if>
+                ORDER BY goods_creDate DESC))
     WHERE recNum BETWEEN (#{section} - 1) * 100 + (#{pageNum} - 1) * 10 + 1 AND (#{section} - 1) * 100 + (#{pageNum}) * 10
-    ]]>
+
 	</select>
 
 

@@ -42,19 +42,19 @@ public class AdminGoodsController extends BaseController {
   @RequestMapping(
       value = "/adminGoodsMain.do",
       method = {RequestMethod.POST, RequestMethod.GET})
-  public void adminGoodsMain(@RequestParam Map<String, String> dateMap, Model model) {
+  public void adminGoodsMain(@RequestParam Map<String, String> paramMap, Model model) {
 
-    String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
-    String section = dateMap.get("section");
-    String pageNum = dateMap.get("pageNum");
+    String fixedSearchPeriod = paramMap.get("fixedSearchPeriod");
+    String section = paramMap.get("section");
+    String pageNum = paramMap.get("pageNum");
     String beginDate, endDate;
 
     String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
     // yyyy-MM-dd 형식 문자열이 입력된다.
     beginDate = tempDate[0];
     endDate = tempDate[1];
-    dateMap.put("beginDate", beginDate);
-    dateMap.put("endDate", endDate);
+    paramMap.put("beginDate", beginDate);
+    paramMap.put("endDate", endDate);
 
     Map<String, Object> condMap = new HashMap<>();
     if (section == null) {
@@ -67,6 +67,24 @@ public class AdminGoodsController extends BaseController {
     condMap.put("pageNum", pageNum);
     condMap.put("beginDate", beginDate);
     condMap.put("endDate", endDate);
+
+    if (paramMap.get("search_type") != null) {
+      condMap.put("search_type", paramMap.get("search_type"));
+      condMap.put("search_word", paramMap.get("search_word"));
+      beginDate =
+          "%s-%s-%s"
+              .formatted(
+                  paramMap.get("beginYear"), paramMap.get("beginMonth"), paramMap.get("beginDay"));
+      condMap.put("beginDate", beginDate);
+      endDate =
+          "%s-%s-%s"
+              .formatted(paramMap.get("endYear"), paramMap.get("endMonth"), paramMap.get("endDay"));
+      condMap.put("endDate", endDate);
+
+      model.addAttribute("search_type", paramMap.get("search_type"));
+      model.addAttribute("search_word", paramMap.get("search_word"));
+    }
+
     List<GoodsVO> newGoodsList = adminGoodsService.listNewGoods(condMap);
     model.addAttribute("newGoodsList", newGoodsList);
 
