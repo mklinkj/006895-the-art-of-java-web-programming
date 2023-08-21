@@ -1,5 +1,7 @@
 package com.bookshop01.mypage.controller;
 
+import static com.bookshop01.common.util.DateUtils.calcSearchPeriod;
+
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.member.vo.MemberVO;
 import com.bookshop01.mypage.service.MyPageService;

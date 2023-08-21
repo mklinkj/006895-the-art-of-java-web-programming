@@ -7,23 +7,23 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminGoodsService {
-  int addNewGoods(Map newGoodsMap) throws Exception;
+  int addNewGoods(Map<String, ?> newGoodsMap);
 
-  List<GoodsVO> listNewGoods(Map condMap) throws Exception;
+  List<GoodsVO> listNewGoods(Map<String, ?> condMap);
 
-  Map goodsDetail(int goods_id) throws Exception;
+  Map<String, ?> goodsDetail(int goodsId);
 
-  List goodsImageFile(int goods_id) throws Exception;
+  List<ImageFileVO> goodsImageFile(int goodsId);
 
-  void modifyGoodsInfo(Map goodsMap) throws Exception;
+  void modifyGoodsInfo(Map<String, ?> goodsMap);
 
-  void modifyGoodsImage(List<ImageFileVO> imageFileList) throws Exception;
+  void modifyGoodsImage(List<ImageFileVO> imageFileList);
 
-  List<OrderVO> listOrderGoods(Map condMap) throws Exception;
+  List<OrderVO> listOrderGoods(Map<String, ?> condMap);
 
-  void modifyOrderGoods(Map orderMap) throws Exception;
+  void modifyOrderGoods(Map<String, ?> orderMap);
 
-  void removeGoodsImage(int image_id) throws Exception;
+  void removeGoodsImage(int imageId);
 
-  void addNewGoodsImage(List imageFileList) throws Exception;
+  void addNewGoodsImage(List<ImageFileVO> imageFileList);
 }

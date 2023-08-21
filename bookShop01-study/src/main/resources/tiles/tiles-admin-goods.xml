@@ -4,7 +4,7 @@
   "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-  <definition extends="baseLayout" name="/admin/goods/adminGoodsMain">
+  <definition extends="baseLayout" name="admin/goods/adminGoodsMain">
     <put-attribute name="title"     value="관리자 메인 페이지"/>
     <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
     <put-attribute name="body"      value="/WEB-INF/views/admin/goods/adminGoodsMain.jsp"/>
@@ -14,7 +14,7 @@
     <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
     <put-attribute name="body"      value="/WEB-INF/views/admin/goods/addNewGoodsForm.jsp"/>
   </definition>
-  <definition extends="baseLayout" name="/admin/goods/modifyGoodsForm">
+  <definition extends="baseLayout" name="admin/goods/modifyGoodsForm">
     <put-attribute name="title"     value="상품 수정 페이지"/>
     <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
     <put-attribute name="body"      value="/WEB-INF/views/admin/goods/modifyGoodsForm.jsp"/>

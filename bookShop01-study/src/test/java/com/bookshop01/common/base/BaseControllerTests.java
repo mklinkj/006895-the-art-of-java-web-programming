@@ -1,11 +1,18 @@
 package com.bookshop01.common.base;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mklinkj.test.support.FixedDateTestHelper.changeNowLocalDate;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 /*
  * 공통 컨트롤러이긴한데, 상속하는 메서드들이 약간 유릴리티 유형이다.
@@ -14,35 +21,31 @@ import org.junit.jupiter.api.Test;
  * - AdminGoodsController
  */
 @Slf4j
+@SpringJUnitWebConfig(
+    locations = {
+      "classpath:config/spring/root-context.xml",
+      "classpath:config/spring/servlet-context.xml"
+    })
 class BaseControllerTests {
-  private final BaseController baseController = new BaseController() {};
 
-  /** 오늘 기준으로 검색 기준 일자 문자열을 반환 */
+  @Autowired private WebApplicationContext context;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void beforeEach() {
+    mockMvc = webAppContextSetup(context).build();
+  }
+
+  /*
+    단지 아무 작업 없이 바로 뷰만 바로 리턴하는 공통 메서드 테스트
+  */
   @Test
-  void calcSearchPeriod() {
-    changeNowLocalDate(
-        LocalDate.of(2023, 8, 9),
-        () -> {
-          String result = baseController.calcSearchPeriod(null);
-          assertThat(result).isEqualTo("2023-04-09,2023-08-09");
-
-          result = baseController.calcSearchPeriod("one_week");
-          assertThat(result).isEqualTo("2023-08-02,2023-08-09");
-
-          result = baseController.calcSearchPeriod("two_week");
-          assertThat(result).isEqualTo("2023-07-26,2023-08-09");
-
-          result = baseController.calcSearchPeriod("one_month");
-          assertThat(result).isEqualTo("2023-07-09,2023-08-09");
-
-          result = baseController.calcSearchPeriod("two_month");
-          assertThat(result).isEqualTo("2023-06-09,2023-08-09");
-
-          result = baseController.calcSearchPeriod("three_month");
-          assertThat(result).isEqualTo("2023-05-09,2023-08-09");
-
-          result = baseController.calcSearchPeriod("four_month");
-          assertThat(result).isEqualTo("2023-04-09,2023-08-09");
-        });
+  void viewForm() throws Exception {
+    mockMvc
+        .perform(get("/admin/goods/addNewGoodsForm.do")) //
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(view().name("admin/goods/addNewGoodsForm"));
   }
 }
