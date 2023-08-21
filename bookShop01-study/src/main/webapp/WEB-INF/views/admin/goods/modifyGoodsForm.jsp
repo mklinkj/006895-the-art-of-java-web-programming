@@ -60,10 +60,10 @@
       value = frm_mod_goods.goods_writer_intro.value;
     } else if (attribute == 'goods_intro') {
       value = frm_mod_goods.goods_intro.value;
-    } else if (attribute == 'publisher_comment') {
-      value = frm_mod_goods.publisher_comment.value;
-    } else if (attribute == 'recommendation') {
-      value = frm_mod_goods.recommendation.value;
+    } else if (attribute == 'goods_publisher_comment') {
+      value = frm_mod_goods.goods_publisher_comment.value;
+    } else if (attribute == 'goods_recommendation') {
+      value = frm_mod_goods.goods_recommendation.value;
     }
 
     $.ajax({
@@ -370,9 +370,7 @@
         <table>
           <tr>
             <td>상품목차</td>
-            <td><textarea rows="100" cols="80" name="goods_contents_order">
-              ${goods.goods_contents_order }
-            </textarea>
+            <td><textarea rows="100" cols="80" name="goods_contents_order">${goods.goods_contents_order }</textarea>
             </td>
             <td>
               &nbsp;&nbsp;&nbsp;&nbsp;
@@ -388,9 +386,7 @@
         <table>
           <tr>
             <td>상품 저자 소개</td>
-            <td><textarea rows="100" cols="80" name="goods_writer_intro">
-              ${goods.goods_writer_intro }
-            </textarea>
+            <td><textarea rows="100" cols="80" name="goods_writer_intro">${goods.goods_writer_intro }</textarea>
             </td>
             <td>
               &nbsp;&nbsp;&nbsp;&nbsp;
@@ -407,9 +403,7 @@
         <table>
           <tr>
             <td>상품소개</td>
-            <td><textarea rows="100" cols="80" name="goods_intro">
-              ${goods.goods_intro }
-            </textarea>
+            <td><textarea rows="100" cols="80" name="goods_intro">${goods.goods_intro }</textarea>
             </td>
             <td>
               &nbsp;&nbsp;&nbsp;&nbsp;
@@ -425,9 +419,7 @@
         <P>
         <table>
           <tr>
-            <td><textarea rows="100" cols="80" name="goods_publisher_comment">
-              ${goods.goods_publisher_comment }
-            </textarea>
+            <td><textarea rows="100" cols="80" name="goods_publisher_comment">${goods.goods_publisher_comment }</textarea>
             </td>
             <td>
               &nbsp;&nbsp;&nbsp;&nbsp;
@@ -443,9 +435,7 @@
         <table>
           <tr>
             <td>추천사</td>
-            <td><textarea rows="100" cols="80" name="goods_recommendation">
-              ${goods.goods_recommendation }
-            </textarea>
+            <td><textarea rows="100" cols="80" name="goods_recommendation">${goods.goods_recommendation }</textarea>
             </td>
             <td>
               &nbsp;&nbsp;&nbsp;&nbsp;
