@@ -61,6 +61,10 @@
   * 원인
     * `modifyGoodsForm.jsp`에 `<textarea>` 에 공백이 포함되서 값이 들어가게 되어있음.
 
+- [ ] 상품 관리 > 상단 검색 조건 메뉴들이 정상 동작하지 않음.
+  * 문제
+    * 
+
 
 
 
@@ -69,7 +73,24 @@
 
 * [x] `BaseController`의 calcSearchPeriod 메서드는 유틸리티 성 메서드라 상속대신 유틸클래스틀 통해 사용하도록 하는게 나아보인다. > DateUtils로 이동
 
+* [x] 이미지 다운로드가 일어날 때, Tomcat에서 경고
+
+  ```
+  경고 [http-nio-8090-exec-6] org.apache.coyote.http11.Http11Processor.prepareResponse 값이 [attachment; fileName=리액트.png]인 HTTP 응답 헤더 [Content-Disposition](이)가 유효하지 않은 값이므로 응답에서 제거되었습니다.
+  	java.lang.IllegalArgumentException: code point [50,976]에 위치한 유니코드 문자 [리]은(는), 0에서 255까지의 허용 범위 바깥에 있으므로 인코딩될 수 없습니다.
+    ...
+  ```
   
+  * Content-Disposition을 설정할 때..  다음 처럼 설정
+  
+    ```java
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename*=UTF-8''" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+    ```
+  
+    * [HTTP - Content-Disposition - HTTP 콘텐츠 처리 헤더는 브라우저가 응답 페이로드를 처리하는 방법을 정의하는 데 사용됩니다. (runebook.dev)](https://runebook.dev/ko/docs/http/headers/content-disposition)
+    * 조금 해깔린 점이 있었는데.. URL인코딩을 하면 공백도 치환문자로 변경되서 따옴표로 묶을 일은 없을 것 같다.
 
 
 

@@ -4,6 +4,8 @@ import com.bookshop01.common.util.ProjectDataUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletResponse;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +28,10 @@ public class FileDownloadController {
     File image = new File(filePath);
 
     response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache");
-    response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=" + fileName);
+    response.setHeader(
+        HttpHeaders.CONTENT_DISPOSITION,
+        "attachment; filename*=UTF-8''" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+
     FileInputStream in = new FileInputStream(image);
     byte[] buffer = new byte[1024 * 8];
     while (true) {
