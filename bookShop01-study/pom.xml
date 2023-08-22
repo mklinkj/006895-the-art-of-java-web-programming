@@ -20,6 +20,15 @@
     <spring.version>${spring5.version}</spring.version>
     <jstl-scope.type>compile</jstl-scope.type>
   </properties>
+  
+  <profiles>
+    <profile>
+      <id>jetty-run</id>
+      <properties>
+        <jstl-scope.type>provided</jstl-scope.type>
+      </properties>
+    </profile>
+  </profiles>     
 
   <version>1.0.0-BUILD-SNAPSHOT</version>
 
