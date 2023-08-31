@@ -1,7 +1,6 @@
 package com.bookshop01.admin.member.dao;
 
 import com.bookshop01.member.vo.MemberVO;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

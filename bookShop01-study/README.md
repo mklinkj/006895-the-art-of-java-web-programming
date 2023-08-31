@@ -24,7 +24,7 @@
 ## 서버 실행
 
 * Jetty 서버 실행
-  ```
+  ```sh
   mvn clean jetty:run
   ```
 

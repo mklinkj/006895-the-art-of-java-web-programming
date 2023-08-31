@@ -5,7 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <html>
 <head>
@@ -16,25 +16,25 @@
       var date = temp.split(",");
       beginDate = date[0];
       endDate = date[1];
-      //alert("beginDate:"+beginDate+",endDate:"+endDate);
-      //return ;
 
       var formObj = document.createElement("form");
-
-      var formObj = document.createElement("form");
+      var i_command = document.createElement("input");
       var i_beginDate = document.createElement("input");
       var i_endDate = document.createElement("input");
 
+      i_command.name = "command";
+      i_command.value = 'simple_search';
       i_beginDate.name = "beginDate";
       i_beginDate.value = beginDate;
       i_endDate.name = "endDate";
       i_endDate.value = endDate;
 
+      formObj.appendChild(i_command);
       formObj.appendChild(i_beginDate);
       formObj.appendChild(i_endDate);
       document.body.appendChild(formObj);
       formObj.method = "get";
-      formObj.action = "/bookshop01/admin/member/adminMemberMain.do";
+      formObj.action = "${contextPath}/admin/member/adminMemberMain.do";
       formObj.submit();
     }
 
@@ -113,9 +113,6 @@
     }
 
     function fn_member_detail(order_id) {
-      //alert(order_id);
-      var frm_delivery_list = document.frm_delivery_list;
-
       var formObj = document.createElement("form");
       var i_order_id = document.createElement("input");
 
@@ -125,12 +122,12 @@
       formObj.appendChild(i_order_id);
       document.body.appendChild(formObj);
       formObj.method = "post";
-      formObj.action = "/bookshop01/admin/member/memberDetail.do";
+      formObj.action = "${contextPath}/admin/member/memberDetail.do";
       formObj.submit();
 
     }
 
-    function fn_enable_detail_search(r_search) {
+    function fn_enable_detail_search(searchType) {
       var frm_delivery_list = document.frm_delivery_list;
       t_beginYear = frm_delivery_list.beginYear;
       t_beginMonth = frm_delivery_list.beginMonth;
@@ -142,8 +139,7 @@
       t_search_word = frm_delivery_list.t_search_word;
       btn_search = frm_delivery_list.btn_search;
 
-      if (r_search.value == 'detail_search') {
-        //alert(r_search.value);
+      if (searchType == 'detail_search') {
         t_beginYear.disabled = false;
         t_beginMonth.disabled = false;
         t_beginDay.disabled = false;
@@ -195,7 +191,7 @@
       i_search_type.name = "search_type";
       i_search_word.name = "search_word";
 
-      i_command.value = "list_detail_order_goods";
+      i_command.value = "detail_search";
       i_beginDate.value = beginYear + "-" + beginMonth + "-" + beginDay;
       i_endDate.value = endYear + "-" + endMonth + "-" + endDay;
       i_search_type.value = search_type;
@@ -207,8 +203,8 @@
       formObj.appendChild(i_search_type);
       formObj.appendChild(i_search_word);
       document.body.appendChild(formObj);
-      formObj.method = "post";
-      formObj.action = "/bookshop01/admin/member/memberDetail.do";
+      formObj.method = "get";
+      formObj.action = "${contextPath}/admin/member/adminMemberMain.do";
       formObj.submit();
 
     }
@@ -221,10 +217,12 @@
     <tbody>
     <tr>
       <td>
-        <input type="radio" name="r_search_option" value="simple_search" checked
-               onClick="fn_enable_detail_search(this)"/> 간단조회 &nbsp;&nbsp;&nbsp;
+        <input type="radio" name="r_search_option" value="simple_search"
+                <c:if test="${empty command or command eq 'simple_search'}">checked</c:if>
+               onClick="fn_enable_detail_search(this.value)"/> 간단조회 &nbsp;&nbsp;&nbsp;
         <input type="radio" name="r_search_option" value="detail_search"
-               onClick="fn_enable_detail_search(this)"/> 상세조회 &nbsp;&nbsp;&nbsp;
+               <c:if test="${command eq 'detail_search'}">checked</c:if>
+               onClick="fn_enable_detail_search(this.value)"/> 상세조회 &nbsp;&nbsp;&nbsp;
       </td>
     </tr>
     <tr>
@@ -400,13 +398,12 @@
     <tr>
       <td>
         <select name="s_search_type" disabled>
-          <option value="all" checked>전체</option>
-          <option value="member_name">회원이름</option>
-          <option value="member_id">회원아이디</option>
-          <option value="member_hp_num">회원휴대폰번호</option>
-          <option value="member_addr">회원주소</option>
+          <option value="member_id" <c:if test="${search_type eq 'member_id'}">selected</c:if>>회원아이디</option>
+          <option value="member_name" <c:if test="${search_type eq 'member_name'}">selected</c:if>>회원이름</option>
+          <option value="member_hp_num" <c:if test="${search_type eq 'member_hp_num'}">selected</c:if>>회원휴대폰번호</option>
+          <option value="member_addr" <c:if test="${search_type eq 'member_addr'}">selected</c:if>>회원주소</option>
         </select>
-        <input type="text" size="30" name="t_search_word" disabled/>
+        <input type="text" size="30" name="t_search_word" value="${search_word}" onsubmit="return false;" disabled/>
         <input type="button" value="조회" name="btn_search" onClick="fn_detail_search()" disabled/>
       </td>
     </tr>
@@ -509,6 +506,14 @@
     </DIV>
   </c:when>
 </c:choose>
+<script>
+  document.querySelector('input[name="t_search_word"]').addEventListener('keydown', event => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      fn_detail_search();
+    }
+  });
+  fn_enable_detail_search(document.querySelector('input[name="r_search_option"]:checked').value)
+</script>
 </body>
 </html>
-

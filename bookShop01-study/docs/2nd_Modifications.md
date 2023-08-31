@@ -3,6 +3,8 @@
 > 패키지 단위로 Service > Controller 수정을 진행해보자.
 >
 > ViewNameInterceptor 사용처는 전부 void 컨트롤러 메서드 사용방식으로 바꾸자.
+>
+> ✨ 제일 중요한건.. 테스트 코드에 매달려서 ... 너무 질질 끌면 안됌, 동작하지 않는 필수 기능 수정 위주로 먼저 봐야한다.
 
 
 
@@ -99,7 +101,158 @@
 * IntelliJ에서 MyBatis의 중첩 `<if>`를 정확하게 알아채지 못하는 것 같다.
   * 편집기 상에서만 구문 문제가 있다고 경고가 노출됨. 나중에 한번 이슈 올려보자..
 
+---
 
+## 2. `admin.member` 패키지 이하 수정
+
+### 코드 스타일 변경
+
+- [x] ViewName 인터셉터 제거와 ModelAndView를 Model로 전환
+
+- [x] 읽기만하는 트랜젝션은 `readOnly = true` 옵션을 붙여보자!
+
+  ```java
+  @Transactional(readOnly = true)
+  ```
+
+  * 트랜젝션 전파 속성은 `Propagation.REQUIRED` 는 기본 값이니 일부러 명시하진 말자!
+
+- [x] PrintWriter로 직접 응답을 String을 쓰는 부분은 `ResponseEntity<String>`으로 반환하자!
+
+  ```java
+  ...
+  @ResponseBody
+  public ResponseEntity<String> modifyMemberInfo( ... ) {
+    ...
+    return ResponseEntity.ok("mod_success");
+  }
+  ```
+
+  
+
+- [x] HttpServletRequest 로 파라미터 받는 부분은 아래와 같은 스타일로 바꾸자!
+
+  ```java
+  @RequestParam("member_id") String memberId
+  ```
+
+  
+
+### ✨ 기능 문제
+
+#### `관리자` > `회원관리` 의 목록 페이지
+
+- [x] 검색 조건의 `[당일]`~`[4개월]`버튼이 정상 동작하지 않음
+
+  * 원인: URL에 ContextPath 가 동적으로 설정되어있지 않음
+
+- [x] 검색 조건의 상세조회의 `[조회]` 가 정상동작하지 않음
+
+  * 원인: 쿼리는 조건절은 있긴한데.. view > Controller 로 의 파라미터 전달등의 처리가 안되있다.
+
+    > ##### ✨기타
+    >
+    > view의 Select Box의 검색 조건에 ''전체''라는 항목이 있는데.. 이부분은 제거하는 것이 낫겠다.
+    >
+    > 검색 쿼리에 OR로 회원아이디, 이름, 휴대폰번호, 회원주소를 묶어서 쿼리를 할 수는 있겠지만 별 의미가 없어보인다. (성능에도 좋지 않을 것 같음. 😅)
+
+- [x] 검색 조건 상세조회의 input form에서 엔터를 누르면 그대로 submit이 일어남
+
+  * 원인: form에 input 테그 하나만 있는 상태라면 엔터누를때 submit이 일어날 수 있음
+
+  * 해결:  해당 input에 엔터 누를떼 submit 이벤트 막고 검색 함수 실행
+
+    ```javascript
+    // jQuery
+    $('input[name="t_search_word"]').keydown(function(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          fn_detail_search();
+        }
+      });
+    ```
+
+    ```javascript
+    // ES6
+    document.querySelector('input[name="t_search_word"]').addEventListener('keydown', event => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            fn_detail_search();
+        }
+    });
+    ```
+
+    
+
+- [x] `관리자` > `회원관리` 에서 조회되는 회원이 없음
+
+  * 문제 아님
+
+    * 초기 접근은 오늘 부터 2개월 전 사이에 가입한 회원만 보여줌.
+
+  * 페이징도 확인해야하니... PL/SQL코드로 `110`명 회원 가입 (2023년 8월 31일자로...)
+
+    ```plsql
+    DECLARE
+        i NUMBER := 1;
+    BEGIN
+        WHILE(i <= 110)
+            LOOP
+                INSERT INTO T_SHOPPING_MEMBER (MEMBER_ID, MEMBER_PW, MEMBER_NAME, MEMBER_GENDER, TEL1,
+                                               TEL2, TEL3,
+                                               HP1, HP2, HP3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN,
+                                               ZIPCODE,
+                                               ROADADDRESS, JIBUNADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y,
+                                               MEMBER_BIRTH_M, MEMBER_BIRTH_D, MEMBER_BIRTH_GN,
+                                               JOINDATE, DEL_YN)
+                VALUES ('mem' || i, '1212', '회원' || i, '101', '02', '1111', '2222', '010', '2222',
+                        '3333', 'Y', 'mem' || i,
+                        'test.com', 'Y', '13547', '도로명주소', '지번주소', '나머지주소',
+                        '2000', '5', '10', '2', TO_DATE('23/08/31', 'RR/MM/DD'), 'N');
+                i := i + 1;
+            END LOOP;
+    END;
+    COMMIT;
+    
+    -- 입력한 회원의 정리가 필요할 때는... admin과 lee 회원만 제외하고 삭제
+    DELETE
+      FROM T_SHOPPING_MEMBER
+     WHERE NOT MEMBER_ID IN ('admin', 'lee');
+    ```
+
+- [ ] **✨`관리자` > `회원 관리` 에서  회원이 100명을 넘을 때.. 페이지 네비게이션이 정상 동작하지 않음.**
+
+  * 조회 결과가 110명일 때, 100 ~ 110명 범위의 회원을 조회할 수 없음, 11페이지 부터 동작하지 않음.
+  * ✨ TODO: 페이징 네비게이션 관련 기능은 일괄로 정리해서 바꿔야겠다. 😈
+    * 페이징 코드들이 난해한 부분이 좀 있음..😂
+
+  
+
+#### `관리자` > `회원관리` > `특정 회원의 상세 페이지`
+
+- [x] 수정 가능한 항목에 대해 수정을 시도할 때... 에러 발생 얼럿이 노출됨
+  - 원인
+    - [x] 성별, 비밀번호 외의 항목은 ContextPath 가 동적으로 설정되지 않아 생겼던 문제.
+    - [x] 비밀번호와 성별 바꿀 때 오류는 다른 문제..
+      * 어드민 컨트롤러에 파라미터 전달 구현이 안되어있었다. 
+
+- [x] 양력  / 음력 수정이 안됨.
+  * 쿼리에 조건이 누락되었음.
+- [x] 이메일 직접 입력 동작 수정
+  * 회원 가입시 수정했던 식으로 바꿔야겠다.
+
+- [x] 회원 탈퇴 버튼 눌렀을 때.. 404
+  * 원인: URL에 ContextPath 가 동적으로 설정되어있지 않음
+
+
+
+---
+
+## 3. `admin.order` 패키지 이하 수정
+
+* ...
+
+  
 
 ---
 

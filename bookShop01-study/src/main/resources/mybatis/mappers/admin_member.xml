@@ -83,6 +83,9 @@
       <if test=" member_birth_d!=null and member_birth_d!='' ">
         member_birth_d=#{member_birth_d},
       </if>
+      <if test=" member_birth_gn!=null and member_birth_gn!='' ">
+        member_birth_gn=#{member_birth_gn},
+      </if>
       <if test=" tel1!=null and tel1!='' ">
         tel1=#{tel1},
       </if>

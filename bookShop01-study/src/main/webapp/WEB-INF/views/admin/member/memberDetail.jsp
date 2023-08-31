@@ -2,6 +2,7 @@
          pageEncoding="utf-8"
          isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -43,8 +44,6 @@
 
         function test() {
           init();
-          //alert("회원 정보가 수정되었습니다.");
-//	init();
         }
 
         function init() {
@@ -121,7 +120,7 @@
       var frm_mod_member = document.frm_mod_member;
       if (mod_type == 'member_pw') {
         value = frm_mod_member.member_pw.value;
-        //alert("member_pw:"+value);
+        // alert("member_pw:" + value);
       } else if (mod_type == 'member_gender') {
         var member_gender = frm_mod_member.member_gender;
         for (var i = 0; member_gender.length; i++) {
@@ -130,8 +129,7 @@
             break;
           }
         }
-        //alert("member_gender111:"+value);
-
+        //alert("member_gender:" + value);
       } else if (mod_type == 'member_birth') {
         var member_birth_y = frm_mod_member.member_birth_y;
         var member_birth_m = frm_mod_member.member_birth_m;
@@ -229,7 +227,7 @@
       $.ajax({
         type: "post",
         async: false, //false인 경우 동기식으로 처리한다.
-        url: "http://localhost:8090/bookshop01/admin/member/modifyMemberInfo.do",
+        url: "${contextPath}/admin/member/modifyMemberInfo.do",
         data: {
           member_id: member_id,
           mod_type: mod_type,
@@ -244,6 +242,7 @@
 
         },
         error: function (data, textStatus) {
+          console.log(data);
           alert("에러가 발생했습니다." + data);
         },
         complete: function (data, textStatus) {
@@ -266,7 +265,7 @@
       frm_mod_member.appendChild(i_member_id);
       frm_mod_member.appendChild(i_del_yn);
       frm_mod_member.method = "post";
-      frm_mod_member.action = "/bookshop01/admin/member/deleteMember.do";
+      frm_mod_member.action = "${contextPath}/admin/member/deleteMember.do";
       frm_mod_member.submit();
     }
   </script>
@@ -461,7 +460,7 @@
         <td>
           <input type="text" name="email1" size=10 value="${member_info.email1 }"/> @ <input
             type="text" size=10 name="email2" value="${member_info.email2 }"/>
-          <select name="select_email2" onChange="" title="직접입력">
+          <select class="email_domain_select_box"  name="select_email2" title="직접입력">
             <option value="non">직접입력</option>
             <option value="hanmail.net">hanmail.net</option>
             <option value="naver.com">naver.com</option>
@@ -539,5 +538,18 @@
   <input type="hidden" name="h_tel1" value="${member_info.tel1}"/>
   <input type="hidden" name="h_hp1" value="${member_info.hp1}"/>
 </form>
+<script>
+  const $emailDomainObj = $('form').find('input[name=email2]')
+  $('.email_domain_select_box').change(function () {
+    const domain = $(this).val();
+    if (domain !== 'non') {
+      $emailDomainObj.val(domain);
+      $emailDomainObj.attr('readonly', true);
+    } else {
+      $emailDomainObj.val('');
+      $emailDomainObj.removeAttr('readonly');
+    }
+  });
+</script>
 </body>
 </html>
