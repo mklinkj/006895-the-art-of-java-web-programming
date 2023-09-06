@@ -35,32 +35,32 @@
   > <script>
   > ...
   > function calcPeriod(search_period, baseDate) {
-  >       const endDate = ((baseDate) => {
-  >         if (baseDate) {
-  >           return new Date(baseDate);
-  >         } else {
-  >           return new Date();
-  >         }
-  >       })(baseDate);
+  >      const endDate = ((baseDate) => {
+  >        if (baseDate) {
+  >          return new Date(baseDate);
+  >        } else {
+  >          return new Date();
+  >        }
+  >      })(baseDate);
   > 
-  >       let beginDate;
-  >       if (search_period == 'today') {
-  >         beginDate = endDate;
-  >       } else if (search_period == 'one_week') {
-  >         beginDate = dateFns.subWeeks(endDate, 1);
-  >       } else if (search_period == 'two_week') {
-  >         beginDate = dateFns.subWeeks(endDate, 2);
-  >       } else if (search_period == 'one_month') {
-  >         beginDate = dateFns.subMonths(endDate, 1);
-  >       } else if (search_period == 'two_month') {
-  >         beginDate = dateFns.subMonths(endDate, 2);
-  >       } else if (search_period == 'three_month') {
-  >         beginDate = dateFns.subMonths(endDate, 3);
-  >       } else if (search_period == 'four_month') {
-  >         beginDate = dateFns.subMonths(endDate, 4);
-  >       }
-  >       return {beginDate: dateFns.format(beginDate, 'YYYY-MM-DD'), endDate: dateFns.format(endDate, 'YYYY-MM-DD')};
-  >     }
+  >      let beginDate;
+  >      if (search_period == 'today') {
+  >        beginDate = endDate;
+  >      } else if (search_period == 'one_week') {
+  >        beginDate = dateFns.subWeeks(endDate, 1);
+  >      } else if (search_period == 'two_week') {
+  >        beginDate = dateFns.subWeeks(endDate, 2);
+  >      } else if (search_period == 'one_month') {
+  >        beginDate = dateFns.subMonths(endDate, 1);
+  >      } else if (search_period == 'two_month') {
+  >        beginDate = dateFns.subMonths(endDate, 2);
+  >      } else if (search_period == 'three_month') {
+  >        beginDate = dateFns.subMonths(endDate, 3);
+  >      } else if (search_period == 'four_month') {
+  >        beginDate = dateFns.subMonths(endDate, 4);
+  >      }
+  >      return {beginDate: dateFns.format(beginDate, 'YYYY-MM-DD'), endDate: dateFns.format(endDate, 'YYYY-MM-DD')};
+  >    }
   > ...
   > </script>
   > ```
