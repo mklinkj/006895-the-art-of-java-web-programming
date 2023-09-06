@@ -60,6 +60,9 @@
     <webjars-jquery.version>3.7.1</webjars-jquery.version>
     <webjars-bootstrap.version>5.3.1</webjars-bootstrap.version>
 
+    <!-- JSP 페이지에서 dateFns를 직접 사용하려면 이 버전을 사용해야한다. -->
+    <webjars-date-fns.version>1.30.1</webjars-date-fns.version>
+
     <webjars-locator.version>0.47</webjars-locator.version>
     <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 

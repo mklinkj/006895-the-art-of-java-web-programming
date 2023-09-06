@@ -52,9 +52,6 @@
   <mvc:resources mapping="/favicon.ico" location="/resources/"/>
 
   <!-- webjars 설정-->
-  <!--
-    TODO: 설정을 넣어봤는데, 버전 생략 처리가 동작하지 않음. 나중에 확인하자.
-  -->
   <mvc:resources mapping="/webjars/**" location="/webjars/">
     <mvc:resource-chain resource-cache="false" />
   </mvc:resources>

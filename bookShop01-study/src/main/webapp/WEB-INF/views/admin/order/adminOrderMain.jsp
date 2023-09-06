@@ -6,7 +6,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.min.js"></script>
+  <script src="/webjars/date-fns/dist/date_fns.min.js"></script>
   <c:choose>
     <c:when test='${not empty order_goods_list}'>
       <script type="text/javascript">
