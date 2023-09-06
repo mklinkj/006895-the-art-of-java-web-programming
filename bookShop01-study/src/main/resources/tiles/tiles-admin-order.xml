@@ -5,12 +5,12 @@
 
 <tiles-definitions>
   <!-- 주문관리 -->
-  <definition extends="baseLayout" name="/admin/order/adminOrderMain">
+  <definition extends="baseLayout" name="admin/order/adminOrderMain">
     <put-attribute name="title"     value="주문 관리 페이지"/>
     <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
     <put-attribute name="body"      value="/WEB-INF/views/admin/order/adminOrderMain.jsp"/>
   </definition>
-  <definition extends="baseLayout" name="/admin/order/orderDetail">
+  <definition extends="baseLayout" name="admin/order/orderDetail">
     <put-attribute name="title"     value="주문 관리 페이지"/>
     <put-attribute name="side_nav"  value="/WEB-INF/views/admin/common/side_nav_admin.jsp"/>
     <put-attribute name="body"      value="/WEB-INF/views/admin/order/adminOrderDetail.jsp"/>

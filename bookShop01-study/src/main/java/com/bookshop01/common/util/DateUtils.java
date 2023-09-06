@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.function.Function;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +23,13 @@ public class DateUtils {
   }
 
   public static String calcSearchPeriod(String fixedSearchPeriod) {
-    LocalDate endDate = LocalDate.now();
+    return calcSearchPeriod(fixedSearchPeriod, null);
+  }
+
+  public static String calcSearchPeriod(String fixedSearchPeriod, String endDateStr) {
+    Function<String, LocalDate> endDateFunc =
+        (es) -> (es == null ? LocalDate.now() : LocalDate.parse(es, DATE_FORMAT_YYYY_MM_DD));
+    LocalDate endDate = endDateFunc.apply(endDateStr);
     LocalDate beginDate;
 
     if (fixedSearchPeriod == null) {

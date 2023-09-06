@@ -67,7 +67,8 @@ class FileDownloadControllerTests {
                   .isNotEqualTo(MediaType.IMAGE_PNG_VALUE)
                   .describedAs("컨트롤러 메서드에서 명시적으로 설정을 하지 않아서 null");
               assertThat(result.getResponse().getHeader(HttpHeaders.CONTENT_DISPOSITION)) //
-                  .isEqualTo("attachment; fileName=%s".formatted(IMAGE_FILE_NAME_450_GOODS));
+                  .isEqualTo(
+                      "attachment; filename*=UTF-8''%s".formatted(IMAGE_FILE_NAME_450_GOODS));
             });
   }
 

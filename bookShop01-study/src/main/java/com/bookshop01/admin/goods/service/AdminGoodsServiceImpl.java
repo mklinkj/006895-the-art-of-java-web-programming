@@ -4,7 +4,6 @@ import com.bookshop01.admin.goods.dao.AdminGoodsDAO;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
 import com.bookshop01.order.vo.OrderVO;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,9 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
   @Override
   public int addNewGoods(Map<String, ?> newGoodsMap) {
     int goodsId = adminGoodsDAO.insertNewGoods(newGoodsMap);
-    List<ImageFileVO> imageFileList = (ArrayList) newGoodsMap.get("imageFileList");
+
+    @SuppressWarnings("unchecked")
+    List<ImageFileVO> imageFileList = (List<ImageFileVO>) newGoodsMap.get("imageFileList");
     for (ImageFileVO imageFileVO : imageFileList) {
       imageFileVO.setGoods_id(goodsId);
     }

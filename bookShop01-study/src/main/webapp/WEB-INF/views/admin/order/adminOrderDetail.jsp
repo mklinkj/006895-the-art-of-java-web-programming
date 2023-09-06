@@ -260,9 +260,8 @@
 <br>
 <br>
 <br>
-<a href="${contextPath}/main/main.do">
-  <IMG width="75" alt="" src="${contextPath}/resources/image/btn_shoping_continue.jpg">
-</a>
+
+<a href="${contextPath}/admin/order/adminOrderMain.do"><button type="button">주문 목록으로 돌아가기...</button></a>
 <div class="clear"></div>		
 	
 			

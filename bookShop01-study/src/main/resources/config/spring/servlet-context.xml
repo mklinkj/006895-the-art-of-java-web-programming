@@ -48,8 +48,16 @@
     </mvc:interceptor>
   </mvc:interceptors>
 
-  <!-- 멀티파트 리졸버 -->
-  <resources location="/resources/" mapping="/resources/**"/>
+  <mvc:resources mapping="/resources/**" location="/resources/"/>
+  <mvc:resources mapping="/favicon.ico" location="/resources/"/>
+
+  <!-- webjars 설정-->
+  <!--
+    TODO: 설정을 넣어봤는데, 버전 생략 처리가 동작하지 않음. 나중에 확인하자.
+  -->
+  <mvc:resources mapping="/webjars/**" location="/webjars/">
+    <mvc:resource-chain resource-cache="false" />
+  </mvc:resources>
 
   <!-- 루트 경로 접근시 상점 메인 페이지로 이동 -->
   <mvc:redirect-view-controller path="/" redirect-url="/main/main.do" />

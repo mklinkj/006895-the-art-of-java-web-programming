@@ -1,23 +1,23 @@
 package com.bookshop01.admin.order.controller;
 
-import static com.bookshop01.common.util.DateUtils.calcSearchPeriod;
+import static com.bookshop01.common.constants.Constants.DATE_FORMAT_YYYY_MM_DD;
 
 import com.bookshop01.admin.order.service.AdminOrderService;
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.order.vo.OrderVO;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Controller
@@ -28,23 +28,20 @@ public class AdminOrderController extends BaseController {
   @RequestMapping(
       value = "/adminOrderMain.do",
       method = {RequestMethod.GET, RequestMethod.POST})
-  public ModelAndView adminOrderMain(
-      @RequestParam Map<String, String> dateMap, HttpServletRequest request) throws Exception {
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
+  public void adminOrderMain(@RequestParam Map<String, String> paramMap, Model model) {
 
-    String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
-    String section = dateMap.get("section");
-    String pageNum = dateMap.get("pageNum");
-    String beginDate, endDate;
+    String section = paramMap.get("section");
+    String pageNum = paramMap.get("pageNum");
+    String beginDate = paramMap.get("beginDate");
+    String endDate = paramMap.get("endDate");
 
-    String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
-    beginDate = tempDate[0];
-    endDate = tempDate[1];
-    dateMap.put("beginDate", beginDate);
-    dateMap.put("endDate", endDate);
+    if (beginDate == null || endDate == null) {
+      LocalDate today = LocalDate.now();
+      beginDate = today.minusMonths(4).format(DATE_FORMAT_YYYY_MM_DD);
+      endDate = today.format(DATE_FORMAT_YYYY_MM_DD);
+    }
 
-    HashMap<String, Object> condMap = new HashMap<String, Object>();
+    Map<String, Object> condMap = new HashMap<>();
     if (section == null) {
       section = "1";
     }
@@ -55,44 +52,43 @@ public class AdminOrderController extends BaseController {
     condMap.put("pageNum", pageNum);
     condMap.put("beginDate", beginDate);
     condMap.put("endDate", endDate);
+
+    val command = paramMap.get("command");
+    model.addAttribute("command", command);
+
+    if ("detail_search".equals(command)) {
+      val searchType = paramMap.get("search_type");
+      val searchWord = paramMap.get("search_word");
+      condMap.put("search_type", searchType);
+      condMap.put("search_word", searchWord);
+      model.addAttribute("search_type", searchType);
+      model.addAttribute("search_word", searchWord);
+    }
+
     List<OrderVO> newOrderList = adminOrderService.listNewOrder(condMap);
-    mav.addObject("newOrderList", newOrderList);
+    model.addAttribute("newOrderList", newOrderList);
 
-    String beginDate1[] = beginDate.split("-");
-    String endDate2[] = endDate.split("-");
-    mav.addObject("beginYear", beginDate1[0]);
-    mav.addObject("beginMonth", beginDate1[1]);
-    mav.addObject("beginDay", beginDate1[2]);
-    mav.addObject("endYear", endDate2[0]);
-    mav.addObject("endMonth", endDate2[1]);
-    mav.addObject("endDay", endDate2[2]);
+    model.addAttribute("beginDate", beginDate);
+    model.addAttribute("endDate", endDate);
 
-    mav.addObject("section", section);
-    mav.addObject("pageNum", pageNum);
-    return mav;
+    model.addAttribute("section", section);
+    model.addAttribute("pageNum", pageNum);
   }
 
   @RequestMapping(
       value = "/modifyDeliveryState.do",
       method = {RequestMethod.POST})
-  @ResponseBody // TODO: 이 어노테이션을 써주지 않아도 동작은 하지만 써줘야 명확한 것 같은데...
-  public ResponseEntity modifyDeliveryState(@RequestParam Map<String, String> deliveryMap)
-      throws Exception {
+  @ResponseBody
+  public ResponseEntity<String> modifyDeliveryState(@RequestParam Map<String, String> deliveryMap) {
     adminOrderService.modifyDeliveryState(deliveryMap);
-
-    String message = "mod_success";
-    return new ResponseEntity(message, HttpStatus.OK);
+    return ResponseEntity.ok("mod_success");
   }
 
   @RequestMapping(
       value = "/orderDetail.do",
       method = {RequestMethod.GET, RequestMethod.POST})
-  public ModelAndView orderDetail(
-      @RequestParam("order_id") int order_id, HttpServletRequest request) throws Exception {
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
-    Map<String, ?> orderMap = adminOrderService.orderDetail(order_id);
-    mav.addObject("orderMap", orderMap);
-    return mav;
+  public void orderDetail(@RequestParam("order_id") Integer orderId, Model model) {
+    Map<String, ?> orderMap = adminOrderService.orderDetail(orderId);
+    model.addAttribute("orderMap", orderMap);
   }
 }

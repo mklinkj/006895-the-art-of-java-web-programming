@@ -130,7 +130,7 @@ public class AdminGoodsController extends BaseController {
     }
 
     String message;
-    ResponseEntity resEntity;
+    ResponseEntity<String> resEntity;
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=utf-8");
     try {
@@ -179,7 +179,7 @@ public class AdminGoodsController extends BaseController {
   @RequestMapping(
       value = "/modifyGoodsForm.do",
       method = {RequestMethod.GET, RequestMethod.POST})
-  public void modifyGoodsForm(@RequestParam("goods_id") int goodsId, Model model) {
+  public void modifyGoodsForm(@RequestParam("goods_id") Integer goodsId, Model model) {
     Map<String, ?> goodsMap = adminGoodsService.goodsDetail(goodsId);
     model.addAttribute("goodsMap", goodsMap);
   }
@@ -211,9 +211,9 @@ public class AdminGoodsController extends BaseController {
 
     String imageFileName;
     Map<String, Object> goodsMap = new HashMap<>();
-    Enumeration enu = multipartRequest.getParameterNames();
+    Enumeration<String> enu = multipartRequest.getParameterNames();
     while (enu.hasMoreElements()) {
-      String name = (String) enu.nextElement();
+      String name = enu.nextElement();
       String value = multipartRequest.getParameter(name);
       goodsMap.put(name, value);
     }

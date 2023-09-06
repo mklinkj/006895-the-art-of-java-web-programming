@@ -119,18 +119,6 @@
 
     <!-- MyBatis 설정관련 라이브러리 -->
     <dependency>
-      <artifactId>commons-beanutils</artifactId>
-      <groupId>commons-beanutils</groupId>
-      <version>${commons-beanutils.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
       <artifactId>mybatis</artifactId>
       <groupId>org.mybatis</groupId>
       <version>${mybatis.version}</version>
@@ -139,9 +127,8 @@
     <dependency>
       <artifactId>mybatis-spring</artifactId>
       <groupId>org.mybatis</groupId>
-      <version>${mybatis-spring.version}</version>
+      <version>${mybatis-spring2x.version}</version>
     </dependency>
-
 
     <dependency>
       <artifactId>tiles-jsp</artifactId>
@@ -151,6 +138,19 @@
         <exclusion>
           <groupId>org.slf4j</groupId>
           <artifactId>jcl-over-slf4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- tiles-jsp에 의해 종속성이 있음. 최신 버전을 쓰기 위해 정의 -->
+    <dependency>
+      <artifactId>commons-beanutils</artifactId>
+      <groupId>commons-beanutils</groupId>
+      <version>${commons-beanutils.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

@@ -75,14 +75,19 @@
        FROM (
         SELECT * FROM t_shopping_order
          WHERE TO_CHAR(pay_order_time,'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
-        <if test="search_type=='orderer_id'">
-          AND member_id=#{search_word}
-        </if>
-        <if test="search_type=='orderer_name'">
-          AND orderer_name=#{search_word}
-        </if>
-        <if test="search_type=='orderer_hp_num'">
-          AND pay_orderer_hp_num=#{search_word}
+        <if test=" search_word!=null and search_word!='' ">
+          <if test=" search_type=='orderer_id' ">
+            AND member_id=#{search_word}
+          </if>
+          <if test=" search_type=='orderer_name' ">
+            AND orderer_name=#{search_word}
+          </if>
+          <if test=" search_type=='orderer_hp' ">
+            AND orderer_hp=#{search_word}
+          </if>
+          <if test=" search_type=='goods_title' ">
+            AND goods_title LIKE '%' || #{search_word} || '%'
+          </if>
         </if>
         ORDER BY pay_order_time DESC
       ) t
