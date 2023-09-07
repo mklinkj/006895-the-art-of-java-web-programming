@@ -8,130 +8,116 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <script src="/webjars/date-fns/dist/date_fns.min.js"></script>
+  <script src="/resources/js/utils.js"></script>
   <script>
-    function search_goods_list(fixedSearchPeriod) {
-      var formObj = document.createElement("form");
-      var i_fixedSearch_period = document.createElement("input");
-      i_fixedSearch_period.name = "fixedSearchPeriod";
-      i_fixedSearch_period.value = fixedSearchPeriod;
-      formObj.appendChild(i_fixedSearch_period);
+    function search_goods_list(search_period) {
+      const baseDate = document.frm_list.simpleEndDate.value;
+
+      const temp = calcPeriod(search_period, baseDate);
+      const beginDate = temp['beginDate'];
+      const endDate = temp['endDate'];
+
+      const formObj = document.createElement("form");
+      const i_beginDate = document.createElement("input");
+      const i_endDate = document.createElement("input");
+
+      i_beginDate.name = "beginDate";
+      i_beginDate.value = beginDate;
+      i_endDate.name = "endDate";
+      i_endDate.value = endDate;
+
+      formObj.appendChild(i_beginDate);
+      formObj.appendChild(i_endDate);
       document.body.appendChild(formObj);
       formObj.method = "get";
       formObj.action = "${contextPath}/admin/goods/adminGoodsMain.do";
       formObj.submit();
     }
 
-    function calcPeriod(search_period) {
-      var dt = new Date();
-      var beginYear, endYear;
-      var beginMonth, endMonth;
-      var beginDay, endDay;
-      var beginDate, endDate;
+    function fn_enable_detail_search(searchType) {
+      const frm_list = document.frm_list;
+      const t_beginDate = frm_list.beginDate;
+      const t_endDate = frm_list.endDate;
 
-      endYear = dt.getFullYear();
-      endMonth = dt.getMonth() + 1;
-      endDay = dt.getDate();
-      if (search_period == 'today') {
-        beginYear = endYear;
-        beginMonth = endMonth;
-        beginDay = endDay;
-      } else if (search_period == 'one_week') {
-        beginYear = dt.getFullYear();
-        beginMonth = dt.getMonth() + 1;
-        dt.setDate(endDay - 7);
-        beginDay = dt.getDate();
+      const s_search_type = frm_list.s_search_type;
+      const t_search_word = frm_list.t_search_word;
+      const btn_search = frm_list.btn_search;
 
-      } else if (search_period == 'two_week') {
-        beginYear = dt.getFullYear();
-        beginMonth = dt.getMonth() + 1;
-        dt.setDate(endDay - 14);
-        beginDay = dt.getDate();
-      } else if (search_period == 'one_month') {
-        beginYear = dt.getFullYear();
-        dt.setMonth(endMonth - 1);
-        beginMonth = dt.getMonth();
-        beginDay = dt.getDate();
-      } else if (search_period == 'two_month') {
-        beginYear = dt.getFullYear();
-        dt.setMonth(endMonth - 2);
-        beginMonth = dt.getMonth();
-        beginDay = dt.getDate();
-      } else if (search_period == 'three_month') {
-        beginYear = dt.getFullYear();
-        dt.setMonth(endMonth - 3);
-        beginMonth = dt.getMonth();
-        beginDay = dt.getDate();
-      } else if (search_period == 'four_month') {
-        beginYear = dt.getFullYear();
-        dt.setMonth(endMonth - 4);
-        beginMonth = dt.getMonth();
-        beginDay = dt.getDate();
-      }
+      if (searchType === 'detail_search') {
+        t_beginDate.disabled = false;
+        t_endDate.disabled = false;
 
-      if (beginMonth < 10) {
-        beginMonth = '0' + beginMonth;
-        if (beginDay < 10) {
-          beginDay = '0' + beginDay;
-        }
+        s_search_type.disabled = false;
+        t_search_word.disabled = false;
+        btn_search.disabled = false;
+      } else {
+        t_beginDate.disabled = true;
+        t_endDate.disabled = true;
+
+        s_search_type.disabled = true;
+        t_search_word.disabled = true;
+        btn_search.disabled = true;
       }
-      if (endMonth < 10) {
-        endMonth = '0' + endMonth;
-        if (endDay < 10) {
-          endDay = '0' + endDay;
-        }
-      }
-      endDate = endYear + '-' + endMonth + '-' + endDay;
-      beginDate = beginYear + '-' + beginMonth + '-' + beginDay;
-      //alert(beginDate+","+endDate);
-      return beginDate + "," + endDate;
+    }
+
+    //상세조회 버튼 클릭 시 수행
+    function fn_detail_search() {
+      const frm_list = document.frm_list;
+      const beginDate = frm_list.beginDate.value;
+      const endDate = frm_list.endDate.value;
+      const search_type = frm_list.s_search_type.value;
+      const search_word = frm_list.t_search_word.value;
+
+      const formObj = document.createElement("form");
+      const i_command = document.createElement("input");
+      const i_beginDate = document.createElement("input");
+      const i_endDate = document.createElement("input");
+      const i_search_type = document.createElement("input");
+      const i_search_word = document.createElement("input");
+
+      i_command.name = "command";
+      i_beginDate.name = "beginDate";
+      i_endDate.name = "endDate";
+      i_search_type.name = "search_type";
+      i_search_word.name = "search_word";
+
+      i_command.value = "detail_search";
+      i_beginDate.value = beginDate;
+      i_endDate.value = endDate;
+      i_search_type.value = search_type;
+      i_search_word.value = search_word;
+
+      formObj.appendChild(i_command);
+      formObj.appendChild(i_beginDate);
+      formObj.appendChild(i_endDate);
+      formObj.appendChild(i_search_type);
+      formObj.appendChild(i_search_word);
+      document.body.appendChild(formObj);
+      formObj.method = "get";
+      formObj.action = "${contextPath}/admin/goods/adminGoodsMain.do";
+      formObj.submit();
     }
   </script>
 </head>
 <body>
 <h3>상품 조회</h3>
+<form name="frm_list">
   <table cellpadding="10" cellspacing="10">
     <tbody>
     <tr>
-      <td>등록일로 조회</td>
+      <td>
+        <input type="radio" name="r_search_option" value="simple_search"
+               <c:if test="${empty command or command eq 'simple_search'}">checked</c:if>
+               onClick="fn_enable_detail_search(this.value)"/> 간단조회 &nbsp;&nbsp;&nbsp;
+        <input type="radio" name="r_search_option" value="detail_search"
+               <c:if test="${command eq 'detail_search'}">checked</c:if>
+               onClick="fn_enable_detail_search(this.value)"/> 상세조회 &nbsp;&nbsp;&nbsp;
+      </td>
     </tr>
     <tr>
       <td>
-        <select name="curYear">
-          <c:forEach var="i" begin="0" end="5">
-            <c:choose>
-              <c:when test="${endYear==endYear-i}">
-                <option value="${endYear}" selected>${endYear}</option>
-              </c:when>
-              <c:otherwise>
-                <option value="${endYear-i }">${endYear-i }</option>
-              </c:otherwise>
-            </c:choose>
-          </c:forEach>
-        </select>년 <select name="curMonth">
-        <c:forEach var="i" begin="1" end="12">
-          <c:choose>
-            <c:when test="${endMonth==i }">
-              <option value="${i }" selected>${i }</option>
-            </c:when>
-            <c:otherwise>
-              <option value="${i }">${i }</option>
-            </c:otherwise>
-          </c:choose>
-        </c:forEach>
-      </select>월
-
-        <select name="curDay">
-          <c:forEach var="i" begin="1" end="31">
-            <c:choose>
-              <c:when test="${endDay==i}">
-                <option value="${i }" selected>${i }</option>
-              </c:when>
-              <c:otherwise>
-                <option value="${i }">${i }</option>
-              </c:otherwise>
-            </c:choose>
-          </c:forEach>
-        </select>일 &nbsp;이전&nbsp;&nbsp;&nbsp;&nbsp;
+        <input name='simpleEndDate' type="date" value="${endDate}"> &nbsp;이전&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="javascript:search_goods_list('today')">
           <img src="${contextPath}/resources/image/btn_search_one_day.jpg">
         </a>
@@ -156,45 +142,33 @@
         &nbsp;까지 조회
       </td>
     </tr>
-    </tbody>
-  </table>
-<form method="get" action="${contextPath}/admin/goods/adminGoodsMain.do">
-  <table cellpadding="10" cellspacing="10">
-    <tbody>
-    <tr>
-      <td>상세 조회</td>
-    </tr>
     <tr>
       <td>
-        <select name="search_type" >
+        <select name="s_search_type" disabled>
           <option value="total" <c:if test="${empty search_type}">selected</c:if>>전체(상품 이름 + 저자)</option>
           <option value="goods_id" <c:if test="${search_type eq 'goods_id'}">selected</c:if>>상품번호</option>
           <option value="goods_title" <c:if test="${search_type eq 'goods_title'}">selected</c:if>>상품이름</option>
           <option value="goods_writer" <c:if test="${search_type eq 'goods_writer'}">selected</c:if>>저자</option>
         </select>
-        <input name="search_word" type="text" size="30" value="${search_word}"/>
-        <input type="submit" value="조회"/>
+        <input type="text" size="30" name="t_search_word" value="${search_word}" onsubmit="return false;" disabled/>
+        <input type="button" value="조회" name="btn_search" onClick="fn_detail_search()" disabled/>
       </td>
     </tr>
     <tr>
       <td>
-        조회한 기간:<input name="beginYear" type="text" size="4" value="${beginYear}"/>년
-        <input name="beginMonth" type="text" size="4" value="${beginMonth}"/>월
-        <input name="beginDay" type="text" size="4" value="${beginDay}"/>일
-        &nbsp; ~
-        <input name="endYear" type="text" size="4" value="${endYear }"/>년
-        <input name="endMonth" type="text" size="4" value="${endMonth }"/>월
-        <input name="endDay" type="text" size="4" value="${endDay }"/>일
+        조회 기간:
+        <input name="beginDate" type="date" value="${beginDate}"> ~
+        <input name="endDate" type="date" value="${endDate}">
       </td>
     </tr>
-    </TBODY>
-  </TABLE>
-  <DIV class="clear">
-  </DIV>
+    </tbody>
+  </table>
+  <div class="clear">
+  </div>
 </form>
-<DIV class="clear"></DIV>
-<TABLE class="list_view">
-  <TBODY align=center>
+<div class="clear"></div>
+<table class="list_view">
+  <tbody align=center>
   <tr style="background:#33ff00">
     <td>상품번호</td>
     <td>상품이름</td>
@@ -206,29 +180,29 @@
   </tr>
   <c:choose>
     <c:when test="${empty newGoodsList }">
-      <TR>
-        <TD colspan=8 class="fixed">
+      <tr>
+        <td colspan=8 class="fixed">
           <strong>조회된 상품이 없습니다.</strong>
-        </TD>
-      </TR>
+        </td>
+      </tr>
     </c:when>
     <c:otherwise>
       <c:forEach var="item" items="${newGoodsList }">
-        <TR>
-          <TD>
+        <tr>
+          <td>
             <strong>${item.goods_id }</strong>
-          </TD>
-          <TD>
+          </td>
+          <td>
             <a href="${pageContext.request.contextPath}/admin/goods/modifyGoodsForm.do?goods_id=${item.goods_id}">
               <strong>${item.goods_title } </strong>
             </a>
-          </TD>
-          <TD>
+          </td>
+          <td>
             <strong>${item.goods_writer }</strong>
-          </TD>
-          <TD>
+          </td>
+          <td>
             <strong>${item.goods_publisher }</strong>
-          </TD>
+          </td>
           <td>
             <strong>${item.goods_sales_price }</strong>
           </td>
@@ -242,8 +216,7 @@
               <c:out value="${arr[0]}"/>
             </strong>
           </td>
-
-        </TR>
+        </tr>
       </c:forEach>
     </c:otherwise>
   </c:choose>
@@ -260,17 +233,26 @@
         next</a>
       </c:if>
       </c:forEach>
-
-  </TBODY>
-
-</TABLE>
-<DIV class="clear"></DIV>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div class="clear"></div>
 <br><br><br>
-<H3>상품등록하기</H3>
-<DIV id="search">
+<h3>상품등록하기</h3>
+<div id="search">
   <form action="${contextPath}/admin/goods/addNewGoodsForm.do">
     <input type="submit" value="상품 등록하기">
   </form>
-</DIV>
+</div>
+<script>
+  document.querySelector('input[name="t_search_word"]').addEventListener('keydown', event => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      fn_detail_search();
+    }
+  });
+  fn_enable_detail_search(document.querySelector('input[name="r_search_option"]:checked').value)
+</script>
 </body>
 </html>

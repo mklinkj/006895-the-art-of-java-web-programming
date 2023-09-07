@@ -1,6 +1,6 @@
 package com.bookshop01.admin.goods.controller;
 
-import static com.bookshop01.common.util.DateUtils.calcSearchPeriod;
+import static com.bookshop01.admin.common.ControllerUtils.processList;
 
 import com.bookshop01.admin.goods.service.AdminGoodsService;
 import com.bookshop01.common.base.BaseController;
@@ -43,62 +43,8 @@ public class AdminGoodsController extends BaseController {
       value = "/adminGoodsMain.do",
       method = {RequestMethod.POST, RequestMethod.GET})
   public void adminGoodsMain(@RequestParam Map<String, String> paramMap, Model model) {
-
-    String fixedSearchPeriod = paramMap.get("fixedSearchPeriod");
-    String section = paramMap.get("section");
-    String pageNum = paramMap.get("pageNum");
-    String beginDate, endDate;
-
-    String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
-    // yyyy-MM-dd 형식 문자열이 입력된다.
-    beginDate = tempDate[0];
-    endDate = tempDate[1];
-    paramMap.put("beginDate", beginDate);
-    paramMap.put("endDate", endDate);
-
-    Map<String, Object> condMap = new HashMap<>();
-    if (section == null) {
-      section = "1";
-    }
-    condMap.put("section", section);
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-    condMap.put("pageNum", pageNum);
-    condMap.put("beginDate", beginDate);
-    condMap.put("endDate", endDate);
-
-    if (paramMap.get("search_type") != null) {
-      condMap.put("search_type", paramMap.get("search_type"));
-      condMap.put("search_word", paramMap.get("search_word"));
-      beginDate =
-          "%s-%s-%s"
-              .formatted(
-                  paramMap.get("beginYear"), paramMap.get("beginMonth"), paramMap.get("beginDay"));
-      condMap.put("beginDate", beginDate);
-      endDate =
-          "%s-%s-%s"
-              .formatted(paramMap.get("endYear"), paramMap.get("endMonth"), paramMap.get("endDay"));
-      condMap.put("endDate", endDate);
-
-      model.addAttribute("search_type", paramMap.get("search_type"));
-      model.addAttribute("search_word", paramMap.get("search_word"));
-    }
-
-    List<GoodsVO> newGoodsList = adminGoodsService.listNewGoods(condMap);
-    model.addAttribute("newGoodsList", newGoodsList);
-
-    String beginDate1[] = beginDate.split("-");
-    String endDate2[] = endDate.split("-");
-    model.addAttribute("beginYear", beginDate1[0]);
-    model.addAttribute("beginMonth", beginDate1[1]);
-    model.addAttribute("beginDay", beginDate1[2]);
-    model.addAttribute("endYear", endDate2[0]);
-    model.addAttribute("endMonth", endDate2[1]);
-    model.addAttribute("endDay", endDate2[2]);
-
-    model.addAttribute("section", section);
-    model.addAttribute("pageNum", pageNum);
+    List<GoodsVO> resultList = processList(adminGoodsService::listNewGoods, paramMap, model);
+    model.addAttribute("newGoodsList", resultList);
   }
 
   @RequestMapping(
