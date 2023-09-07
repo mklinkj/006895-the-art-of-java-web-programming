@@ -7,6 +7,7 @@
 <head>
   <meta charset="utf-8">
   <script src="/webjars/date-fns/dist/date_fns.min.js"></script>
+  <script src="/resources/js/utils.js"></script>
   <c:choose>
     <c:when test='${not empty order_goods_list}'>
       <script type="text/javascript">
@@ -54,37 +55,6 @@
       formObj.method = "get";
       formObj.action = "${contextPath}/admin/order/adminOrderMain.do";
       formObj.submit();
-    }
-
-    function calcPeriod(search_period, baseDate) {
-      const endDate = ((baseDate) => {
-        if (baseDate) {
-          return new Date(baseDate);
-        } else {
-          return new Date();
-        }
-      })(baseDate);
-
-      let beginDate;
-      if (search_period === 'today') {
-        beginDate = endDate;
-      } else if (search_period === 'one_week') {
-        beginDate = dateFns.subWeeks(endDate, 1);
-      } else if (search_period === 'two_week') {
-        beginDate = dateFns.subWeeks(endDate, 2);
-      } else if (search_period === 'one_month') {
-        beginDate = dateFns.subMonths(endDate, 1);
-      } else if (search_period === 'two_month') {
-        beginDate = dateFns.subMonths(endDate, 2);
-      } else if (search_period === 'three_month') {
-        beginDate = dateFns.subMonths(endDate, 3);
-      } else if (search_period === 'four_month') {
-        beginDate = dateFns.subMonths(endDate, 4);
-      }
-      return {
-        beginDate: dateFns.format(beginDate, 'YYYY-MM-DD'),
-        endDate: dateFns.format(endDate, 'YYYY-MM-DD')
-      };
     }
 
     function fn_modify_order_state(order_id, select_id) {
@@ -156,7 +126,6 @@
       formObj.method = "get";
       formObj.action = "${contextPath}/admin/order/orderDetail.do";
       formObj.submit();
-
     }
 
     //상세조회 버튼 클릭 시 수행
@@ -251,18 +220,10 @@
     <tr>
       <td>
         <select name="s_search_type" disabled>
-          <option value="orderer_id" <c:if test="${search_type eq 'orderer_id'}">selected</c:if>>
-            주문자아이디
-          </option>
-          <option value="orderer_name"
-                  <c:if test="${search_type eq 'orderer_name'}">selected</c:if>>주문자이름
-          </option>
-          <option value="orderer_hp" <c:if test="${search_type eq 'orderer_hp'}">selected</c:if>>
-            주문자휴대폰번호
-          </option>
-          <option value="goods_title" <c:if test="${search_type eq 'goods_title'}">selected</c:if>>
-            주문상품품명
-          </option>
+          <option value="orderer_id" <c:if test="${search_type eq 'orderer_id'}">selected</c:if>>주문자아이디</option>
+          <option value="orderer_name" <c:if test="${search_type eq 'orderer_name'}">selected</c:if>>주문자이름</option>
+          <option value="orderer_hp" <c:if test="${search_type eq 'orderer_hp'}">selected</c:if>>주문자휴대폰번호</option>
+          <option value="goods_title" <c:if test="${search_type eq 'goods_title'}">selected</c:if>>주문상품품명</option>
         </select>
         <input type="text" size="30" name="t_search_word" value="${search_word}"
                onsubmit="return false;" disabled/>

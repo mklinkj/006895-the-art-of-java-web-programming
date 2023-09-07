@@ -1,6 +1,6 @@
 package com.bookshop01.admin.member.controller;
 
-import static com.bookshop01.common.util.DateUtils.calcSearchPeriod;
+import static com.bookshop01.admin.common.ControllerUtils.processList;
 
 import com.bookshop01.admin.member.service.AdminMemberService;
 import com.bookshop01.common.base.BaseController;
@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,57 +27,8 @@ public class AdminMemberController extends BaseController {
       value = "/adminMemberMain.do",
       method = {RequestMethod.POST, RequestMethod.GET})
   public void adminGoodsMain(@RequestParam Map<String, String> paramMap, Model model) {
-
-    String fixedSearchPeriod = paramMap.get("fixedSearchPeriod");
-    String section =
-        paramMap.get("section"); // TODO: View에서는 chapter로 쓰고 쿼리에서는 section으로 쓰고 있었다. 😓 정리를 해야할 듯..
-    String pageNum = paramMap.get("pageNum");
-    String beginDate, endDate;
-
-    String[] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
-    beginDate = tempDate[0];
-    endDate = tempDate[1];
-    paramMap.put("beginDate", beginDate);
-    paramMap.put("endDate", endDate);
-
-    HashMap<String, Object> condMap = new HashMap<>();
-    if (section == null) {
-      section = "1";
-    }
-    condMap.put("section", section);
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-    condMap.put("pageNum", pageNum);
-    condMap.put("beginDate", beginDate);
-    condMap.put("endDate", endDate);
-
-    val command = paramMap.get("command");
-    model.addAttribute("command", command);
-
-    if ("detail_search".equals(command)) {
-      val searchType = paramMap.get("search_type");
-      val searchWord = paramMap.get("search_word");
-      condMap.put("search_type", searchType);
-      condMap.put("search_word", searchWord);
-      model.addAttribute("search_type", searchType);
-      model.addAttribute("search_word", searchWord);
-    }
-
-    List<MemberVO> memberList = adminMemberService.listMember(condMap);
-    model.addAttribute("member_list", memberList);
-
-    String[] beginDate1 = beginDate.split("-");
-    String[] endDate2 = endDate.split("-");
-    model.addAttribute("beginYear", beginDate1[0]);
-    model.addAttribute("beginMonth", beginDate1[1]);
-    model.addAttribute("beginDay", beginDate1[2]);
-    model.addAttribute("endYear", endDate2[0]);
-    model.addAttribute("endMonth", endDate2[1]);
-    model.addAttribute("endDay", endDate2[2]);
-
-    model.addAttribute("section", section);
-    model.addAttribute("pageNum", pageNum);
+    List<MemberVO> resultList = processList(adminMemberService::listMember, paramMap, model);
+    model.addAttribute("memberList", resultList);
   }
 
   @RequestMapping(
