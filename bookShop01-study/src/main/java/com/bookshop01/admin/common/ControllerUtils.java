@@ -2,10 +2,13 @@ package com.bookshop01.admin.common;
 
 import static com.bookshop01.common.constants.Constants.DATE_FORMAT_YYYY_MM_DD;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.admin.common.pagination.PageResponse;
+import com.bookshop01.admin.common.pagination.PageUtils;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import lombok.NoArgsConstructor;
 import lombok.val;
 import org.springframework.ui.Model;
@@ -20,11 +23,12 @@ public class ControllerUtils {
    * @param paramMap 파라미터 맵
    * @param model Spring 컨트롤러 Model
    * @return 목록 결과 값
-   * @param <R> 목록 결과 타입
+   * @param <T> 목록 결과 타입
    */
-  public static <R> R processList(
-      Function<Map<String, Object>, R> func, Map<String, String> paramMap, Model model) {
-    String section = paramMap.get("section");
+  public static <T> PageResponse<T> processList(
+      BiFunction<PageRequest, Map<String, Object>, PageResponse<T>> func,
+      Map<String, String> paramMap,
+      Model model) {
     String pageNum = paramMap.get("pageNum");
     String beginDate = paramMap.get("beginDate");
     String endDate = paramMap.get("endDate");
@@ -35,15 +39,12 @@ public class ControllerUtils {
       endDate = today.format(DATE_FORMAT_YYYY_MM_DD);
     }
 
-    Map<String, Object> condMap = new HashMap<>();
-    if (section == null) {
-      section = "1";
-    }
-    condMap.put("section", section);
+    LinkedHashMap<String, Object> condMap = new LinkedHashMap<>();
+
     if (pageNum == null) {
       pageNum = "1";
     }
-    condMap.put("pageNum", pageNum);
+
     condMap.put("beginDate", beginDate);
     condMap.put("endDate", endDate);
 
@@ -58,15 +59,14 @@ public class ControllerUtils {
       model.addAttribute("search_type", searchType);
       model.addAttribute("search_word", searchWord);
     }
-
-    R resultList = func.apply(condMap);
+    PageRequest pageRequest = PageRequest.builder().page(Integer.parseInt(pageNum)).build();
+    PageResponse<T> pageResult = func.apply(pageRequest, condMap);
 
     model.addAttribute("beginDate", beginDate);
     model.addAttribute("endDate", endDate);
 
-    model.addAttribute("section", section);
     model.addAttribute("pageNum", pageNum);
-
-    return resultList;
+    model.addAttribute("additionalParameters", PageUtils.additionalParameters(condMap));
+    return pageResult;
   }
 }

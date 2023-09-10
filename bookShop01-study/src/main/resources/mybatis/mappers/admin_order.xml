@@ -68,32 +68,47 @@
     <result column="namujiAddress" property="namujiAddress"/>
     <result column="joinDate" property="joinDate"/>
   </resultMap>
+
+  <sql id="order_condition">
+    WHERE TO_CHAR(pay_order_time,'YYYY-MM-DD') BETWEEN #{condMap.beginDate} AND #{condMap.endDate}
+    <if test=" condMap.search_type!=null and condMap.search_word!=null and condMap.search_word!='' ">
+      <if test=" condMap.search_type=='orderer_id' ">
+        AND member_id=#{condMap.search_word}
+      </if>
+      <if test=" condMap.search_type=='orderer_name' ">
+        AND orderer_name=#{condMap.search_word}
+      </if>
+      <if test=" condMap.search_type=='orderer_hp' ">
+        AND orderer_hp=#{condMap.search_word}
+      </if>
+      <if test=" condMap.search_type=='goods_title' ">
+        AND goods_title LIKE '%' || #{condMap.search_word} || '%'
+      </if>
+    </if>
+  </sql>
+
   <select id="selectNewOrderList" parameterType="map" resultMap="orderResult">
-    SELECT * FROM (
-      SELECT rowNum AS recNum
-           , t.*
-       FROM (
-        SELECT * FROM t_shopping_order
-         WHERE TO_CHAR(pay_order_time,'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
-        <if test=" search_word!=null and search_word!='' ">
-          <if test=" search_type=='orderer_id' ">
-            AND member_id=#{search_word}
-          </if>
-          <if test=" search_type=='orderer_name' ">
-            AND orderer_name=#{search_word}
-          </if>
-          <if test=" search_type=='orderer_hp' ">
-            AND orderer_hp=#{search_word}
-          </if>
-          <if test=" search_type=='goods_title' ">
-            AND goods_title LIKE '%' || #{search_word} || '%'
-          </if>
-        </if>
-        ORDER BY pay_order_time DESC
-      ) t
+    SELECT *
+      FROM (
+        SELECT ROWNUM AS rnum
+             , t.*
+          FROM (
+            SELECT * FROM t_shopping_order
+             <include refid="order_condition" />
+             ORDER BY pay_order_time DESC
+          ) t
     )
-    WHERE recNum BETWEEN (#{section}-1)*100+ (#{pageNum}-1)*10+1 AND (#{section}-1)*100+(#{pageNum})*10
+    <![CDATA[
+    WHERE rnum <= #{pageRequest.page} * #{pageRequest.size} AND rnum > #{pageRequest.offset}
+    ]]>
   </select>
+
+  <select id="countOrder" parameterType="map" resultType="long">
+    SELECT COUNT(*)
+     FROM t_shopping_order
+    <include refid="order_condition" />
+  </select>
+
 
   <select id="selectOrderDetail" parameterType="int" resultMap="orderResult">
     <![CDATA[

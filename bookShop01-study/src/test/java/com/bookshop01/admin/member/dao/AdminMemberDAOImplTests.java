@@ -2,6 +2,7 @@ package com.bookshop01.admin.member.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
 import com.bookshop01.member.vo.MemberVO;
 import java.util.HashMap;
 import java.util.List;
@@ -27,10 +28,9 @@ class AdminMemberDAOImplTests {
     condMap.put("search_type", "member_id");
     condMap.put("search_word", "admin");
 
-    condMap.put("section", 1);
-    condMap.put("pageNum", 1);
+    PageRequest pageRequest = PageRequest.builder().page(1).size(10).build();
 
-    List<MemberVO> result = adminMemberDAO.listMember(condMap);
+    List<MemberVO> result = adminMemberDAO.listMember(pageRequest, condMap);
 
     assertThat(result).isNotNull();
   }

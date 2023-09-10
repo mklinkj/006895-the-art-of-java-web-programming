@@ -1,5 +1,7 @@
 package com.bookshop01.admin.member.service;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.admin.common.pagination.PageResponse;
 import com.bookshop01.admin.member.dao.AdminMemberDAO;
 import com.bookshop01.member.vo.MemberVO;
 import java.util.List;
@@ -15,8 +17,14 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<MemberVO> listMember(Map<String, ?> condMap) {
-    return adminMemberDAO.listMember(condMap);
+  public PageResponse<MemberVO> listMember(PageRequest pageRequest, Map<String, ?> condMap) {
+    List<MemberVO> list = adminMemberDAO.listMember(pageRequest, condMap);
+
+    return PageResponse.<MemberVO>withAll()
+        .content(list)
+        .pageRequest(pageRequest)
+        .total(adminMemberDAO.countMember(condMap))
+        .build();
   }
 
   @Transactional(readOnly = true)

@@ -182,7 +182,7 @@
       <td>탈퇴여부</td>
     </tr>
     <c:choose>
-      <c:when test="${empty memberList}">
+      <c:when test="${empty pageResponse.content}">
         <tr>
           <td colspan=5 class="fixed">
             <strong>조회된 회원이 없습니다.</strong>
@@ -190,7 +190,7 @@
         </tr>
       </c:when>
       <c:otherwise>
-        <c:forEach var="item" items="${memberList}" varStatus="item_num">
+        <c:forEach var="item" items="${pageResponse.content}" varStatus="item_num">
           <tr>
             <td width=10%>
 
@@ -230,17 +230,26 @@
     </c:choose>
     <tr>
       <td colspan=8 class="fixed">
-        <c:forEach var="page" begin="1" end="10" step="1">
-          <c:if test="${section >1 && page==1 }">
-            <a href="${pageContext.request.contextPath}/admin/member/adminMemberMain.do?section=${section-1}&pageNum=${(section-1)*10 +1 }">&nbsp;pre
-              &nbsp;</a>
+        <div>
+          <c:if test="${pageResponse.prev}">
+            <a class="page-link" href="${pageContext.request.contextPath}/admin/member/adminMemberMain.do?pageNum=${pageResponse.start - 1}&command=${command}&${additionalParameters}">[◀ 이전]</a>
           </c:if>
-          <a href="${pageContext.request.contextPath}/admin/member/adminMemberMain.do?section=${section}&pageNum=${page}">${(section-1)*10 +page } </a>
-          <c:if test="${page ==10 }">
-            <a href="${pageContext.request.contextPath}/admin/member/adminMemberMain.do?section=${section+1}&pageNum=${section*10+1}">&nbsp;
-              next</a>
+
+          <c:forEach var="num" begin="${pageResponse.start}" end="${pageResponse.end}">
+            <c:choose>
+              <c:when test="${pageResponse.pageNumber == num}">
+                <a style="font-weight: bold; color: blue" class="page-link">[${num}]</strong></a>
+              </c:when>
+              <c:otherwise>
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/member/adminMemberMain.do?pageNum=${num}&command=${command}&${additionalParameters}">[${num}]</a>
+              </c:otherwise>
+            </c:choose>
+          </c:forEach>
+
+          <c:if test="${pageResponse.next}">
+            <a class="page-link" href="${pageContext.request.contextPath}/admin/member/adminMemberMain.do?pageNum=${pageResponse.end + 1}&command=${command}&${additionalParameters}">[다음 ▶]</a>
           </c:if>
-        </c:forEach>
+        </div>
       </td>
     </tr>
     </tbody>

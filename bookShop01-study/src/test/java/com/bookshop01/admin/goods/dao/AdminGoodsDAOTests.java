@@ -2,6 +2,7 @@ package com.bookshop01.admin.goods.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
 import com.bookshop01.common.util.DateUtils;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
@@ -143,12 +144,24 @@ class AdminGoodsDAOTests {
     condMap.put("endDate", "2018-10-18");
 
     // 기본 상태가 상품자체가 몇페이지가 될 정도는 아니여서, 1페이지로 봐보자.
-    condMap.put("section", 1);
-    condMap.put("pageNum", 1);
+    PageRequest pageRequest = PageRequest.builder().page(1).size(10).build();
 
-    List<GoodsVO> result = adminGoodsDAO.selectNewGoodsList(condMap);
+    List<GoodsVO> result = adminGoodsDAO.selectNewGoodsList(pageRequest, condMap);
 
     assertThat(result).isNotEmpty();
+  }
+
+  @Test
+  void countNewGoods() {
+    Map<String, Object> condMap = new HashMap<>();
+    // 상품 생성 기준 시작 일자
+    condMap.put("beginDate", "2018-10-02");
+    // 상품 생성 기준 종료 일자
+    condMap.put("endDate", "2018-10-18");
+
+    long result = adminGoodsDAO.countNewGoods(condMap);
+
+    assertThat(result).isGreaterThan(0);
   }
 
   @Test
@@ -248,31 +261,6 @@ class AdminGoodsDAOTests {
   void deleteGoodsImage() {
     int imageId = 400;
     adminGoodsDAO.deleteGoodsImage(imageId);
-  }
-
-  /*
-   TODO:
-     여기도 컬럼이 잘못된 부분이 있었음.
-     t_shopping_order 테이블에 orderer_id 라는 컬럼은 없는데...😓
-     아마도 member_id를 잘못 사용한 것으로 보임.
-  */
-  @Test
-  void selectOrderGoodsList() {
-
-    Map<String, Object> condMap = new HashMap<>();
-
-    condMap.put("beginDate", "2018-10-22");
-    condMap.put("endDate", "2018-10-23");
-
-    condMap.put("search_type", "orderer_id");
-    condMap.put("search_word", "lee");
-
-    condMap.put("section", 1);
-    condMap.put("pageNum", 1);
-
-    List<OrderVO> result = adminGoodsDAO.selectOrderGoodsList(condMap);
-
-    assertThat(result).hasSize(2);
   }
 
   @Transactional

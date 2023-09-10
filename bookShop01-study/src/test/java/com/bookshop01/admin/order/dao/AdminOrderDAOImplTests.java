@@ -2,6 +2,7 @@ package com.bookshop01.admin.order.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
 import com.bookshop01.member.vo.MemberVO;
 import com.bookshop01.order.vo.OrderVO;
 import java.util.HashMap;
@@ -29,12 +30,26 @@ class AdminOrderDAOImplTests {
     condMap.put("search_type", "orderer_id");
     condMap.put("search_word", "lee");
 
-    condMap.put("section", 1);
-    condMap.put("pageNum", 1);
+    PageRequest pageRequest = PageRequest.builder().page(1).size(1).build();
 
-    List<OrderVO> result = adminOrderDAO.selectNewOrderList(condMap);
+    List<OrderVO> result = adminOrderDAO.selectNewOrderList(pageRequest, condMap);
 
     assertThat(result).isNotEmpty();
+  }
+
+  @Test
+  void countOrder() {
+    Map<String, Object> condMap = new HashMap<>();
+
+    condMap.put("beginDate", "2018-10-22");
+    condMap.put("endDate", "2018-10-24");
+
+    condMap.put("search_type", "orderer_id");
+    condMap.put("search_word", "lee");
+
+    long result = adminOrderDAO.countOrder(condMap);
+
+    assertThat(result).isGreaterThan(0);
   }
 
   @Transactional

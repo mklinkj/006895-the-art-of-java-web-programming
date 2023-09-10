@@ -246,7 +246,7 @@
       <td>배송수정</td>
     </tr>
     <c:choose>
-      <c:when test="${empty newOrderList}">
+      <c:when test="${empty pageResponse.content}">
         <tr>
           <td colspan=5 class="fixed">
             <strong>주문한 상품이 없습니다.</strong>
@@ -254,7 +254,7 @@
         </tr>
       </c:when>
       <c:otherwise>
-        <c:forEach var="item" items="${newOrderList}" varStatus="i">
+        <c:forEach var="item" items="${pageResponse.content}" varStatus="i">
           <c:choose>
             <c:when test="${item.order_id != pre_order_id }">
               <c:choose>
@@ -345,16 +345,26 @@
     </c:choose>
     <tr>
       <td colspan=8 class="fixed">
-        <c:forEach var="page" begin="1" end="10" step="1">
-          <c:if test="${section >1 && page==1 }">
-            <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section-1}&pageNum=${(section-1)*10 +1 }">&nbsp;&nbsp;</a>
+        <div>
+          <c:if test="${pageResponse.prev}">
+            <a class="page-link" href="${pageContext.request.contextPath}/admin/order/adminOrderMain.do?pageNum=${pageResponse.start - 1}&command=${command}&${additionalParameters}">[◀ 이전]</a>
           </c:if>
-          <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section}&pageNum=${page}">${(section-1)*10 +page } </a>
-          <c:if test="${page ==10 }">
-            <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section+1}&pageNum=${section*10+1}">&nbsp;
-              next</a>
+
+          <c:forEach var="num" begin="${pageResponse.start}" end="${pageResponse.end}">
+            <c:choose>
+              <c:when test="${pageResponse.pageNumber == num}">
+                <a style="font-weight: bold; color: blue" class="page-link">[${num}]</strong></a>
+              </c:when>
+              <c:otherwise>
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/order/adminOrderMain.do?pageNum=${num}&command=${command}&${additionalParameters}">[${num}]</a>
+              </c:otherwise>
+            </c:choose>
+          </c:forEach>
+
+          <c:if test="${pageResponse.next}">
+            <a class="page-link" href="${pageContext.request.contextPath}/admin/order/adminOrderMain.do?pageNum=${pageResponse.end + 1}&command=${command}&${additionalParameters}">[다음 ▶]</a>
           </c:if>
-        </c:forEach>
+        </div>
       </td>
     </tr>
     </tbody>

@@ -1,13 +1,12 @@
 package com.bookshop01.admin.goods.dao;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
-import com.bookshop01.order.vo.OrderVO;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -29,40 +28,42 @@ public class AdminGoodsDAOImpl implements AdminGoodsDAO {
   }
 
   @Override
-  public List<GoodsVO> selectNewGoodsList(Map<String, ?> condMap) throws DataAccessException {
-    return sqlSession.selectList("mapper.admin.goods.selectNewGoodsList", condMap);
+  public List<GoodsVO> selectNewGoodsList(PageRequest pageRequest, Map<String, ?> condMap) {
+    return sqlSession.selectList(
+        "mapper.admin.goods.selectNewGoodsList",
+        Map.of("pageRequest", pageRequest, "condMap", condMap));
   }
 
   @Override
-  public GoodsVO selectGoodsDetail(int goodsId) throws DataAccessException {
+  public long countNewGoods(Map<String, ?> condMap) {
+    return sqlSession.selectOne("mapper.admin.goods.countNewGoods", Map.of("condMap", condMap));
+  }
+
+  @Override
+  public GoodsVO selectGoodsDetail(int goodsId) {
     return sqlSession.selectOne("mapper.admin.goods.selectGoodsDetail", goodsId);
   }
 
   @Override
-  public List<ImageFileVO> selectGoodsImageFileList(int goodsId) throws DataAccessException {
+  public List<ImageFileVO> selectGoodsImageFileList(int goodsId) {
     return sqlSession.selectList("mapper.admin.goods.selectGoodsImageFileList", goodsId);
   }
 
   @Override
-  public void updateGoodsInfo(Map<String, ?> goodsMap) throws DataAccessException {
+  public void updateGoodsInfo(Map<String, ?> goodsMap) {
     sqlSession.update("mapper.admin.goods.updateGoodsInfo", goodsMap);
   }
 
   @Override
-  public void deleteGoodsImage(int imageId) throws DataAccessException {
+  public void deleteGoodsImage(int imageId) {
     sqlSession.delete("mapper.admin.goods.deleteGoodsImage", imageId);
   }
 
   @Override
-  public void deleteGoodsImage(List<ImageFileVO> fileList) throws DataAccessException {
+  public void deleteGoodsImage(List<ImageFileVO> fileList) {
     for (ImageFileVO bean : fileList) {
       sqlSession.delete("mapper.admin.goods.deleteGoodsImage", bean.getImage_id());
     }
-  }
-
-  @Override
-  public List<OrderVO> selectOrderGoodsList(Map<String, ?> condMap) {
-    return sqlSession.selectList("mapper.admin.goods.selectOrderGoodsList", condMap);
   }
 
   @Override
@@ -71,7 +72,7 @@ public class AdminGoodsDAOImpl implements AdminGoodsDAO {
   }
 
   @Override
-  public void updateGoodsImage(ImageFileVO imageFile) throws DataAccessException {
+  public void updateGoodsImage(ImageFileVO imageFile) {
     sqlSession.update("mapper.admin.goods.updateGoodsImage", imageFile);
   }
 }

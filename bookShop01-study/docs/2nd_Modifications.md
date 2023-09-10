@@ -220,7 +220,7 @@
      WHERE NOT MEMBER_ID IN ('admin', 'lee');
     ```
 
-- [ ] **✨ TODO: `관리자` > `회원 관리` 에서  회원이 100명을 넘을 때.. 페이지 네비게이션이 정상 동작하지 않음.**
+- [x] **✨ TODO: `관리자` > `회원 관리` 에서  회원이 100명을 넘을 때.. 페이지 네비게이션이 정상 동작하지 않음.**
 
   * 조회 결과가 110명일 때, 100 ~ 110명 범위의 회원을 조회할 수 없음, 11페이지 부터 동작하지 않음.
   * ✨ TODO: 페이징 네비게이션 관련 기능은 일괄로 정리해서 바꿔야겠다. 😈
@@ -260,7 +260,7 @@
 
 #### `관리자` > `주문관리` > `주문 목록 페이지`
 
-* [ ] **TODO: 페이지 네비게이션 문제 - 이후 일괄로 바꾸자!**
+* [x] **TODO: 페이지 네비게이션 문제 - 이후 일괄로 바꾸자!**
 * [x] 상세 조회할 때.. 조회버튼을 눌러 조회하면 404페이지
   * ContextPath 문제 같다.
 * [x] 상세 조회 기능 문제 확인
@@ -290,7 +290,7 @@
 
 ---
 
-## ✨ 페이징  문제
+## ✨ 페이지네비게이션 문제
 
 >페이징 코드를 페이지 DTO 같은 것을 만들어서 처리해야할 것 같다.
 >
@@ -309,7 +309,10 @@
 
 #### TODOs
 
-* [ ] 페이지 네비게이션에서 페이지 링크를 누르면 기존 검색 조건 파라미터를 포함하지 않고 항상 페이지 번호, 섹션 번호으로만 파라미터를 넘겨 전할하여 검색조건 파라미터가 손실된다.
+* [x] 페이지 네비게이션에서 페이지 링크를 누르면 기존 검색 조건 파라미터를 포함하지 않고 항상 페이지 번호, 섹션 번호으로만 파라미터를 넘겨 전할하여 검색조건 파라미터가 손실된다.
+* [x] 페이징 문제는 전부 정리했다.
+  * PageRequest, PageResponse 도메인을 만들어서 페이징 계산은 Java 코드로 처리되게 하였음.
+  * 페이지 이동시에 검색 조건도 파라미터로 잘 포함되도록함.
 
 
 
@@ -325,4 +328,78 @@
 
 ## 2차 테스트 / 수정 최종의견
 
-* ...
+* 2차 이터레이션은 페이지네비게이션 문제를 정리한 것으로 마쳐야겠다. 😅
+* 3차 이터레이션은 서비스 패키지 부터 보도록 하자! 👍
+
+
+
+
+
+## Oracle 페이징 쿼리 의문점..
+
+```sql
+-- ### 1번 쿼리
+SELECT *
+FROM (SELECT ROWNUM AS rnum, t.*
+      FROM (SELECT *
+            FROM t_shopping_member
+            ORDER BY joinDate DESC) t
+      )
+WHERE rnum <=5 AND rnum > 0;
+
+-- ## 2번 쿼리
+SELECT *
+FROM (SELECT ROWNUM AS rnum, t.*
+      FROM (SELECT *
+            FROM t_shopping_member
+            ORDER BY joinDate DESC) t
+      WHERE ROWNUM <= 5)
+WHERE rnum > 0;
+
+-- ### 3번 쿼리
+SELECT *
+  FROM t_shopping_member
+ ORDER BY JOINDATE DESC
+ OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;
+```
+
+* 2, 3번 쿼리는 서로 결과가 같음 그러나 원하는 내용은 아님.
+* 1번은 원하는 내용
+
+2, 3번의 경우는 원하는 내용이 아니다. 왜그럴까?
+
+* **yyyy-MM-dd 단위로 가입날짜가 전부 같긴함.  (이거 때문에 버그 동작이 생기는 듯..)**
+* 확실히 구분할 수 있는 member_id를 기준으로 하면 3쿼리 모두 결과가 같음.
+* 그리고 OracleXE 21c에서 데이터 넣고 해봤는데.. 이때는 1~3번 쿼리 결과가 모두 같음.
+
+> 더 확인을 해봤는데.. ORDER BY 의 조건이 명확하면, 쿼리 결과가 동일함. (member_id로 오름차순 정렬 추가)
+>
+> ```sql
+> -- ### 1번 쿼리
+> SELECT *
+> FROM (SELECT ROWNUM AS rnum, t.*
+>       FROM (SELECT *
+>             FROM t_shopping_member
+>             ORDER BY joinDate DESC, member_id) t
+>       )
+> WHERE rnum <=5 AND rnum > 0;
+> 
+> -- ## 2번 쿼리
+> SELECT *
+> FROM (SELECT ROWNUM AS rnum, t.*
+>       FROM (SELECT *
+>             FROM t_shopping_member
+>             ORDER BY joinDate DESC, member_id) t
+>       WHERE ROWNUM <= 5)
+> WHERE rnum > 0;
+> 
+> -- ### 3번 쿼리
+> SELECT *
+>   FROM t_shopping_member
+>  ORDER BY JOINDATE DESC, member_id
+>  OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;
+> ```
+>
+> #### 의견
+>
+> * Oracle 18c에서는 정렬 기준의 중복이 많은 경우 페이징 처리시 문제가 있는 것 같음.

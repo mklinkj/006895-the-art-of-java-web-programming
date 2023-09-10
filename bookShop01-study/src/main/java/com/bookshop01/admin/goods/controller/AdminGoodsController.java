@@ -2,6 +2,7 @@ package com.bookshop01.admin.goods.controller;
 
 import static com.bookshop01.admin.common.ControllerUtils.processList;
 
+import com.bookshop01.admin.common.pagination.PageResponse;
 import com.bookshop01.admin.goods.service.AdminGoodsService;
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.common.util.ProjectDataUtils;
@@ -43,8 +44,9 @@ public class AdminGoodsController extends BaseController {
       value = "/adminGoodsMain.do",
       method = {RequestMethod.POST, RequestMethod.GET})
   public void adminGoodsMain(@RequestParam Map<String, String> paramMap, Model model) {
-    List<GoodsVO> resultList = processList(adminGoodsService::listNewGoods, paramMap, model);
-    model.addAttribute("newGoodsList", resultList);
+    PageResponse<GoodsVO> resultPage =
+        processList(adminGoodsService::listNewGoods, paramMap, model);
+    model.addAttribute("pageResponse", resultPage);
   }
 
   @RequestMapping(

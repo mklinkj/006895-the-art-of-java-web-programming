@@ -146,69 +146,54 @@
     <result column="goods_fileName" property="goods_fileName"/>
   </resultMap>
 
-  <select id="selectNewGoodsList" parameterType="java.util.Map" resultMap="goodsResult">
-    SELECT *
-    FROM (SELECT rowNum                                      AS recNum,
-                 goods_id,
-                 goods_title,
-                 goods_writer,
-                 goods_publisher,
-                 goods_sales_price,
-                 TO_CHAR(goods_creDate, 'YYYY-MM-DD')        AS goods_creDate,
-                 TO_CHAR(goods_published_date, 'YYYY-MM-DD') AS goods_published_date
-          FROM (SELECT goods_id,
-                       goods_title,
-                       goods_writer,
-                       goods_publisher,
-                       goods_sales_price,
-                       goods_creDate,
-                       goods_published_date
-                FROM t_shopping_goods
-                WHERE TO_CHAR(goods_creDate, 'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
-                <if test=" search_word != null and search_word != '' ">
-                  <if test=" search_type=='total'">
-                    AND (
-                        goods_title LIKE '%' || #{search_word} || '%'
-                        OR goods_writer=#{search_word}
-                    )
-                  </if>
-                  <if test=" search_type=='goods_id' ">
-                    AND goods_id=#{search_word}
-                  </if>
-                  <if test=" search_type=='goods_title'">
-                    AND goods_title LIKE '%' || #{search_word} || '%'
-                  </if>
-                  <if test="search_type=='goods_writer'">
-                    AND goods_writer=#{search_word}
-                  </if>
-                </if>
-                ORDER BY goods_creDate DESC))
-    WHERE recNum BETWEEN (#{section} - 1) * 100 + (#{pageNum} - 1) * 10 + 1 AND (#{section} - 1) * 100 + (#{pageNum}) * 10
+  <sql id="goods_condition">
+    WHERE TO_CHAR(goods_creDate, 'YYYY-MM-DD') BETWEEN #{condMap.beginDate} AND #{condMap.endDate}
+    <if test="condMap.search_type!=null and condMap.search_word!=null and condMap.search_word!='' ">
+      <if test=" condMap.search_type=='total'">
+        AND (
+        goods_title LIKE '%' || #{condMap.search_word} || '%'
+        OR goods_writer=#{condMap.search_word}
+        )
+      </if>
+      <if test=" condMap.search_type=='goods_id' ">
+        AND goods_id=#{condMap.search_word}
+      </if>
+      <if test=" condMap.search_type=='goods_title'">
+        AND goods_title LIKE '%' || #{condMap.search_word} || '%'
+      </if>
+      <if test="condMap.search_type=='goods_writer'">
+        AND goods_writer=#{condMap.search_word}
+      </if>
+    </if>
+  </sql>
 
+  <select id="selectNewGoodsList" parameterType="map" resultMap="goodsResult">
+    SELECT *
+      FROM (SELECT ROWNUM AS rnum,
+                   t.*
+              FROM (SELECT goods_id,
+                     goods_title,
+                     goods_writer,
+                     goods_publisher,
+                     goods_sales_price,
+                     TO_CHAR(goods_creDate, 'YYYY-MM-DD')        AS goods_creDate,
+                     TO_CHAR(goods_published_date, 'YYYY-MM-DD') AS goods_published_date
+                FROM t_shopping_goods
+                <include refid="goods_condition" />
+                ORDER BY goods_creDate DESC
+              ) t
+        )
+    <![CDATA[
+    WHERE rnum <= #{pageRequest.page} * #{pageRequest.size} AND rnum > #{pageRequest.offset}
+    ]]>
 	</select>
 
+  <select id="countNewGoods" parameterType="map" resultType="long">
+    SELECT COUNT(*)
+      FROM t_shopping_goods
+     <include refid="goods_condition" />
+	</select>
 
-  <select id="selectOrderGoodsList" parameterType="map" resultMap="orderGoodsResult">
-    SELECT * FROM (
-    SELECT rowNum AS recNum,t.*
-    FROM (
-    SELECT * FROM t_shopping_order
-    WHERE TO_CHAR(pay_order_time,'YYYY-MM-DD') BETWEEN #{beginDate} AND #{endDate}
-    <if test="search_type=='orderer_id'">
-      AND member_id=#{search_word}
-    </if>
-    <if test="search_type=='orderer_name'">
-      AND orderer_name=#{search_word}
-    </if>
-    <if test="search_type=='orderer_hp_num'">
-      AND pay_orderer_hp_num=#{search_word}
-    </if>
-    ORDER BY PAY_ORDER_TIME DESC
-    ) t
-    )
-    WHERE
-    recNum BETWEEN (#{section}-1)*100+ (#{pageNum}-1)*10+1 AND (#{section}-1)*100+(#{pageNum})*10
-  </select>
   <select id="selectGoodsDetail" parameterType="int" resultMap="goodsResult">
 	    <![CDATA[
     SELECT g.*, TO_CHAR(g.goods_published_date, 'YYYY-MM-DD') AS goods_published_date, d.fileName

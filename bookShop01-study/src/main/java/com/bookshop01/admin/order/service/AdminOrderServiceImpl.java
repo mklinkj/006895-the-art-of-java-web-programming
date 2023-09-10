@@ -1,5 +1,7 @@
 package com.bookshop01.admin.order.service;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.admin.common.pagination.PageResponse;
 import com.bookshop01.admin.order.dao.AdminOrderDAO;
 import com.bookshop01.member.vo.MemberVO;
 import com.bookshop01.order.vo.OrderVO;
@@ -16,8 +18,14 @@ public class AdminOrderServiceImpl implements AdminOrderService {
   private final AdminOrderDAO adminOrderDAO;
 
   @Transactional(readOnly = true)
-  public List<OrderVO> listNewOrder(Map<String, ?> condMap) {
-    return adminOrderDAO.selectNewOrderList(condMap);
+  public PageResponse<OrderVO> listNewOrder(PageRequest pageRequest, Map<String, ?> condMap) {
+    List<OrderVO> list = adminOrderDAO.selectNewOrderList(pageRequest, condMap);
+
+    return PageResponse.<OrderVO>withAll()
+        .content(list)
+        .pageRequest(pageRequest)
+        .total(adminOrderDAO.countOrder(condMap))
+        .build();
   }
 
   @Transactional

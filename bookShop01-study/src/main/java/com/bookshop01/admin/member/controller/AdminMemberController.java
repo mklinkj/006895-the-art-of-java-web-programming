@@ -2,11 +2,11 @@ package com.bookshop01.admin.member.controller;
 
 import static com.bookshop01.admin.common.ControllerUtils.processList;
 
+import com.bookshop01.admin.common.pagination.PageResponse;
 import com.bookshop01.admin.member.service.AdminMemberService;
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.member.vo.MemberVO;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +27,8 @@ public class AdminMemberController extends BaseController {
       value = "/adminMemberMain.do",
       method = {RequestMethod.POST, RequestMethod.GET})
   public void adminGoodsMain(@RequestParam Map<String, String> paramMap, Model model) {
-    List<MemberVO> resultList = processList(adminMemberService::listMember, paramMap, model);
-    model.addAttribute("memberList", resultList);
+    PageResponse<MemberVO> page = processList(adminMemberService::listMember, paramMap, model);
+    model.addAttribute("pageResponse", page);
   }
 
   @RequestMapping(

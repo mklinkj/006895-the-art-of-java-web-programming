@@ -1,9 +1,10 @@
 package com.bookshop01.admin.goods.service;
 
+import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.admin.common.pagination.PageResponse;
 import com.bookshop01.admin.goods.dao.AdminGoodsDAO;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
-import com.bookshop01.order.vo.OrderVO;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,14 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
   }
 
   @Override
-  public List<GoodsVO> listNewGoods(Map<String, ?> condMap) {
-    return adminGoodsDAO.selectNewGoodsList(condMap);
+  public PageResponse<GoodsVO> listNewGoods(PageRequest pageRequest, Map<String, ?> condMap) {
+    List<GoodsVO> list = adminGoodsDAO.selectNewGoodsList(pageRequest, condMap);
+
+    return PageResponse.<GoodsVO>withAll()
+        .content(list)
+        .pageRequest(pageRequest)
+        .total(adminGoodsDAO.countNewGoods(condMap))
+        .build();
   }
 
   @Override
@@ -61,11 +68,6 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
     for (ImageFileVO imageFile : imageFileList) {
       adminGoodsDAO.updateGoodsImage(imageFile);
     }
-  }
-
-  @Override
-  public List<OrderVO> listOrderGoods(Map<String, ?> condMap) {
-    return adminGoodsDAO.selectOrderGoodsList(condMap);
   }
 
   @Override

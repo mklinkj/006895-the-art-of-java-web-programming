@@ -2,10 +2,10 @@ package com.bookshop01.admin.order.controller;
 
 import static com.bookshop01.admin.common.ControllerUtils.processList;
 
+import com.bookshop01.admin.common.pagination.PageResponse;
 import com.bookshop01.admin.order.service.AdminOrderService;
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.order.vo.OrderVO;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class AdminOrderController extends BaseController {
       value = "/adminOrderMain.do",
       method = {RequestMethod.GET, RequestMethod.POST})
   public void adminOrderMain(@RequestParam Map<String, String> paramMap, Model model) {
-    List<OrderVO> resultList = processList(adminOrderService::listNewOrder, paramMap, model);
-    model.addAttribute("newOrderList", resultList);
+    PageResponse<OrderVO> page = processList(adminOrderService::listNewOrder, paramMap, model);
+    model.addAttribute("pageResponse", page);
   }
 
   @RequestMapping(

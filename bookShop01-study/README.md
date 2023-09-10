@@ -45,16 +45,14 @@
 
 #### [2차 이터레이션](docs/2nd_Modifications.md)
 
-* 패키지 단위로 Service > Controller 수정
-* ViewNameInterceptor 사용처는 전부 void 컨트롤러 메서드 사용방식 변경
-* ...
+* 어드민 패키지의 Service > Controller 수정
+* 어드민 패키지의 ViewNameInterceptor 사용처는 전부 void 컨트롤러 메서드 사용방식 변경
+* 페이지네비게이션 문제 수정
 
 #### [1차 이터레이션](docs/1st_Modifications.md)
 
 * DAO의 경우 모든 쿼리 확인 및 테스트 코드 작성
 * 그 이외는 핵심 문제가 아닌 이상 조금 씩만 정리
-
-
 
 
 

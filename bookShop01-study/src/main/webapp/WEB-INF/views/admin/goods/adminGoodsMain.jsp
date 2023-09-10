@@ -179,7 +179,7 @@
     <td>출판일</td>
   </tr>
   <c:choose>
-    <c:when test="${empty newGoodsList }">
+    <c:when test="${empty pageResponse.content }">
       <tr>
         <td colspan=8 class="fixed">
           <strong>조회된 상품이 없습니다.</strong>
@@ -187,7 +187,7 @@
       </tr>
     </c:when>
     <c:otherwise>
-      <c:forEach var="item" items="${newGoodsList }">
+      <c:forEach var="item" items="${pageResponse.content }">
         <tr>
           <td>
             <strong>${item.goods_id }</strong>
@@ -222,17 +222,26 @@
   </c:choose>
   <tr>
     <td colspan=8 class="fixed">
-      <c:forEach var="page" begin="1" end="10" step="1">
-      <c:if test="${section >1 && page==1 }">
-      <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section-1}&pageNum=${(section-1)*10 +1 }">&nbsp;
-        &nbsp;</a>
-      </c:if>
-      <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section}&pageNum=${page}">${(section-1)*10 +page } </a>
-      <c:if test="${page ==10 }">
-      <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section+1}&pageNum=${section*10+1}">&nbsp;
-        next</a>
-      </c:if>
-      </c:forEach>
+      <div>
+        <c:if test="${pageResponse.prev}">
+          <a class="page-link" href="${pageContext.request.contextPath}/admin/goods/adminGoodsMain.do?pageNum=${pageResponse.start - 1}&command=${command}&${additionalParameters}">[◀ 이전]</a>
+        </c:if>
+
+        <c:forEach var="num" begin="${pageResponse.start}" end="${pageResponse.end}">
+          <c:choose>
+            <c:when test="${pageResponse.pageNumber == num}">
+              <a style="font-weight: bold; color: blue" class="page-link">[${num}]</strong></a>
+            </c:when>
+            <c:otherwise>
+              <a class="page-link" href="${pageContext.request.contextPath}/admin/goods/adminGoodsMain.do?pageNum=${num}&command=${command}&${additionalParameters}">[${num}]</a>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+
+        <c:if test="${pageResponse.next}">
+          <a class="page-link" href="${pageContext.request.contextPath}/admin/goods/adminGoodsMain.do?pageNum=${pageResponse.end + 1}&command=${command}&${additionalParameters}">[다음 ▶]</a>
+        </c:if>
+      </div>
     </td>
   </tr>
   </tbody>
