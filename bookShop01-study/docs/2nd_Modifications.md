@@ -205,7 +205,7 @@
                                                ROADADDRESS, JIBUNADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y,
                                                MEMBER_BIRTH_M, MEMBER_BIRTH_D, MEMBER_BIRTH_GN,
                                                JOINDATE, DEL_YN)
-                VALUES ('mem' || i, '1212', '회원' || i, '101', '02', '1111', '2222', '010', '2222',
+                VALUES ('mem' || LPAD(''||i, 3, '0'), '1212', '회원' || i, '101', '02', '1111', '2222', '010', '2222',
                         '3333', 'Y', 'mem' || i,
                         'test.com', 'Y', '13547', '도로명주소', '지번주소', '나머지주소',
                         '2000', '5', '10', '2', TO_DATE('23/08/31', 'RR/MM/DD'), 'N');
