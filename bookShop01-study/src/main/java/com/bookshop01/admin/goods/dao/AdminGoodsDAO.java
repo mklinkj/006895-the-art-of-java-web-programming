@@ -1,6 +1,6 @@
 package com.bookshop01.admin.goods.dao;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageRequest;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
 import java.util.List;

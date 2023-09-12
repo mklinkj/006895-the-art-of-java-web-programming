@@ -2,9 +2,9 @@ package com.bookshop01.admin.common;
 
 import static com.bookshop01.common.constants.Constants.DATE_FORMAT_YYYY_MM_DD;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
-import com.bookshop01.admin.common.pagination.PageResponse;
-import com.bookshop01.admin.common.pagination.PageUtils;
+import com.bookshop01.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageResponse;
+import com.bookshop01.common.pagination.PageUtils;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;

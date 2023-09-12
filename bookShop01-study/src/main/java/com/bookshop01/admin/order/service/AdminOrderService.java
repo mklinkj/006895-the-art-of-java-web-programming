@@ -1,7 +1,7 @@
 package com.bookshop01.admin.order.service;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
-import com.bookshop01.admin.common.pagination.PageResponse;
+import com.bookshop01.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageResponse;
 import com.bookshop01.order.vo.OrderVO;
 import java.util.Map;
 

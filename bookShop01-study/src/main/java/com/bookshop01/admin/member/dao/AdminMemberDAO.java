@@ -1,6 +1,6 @@
 package com.bookshop01.admin.member.dao;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageRequest;
 import com.bookshop01.member.vo.MemberVO;
 import java.util.List;
 import java.util.Map;

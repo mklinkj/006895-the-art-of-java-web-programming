@@ -2,7 +2,7 @@ package com.bookshop01.admin.member.controller;
 
 import static com.bookshop01.admin.common.ControllerUtils.processList;
 
-import com.bookshop01.admin.common.pagination.PageResponse;
+import com.bookshop01.common.pagination.PageResponse;
 import com.bookshop01.admin.member.service.AdminMemberService;
 import com.bookshop01.common.base.BaseController;
 import com.bookshop01.member.vo.MemberVO;

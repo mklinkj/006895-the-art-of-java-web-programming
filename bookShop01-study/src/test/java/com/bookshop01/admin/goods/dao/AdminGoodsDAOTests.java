@@ -2,11 +2,10 @@ package com.bookshop01.admin.goods.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageRequest;
 import com.bookshop01.common.util.DateUtils;
 import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
-import com.bookshop01.order.vo.OrderVO;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;

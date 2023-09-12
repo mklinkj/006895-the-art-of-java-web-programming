@@ -1,4 +1,4 @@
-package com.bookshop01.admin.common.pagination;
+package com.bookshop01.common.pagination;
 
 import java.util.List;
 import lombok.Builder;
@@ -17,7 +17,7 @@ public class PageResponse<E> {
   /** 네비게이션에서의 시작 페이지 번호 */
   private final int start;
 
-  /** 네이베기션에서의 끝 페이지 번호 */
+  /** 네비게이션에서의 끝 페이지 번호 */
   private final int end;
 
   /** 이전 페이지의 존재 여부 */

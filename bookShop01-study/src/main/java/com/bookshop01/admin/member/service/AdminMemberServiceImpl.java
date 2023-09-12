@@ -1,7 +1,7 @@
 package com.bookshop01.admin.member.service;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
-import com.bookshop01.admin.common.pagination.PageResponse;
+import com.bookshop01.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageResponse;
 import com.bookshop01.admin.member.dao.AdminMemberDAO;
 import com.bookshop01.member.vo.MemberVO;
 import java.util.List;

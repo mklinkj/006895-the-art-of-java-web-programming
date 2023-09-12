@@ -2,7 +2,7 @@ package com.bookshop01.admin.member.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageRequest;
 import com.bookshop01.member.vo.MemberVO;
 import java.util.HashMap;
 import java.util.List;

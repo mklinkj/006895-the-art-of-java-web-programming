@@ -1,4 +1,4 @@
-package com.bookshop01.admin.common.pagination;
+package com.bookshop01.common.pagination;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

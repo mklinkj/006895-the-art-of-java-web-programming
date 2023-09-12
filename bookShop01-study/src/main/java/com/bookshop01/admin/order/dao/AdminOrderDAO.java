@@ -1,6 +1,6 @@
 package com.bookshop01.admin.order.dao;
 
-import com.bookshop01.admin.common.pagination.PageRequest;
+import com.bookshop01.common.pagination.PageRequest;
 import com.bookshop01.member.vo.MemberVO;
 import com.bookshop01.order.vo.OrderVO;
 import java.util.List;

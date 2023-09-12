@@ -1,4 +1,4 @@
-package com.bookshop01.admin.common.pagination;
+package com.bookshop01.common.pagination;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
