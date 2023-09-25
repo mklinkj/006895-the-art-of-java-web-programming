@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Controller
@@ -28,45 +28,38 @@ public class MyPageController extends BaseController {
   private final MyPageService myPageService;
 
   @RequestMapping(value = "/myPageMain.do", method = RequestMethod.GET)
-  public ModelAndView myPageMain(
+  public void myPageMain(
       @RequestParam(required = false, value = "message") String message,
-      HttpServletRequest request,
-      HttpSession session) {
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
+      HttpSession session,
+      Model model) {
+
     MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
-    String member_id = memberVO.getMember_id();
+    String memberId = memberVO.getMember_id();
 
-    List<OrderVO> myOrderList = myPageService.listMyOrderGoods(member_id);
+    List<OrderVO> myOrderList = myPageService.listMyOrderGoods(memberId);
 
-    mav.addObject("message", message);
-    mav.addObject("myOrderList", myOrderList);
-
-    return mav;
+    model.addAttribute("message", message);
+    model.addAttribute("myOrderList", myOrderList);
   }
 
   @RequestMapping(value = "/myOrderDetail.do", method = RequestMethod.GET)
-  public ModelAndView myOrderDetail(
-      @RequestParam("order_id") Integer orderId, HttpServletRequest request) {
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
+  public void myOrderDetail(
+      @RequestParam("order_id") Integer orderId, HttpServletRequest request, Model model) {
     HttpSession session = request.getSession();
     MemberVO orderer = (MemberVO) session.getAttribute("memberInfo");
 
     List<OrderVO> myOrderList = myPageService.findMyOrderInfo(orderId);
-    mav.addObject("orderer", orderer);
-    mav.addObject("myOrderList", myOrderList);
-    return mav;
+    model.addAttribute("orderer", orderer);
+    model.addAttribute("myOrderList", myOrderList);
   }
 
   @RequestMapping(value = "/listMyOrderHistory.do", method = RequestMethod.GET)
-  public ModelAndView listMyOrderHistory(
-      @RequestParam Map<String, String> dateMap, HttpServletRequest request) {
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
+  public void listMyOrderHistory(
+      @RequestParam Map<String, String> dateMap, HttpServletRequest request, Model model) {
+
     HttpSession session = request.getSession();
     MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
-    String member_id = memberVO.getMember_id();
+    String memberId = memberVO.getMember_id();
 
     String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
     String beginDate, endDate;
@@ -76,35 +69,29 @@ public class MyPageController extends BaseController {
     endDate = tempDate[1];
     dateMap.put("beginDate", beginDate);
     dateMap.put("endDate", endDate);
-    dateMap.put("member_id", member_id);
+    dateMap.put("member_id", memberId);
     List<OrderVO> myOrderHistList = myPageService.listMyOrderHistory(dateMap);
 
     String[] beginDate1 = beginDate.split("-"); // 검색일자를 년,월,일로 분리해서 화면에 전달합니다.
     String[] endDate1 = endDate.split("-");
-    mav.addObject("beginYear", beginDate1[0]);
-    mav.addObject("beginMonth", beginDate1[1]);
-    mav.addObject("beginDay", beginDate1[2]);
-    mav.addObject("endYear", endDate1[0]);
-    mav.addObject("endMonth", endDate1[1]);
-    mav.addObject("endDay", endDate1[2]);
-    mav.addObject("myOrderHistList", myOrderHistList);
-    return mav;
+    model.addAttribute("beginYear", beginDate1[0]);
+    model.addAttribute("beginMonth", beginDate1[1]);
+    model.addAttribute("beginDay", beginDate1[2]);
+    model.addAttribute("endYear", endDate1[0]);
+    model.addAttribute("endMonth", endDate1[1]);
+    model.addAttribute("endDay", endDate1[2]);
+    model.addAttribute("myOrderHistList", myOrderHistList);
   }
 
   @RequestMapping(value = "/cancelMyOrder.do", method = RequestMethod.POST)
-  public ModelAndView cancelMyOrder(@RequestParam("order_id") Integer orderId) {
-    ModelAndView mav = new ModelAndView();
+  public String cancelMyOrder(@RequestParam("order_id") Integer orderId, Model model) {
     myPageService.cancelOrder(orderId);
-    mav.addObject("message", "cancel_order");
-    mav.setViewName("redirect:/mypage/myPageMain.do");
-    return mav;
+    model.addAttribute("message", "cancel_order");
+    return "redirect:/mypage/myPageMain.do";
   }
 
   @RequestMapping(value = "/myDetailInfo.do", method = RequestMethod.GET)
-  public ModelAndView myDetailInfo(HttpServletRequest request) {
-    String viewName = (String) request.getAttribute("viewName");
-    return new ModelAndView(viewName);
-  }
+  public void myDetailInfo() {}
 
   @RequestMapping(value = "/modifyMyInfo.do", method = RequestMethod.POST)
   @ResponseBody

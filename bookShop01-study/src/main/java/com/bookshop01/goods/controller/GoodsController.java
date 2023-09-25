@@ -9,16 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -28,27 +27,22 @@ public class GoodsController extends BaseController {
   private final GoodsService goodsService;
 
   @RequestMapping(value = "/goodsDetail.do", method = RequestMethod.GET)
-  public ModelAndView goodsDetail(
-      @RequestParam("goods_id") String goods_id, HttpServletRequest request) throws Exception {
-    String viewName = (String) request.getAttribute("viewName");
+  public void goodsDetail(
+      @RequestParam("goods_id") String goodsId, HttpServletRequest request, Model model)
+      throws Exception {
     HttpSession session = request.getSession();
-    Map<String, ?> goodsMap = goodsService.goodsDetail(Integer.valueOf(goods_id));
-    ModelAndView mav = new ModelAndView(viewName);
-    mav.addObject("goodsMap", goodsMap);
+    Map<String, ?> goodsMap = goodsService.goodsDetail(Integer.valueOf(goodsId));
+    model.addAttribute("goodsMap", goodsMap);
     GoodsVO goodsVO = (GoodsVO) goodsMap.get("goodsVO");
-    addGoodsInQuick(goods_id, goodsVO, session);
-    return mav;
+    addGoodsInQuick(goodsId, goodsVO, session);
   }
 
   @RequestMapping(
       value = "/keywordSearch.do",
       method = RequestMethod.GET,
       produces = "application/text; charset=utf8")
-  public @ResponseBody String keywordSearch(
-      @RequestParam("keyword") String keyword, HttpServletResponse response) throws Exception {
-    response.setContentType("text/html;charset=utf-8");
-    response.setCharacterEncoding("utf-8");
-
+  @ResponseBody
+  public String keywordSearch(@RequestParam("keyword") String keyword) throws Exception {
     if (keyword == null || keyword.isEmpty()) {
       return null;
     }
@@ -62,17 +56,13 @@ public class GoodsController extends BaseController {
   }
 
   @RequestMapping(value = "/searchGoods.do", method = RequestMethod.GET)
-  public ModelAndView searchGoods(
-      @RequestParam("searchWord") String searchWord, HttpServletRequest request) throws Exception {
-    String viewName = (String) request.getAttribute("viewName");
+  public void searchGoods(@RequestParam("searchWord") String searchWord, Model model) {
     List<GoodsVO> goodsList = goodsService.searchGoods(searchWord);
-    ModelAndView mav = new ModelAndView(viewName);
-    mav.addObject("goodsList", goodsList);
-    return mav;
+    model.addAttribute("goodsList", goodsList);
   }
 
   private void addGoodsInQuick(String goods_id, GoodsVO goodsVO, HttpSession session) {
-    boolean already_existed = false;
+    boolean alreadyExisted = false;
     List<GoodsVO> quickGoodsList; // 최근 본 상품 저장 ArrayList
     quickGoodsList = (List<GoodsVO>) session.getAttribute("quickGoodsList");
 
@@ -81,11 +71,11 @@ public class GoodsController extends BaseController {
         for (int i = 0; i < quickGoodsList.size(); i++) {
           GoodsVO _goodsBean = quickGoodsList.get(i);
           if (goods_id.equals(_goodsBean.getGoods_id())) {
-            already_existed = true;
+            alreadyExisted = true;
             break;
           }
         }
-        if (already_existed == false) {
+        if (!alreadyExisted) {
           quickGoodsList.add(goodsVO);
         }
       }

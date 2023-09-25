@@ -39,15 +39,6 @@
     <beans:property name="defaultEncoding" value="utf-8"/>
   </beans:bean>
 
-
-  <mvc:interceptors>
-    <mvc:interceptor>
-      <mvc:mapping path="/*/*/*.do"/>
-      <mvc:mapping path="/*/*.do"/>
-      <beans:bean class="com.bookshop01.common.interceptor.ViewNameInterceptor"/>
-    </mvc:interceptor>
-  </mvc:interceptors>
-
   <mvc:resources mapping="/resources/**" location="/resources/"/>
   <mvc:resources mapping="/favicon.ico" location="/resources/"/>
 

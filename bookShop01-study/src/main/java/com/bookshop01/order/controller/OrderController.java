@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Controller
@@ -25,10 +25,9 @@ public class OrderController extends BaseController {
   private final OrderService orderService;
 
   @RequestMapping(value = "/orderEachGoods.do", method = RequestMethod.POST)
-  public ModelAndView orderEachGoods(
-      @ModelAttribute("orderVO") OrderVO _orderVO, HttpServletRequest request) throws Exception {
+  public String orderEachGoods(
+      @ModelAttribute("orderVO") OrderVO _orderVO, HttpServletRequest request, Model model) {
 
-    request.setCharacterEncoding("utf-8");
     HttpSession session = request.getSession();
 
     Boolean isLogOn = (Boolean) session.getAttribute("isLogOn");
@@ -40,7 +39,7 @@ public class OrderController extends BaseController {
     if (isLogOn == null || isLogOn == false) {
       session.setAttribute("orderInfo", _orderVO);
       session.setAttribute("action", "/order/orderEachGoods.do");
-      return new ModelAndView("redirect:/member/loginForm.do");
+      return "redirect:/member/loginForm.do";
     } else {
       if (action != null && action.equals("/order/orderEachGoods.do")) {
         orderVO = (OrderVO) session.getAttribute("orderInfo");
@@ -50,24 +49,21 @@ public class OrderController extends BaseController {
       }
     }
 
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
-
-    List myOrderList = new ArrayList<OrderVO>();
+    List<OrderVO> myOrderList = new ArrayList<>();
     myOrderList.add(orderVO);
 
     MemberVO memberInfo = (MemberVO) session.getAttribute("memberInfo");
 
     session.setAttribute("myOrderList", myOrderList);
     session.setAttribute("orderer", memberInfo);
-    return mav;
+    // TODO: 확인 필요
+    return "order/orderEachGoods";
   }
 
   @RequestMapping(value = "/orderAllCartGoods.do", method = RequestMethod.POST)
-  public ModelAndView orderAllCartGoods(
-      @RequestParam("cart_goods_qty") String[] cart_goods_qty, HttpServletRequest request) {
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
+  public void orderAllCartGoods(
+      @RequestParam("cart_goods_qty") String[] cartGoodsQty, HttpServletRequest request) {
+
     HttpSession session = request.getSession();
     Map cartMap = (Map) session.getAttribute("cartMap");
     List myOrderList = new ArrayList<OrderVO>();
@@ -75,8 +71,8 @@ public class OrderController extends BaseController {
     List<GoodsVO> myGoodsList = (List<GoodsVO>) cartMap.get("myGoodsList");
     MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 
-    for (int i = 0; i < cart_goods_qty.length; i++) {
-      String[] cart_goods = cart_goods_qty[i].split(":");
+    for (int i = 0; i < cartGoodsQty.length; i++) {
+      String[] cart_goods = cartGoodsQty[i].split(":");
       for (int j = 0; j < myGoodsList.size(); j++) {
         GoodsVO goodsVO = myGoodsList.get(j);
         int goods_id = goodsVO.getGoods_id();
@@ -97,14 +93,11 @@ public class OrderController extends BaseController {
     }
     session.setAttribute("myOrderList", myOrderList);
     session.setAttribute("orderer", memberVO);
-    return mav;
   }
 
   @RequestMapping(value = "/payToOrderGoods.do", method = RequestMethod.POST)
-  public ModelAndView payToOrderGoods(
-      @RequestParam Map<String, String> receiverMap, HttpServletRequest request) {
-    String viewName = (String) request.getAttribute("viewName");
-    ModelAndView mav = new ModelAndView(viewName);
+  public void payToOrderGoods(
+      @RequestParam Map<String, String> receiverMap, HttpServletRequest request, Model model) {
 
     HttpSession session = request.getSession();
     MemberVO memberVO = (MemberVO) session.getAttribute("orderer");
@@ -139,8 +132,7 @@ public class OrderController extends BaseController {
     } // end for
 
     orderService.addNewOrder(myOrderList);
-    mav.addObject("myOrderInfo", receiverMap); // OrderVO로 주문결과 페이지에  주문자 정보를 표시한다.
-    mav.addObject("myOrderList", myOrderList);
-    return mav;
+    model.addAttribute("myOrderInfo", receiverMap); // OrderVO로 주문결과 페이지에  주문자 정보를 표시한다.
+    model.addAttribute("myOrderList", myOrderList);
   }
 }
