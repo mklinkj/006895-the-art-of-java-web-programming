@@ -34,7 +34,7 @@
     <mockito.version>5.7.0</mockito.version>
     <hamcrest.version>2.2</hamcrest.version>
 
-    <spring.version>6.0.14</spring.version>
+    <spring.version>6.1.0</spring.version>
 
     <spring-security.version>6.1.5</spring-security.version>
 
@@ -68,7 +68,7 @@
     <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 
     <mybatis.version>3.5.14</mybatis.version>
-    <mybatis-spring.version>3.0.2</mybatis-spring.version>
+    <mybatis-spring.version>3.0.3</mybatis-spring.version>
     <mybatis-spring2x.version>2.1.1</mybatis-spring2x.version>
     <mybatis-dynamic-sql.version>1.5.0</mybatis-dynamic-sql.version>
 
