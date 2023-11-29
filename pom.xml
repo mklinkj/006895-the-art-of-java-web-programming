@@ -19,7 +19,7 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
     <lombok.version>1.18.30</lombok.version>
-    <log4j.version>2.21.1</log4j.version>
+    <log4j.version>2.22.0</log4j.version>
 
     <commons-text.version>1.11.0</commons-text.version>
 
@@ -34,9 +34,9 @@
     <mockito.version>5.7.0</mockito.version>
     <hamcrest.version>2.2</hamcrest.version>
 
-    <spring.version>6.1.0</spring.version>
+    <spring.version>6.1.1</spring.version>
 
-    <spring-security.version>6.1.5</spring-security.version>
+    <spring-security.version>6.2.0</spring-security.version>
 
     <aspectj.version>1.9.20.1</aspectj.version>
 
@@ -64,12 +64,12 @@
     <!-- JSP 페이지에서 dateFns를 직접 사용하려면 이 버전을 사용해야한다. -->
     <webjars-date-fns.version>1.30.1</webjars-date-fns.version>
 
-    <webjars-locator.version>0.48</webjars-locator.version>
+    <webjars-locator.version>0.50</webjars-locator.version>
     <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 
     <mybatis.version>3.5.14</mybatis.version>
     <mybatis-spring.version>3.0.3</mybatis-spring.version>
-    <mybatis-spring2x.version>2.1.1</mybatis-spring2x.version>
+    <mybatis-spring2x.version>2.1.2</mybatis-spring2x.version>
     <mybatis-dynamic-sql.version>1.5.0</mybatis-dynamic-sql.version>
 
     <hikaricp.version>5.1.0</hikaricp.version>
