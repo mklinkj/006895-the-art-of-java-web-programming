@@ -106,11 +106,6 @@
 
     <java-time-jsptags-javax.version>1.1.4</java-time-jsptags-javax.version>
 
-    <jetty.version>11.0.20</jetty.version>
-    <jetty-javax.version>10.0.20</jetty-javax.version>
-    <!-- ################################### -->
-
-
     <!-- Maven 플러그인 버전 관리 -->
     <mybatis-generator-maven-plugin.version>1.4.2</mybatis-generator-maven-plugin.version>
     <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
@@ -119,8 +114,9 @@
     <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
     <maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>
 
-    <!-- Jetty일 때는 provided로 설정할 필요가 있다. Jetty는 JSTL 라이브러리가 포함되어있음. -->
-    <jstl-scope.type>provided</jstl-scope.type>
+    <!-- ### Jetty 설정 #### -->
+    <jetty.version>12.0.6</jetty.version>    
+    <jetty.ee.version>ee8</jetty.ee.version>
 
     <!-- Jetty Http 포트 기본값 -->
     <jetty.port>8090</jetty.port>
@@ -141,17 +137,14 @@
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <properties>
-        <jstl-scope.type>provided</jstl-scope.type>
-      </properties>
       <build>
         <plugins>
           <!-- Jetty 서버 구동 -->
           <!-- 도움말 자세히보기: mvnw jetty:help -Ddetail=true -Dgoal=run -->
           <plugin>
-            <!-- https://www.eclipse.org/jetty/documentation/jetty-10/programming-guide/index.html#jetty-maven-plugin -->
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
+            <!-- https://eclipse.dev/jetty/documentation/jetty-12/programming-guide/index.html#jetty-maven-plugin -->
+            <groupId>org.eclipse.jetty.${jetty.ee.version}</groupId>
+            <artifactId>jetty-${jetty.ee.version}-maven-plugin</artifactId>
             <version>${jetty.version}</version>
             <configuration>
               <httpConnector>
@@ -168,7 +161,6 @@
               <deployMode>EMBED</deployMode>
               <stopKey>CTRL+C</stopKey>
               <stopPort>8999</stopPort>
-              <!-- 9.x 설정: <scanIntervalSeconds> 대신 <scan> 사용 -->
               <!-- 
                 변경 감지 자동 재시작시 ContextLoaderListener가 제대로 실행되지 않는 오류가 발생한다.
                 설정을 -1로하여 자동 재시작이 일어나지 않도록 한다.

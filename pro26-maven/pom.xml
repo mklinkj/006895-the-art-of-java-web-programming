@@ -24,9 +24,8 @@
   -->
 
   <properties>
-    <jetty.version>${jetty-javax.version}</jetty.version>
-    <jetty-context-path>/</jetty-context-path>
     <spring.version>${spring4.version}</spring.version>
+    <mybatis-spring.version>${mybatis-spring2x.version}</mybatis-spring.version>
   </properties>
 
   <dependencies>
@@ -95,7 +94,6 @@
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
       <version>${jstl.version}</version>
-      <scope>${jstl-scope.type}</scope>
     </dependency>
 
     <dependency>
