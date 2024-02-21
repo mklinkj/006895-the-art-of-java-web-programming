@@ -28,17 +28,17 @@
 
     <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
 
-    <junit.version>5.10.1</junit.version>
-    <assertj.version>3.25.1</assertj.version>
+    <junit.version>5.10.2</junit.version>
+    <assertj.version>3.25.3</assertj.version>
     <json-unit.version>3.2.2</json-unit.version>
-    <mockito.version>5.8.0</mockito.version>
+    <mockito.version>5.10.0</mockito.version>
     <hamcrest.version>2.2</hamcrest.version>
 
-    <spring.version>6.1.3</spring.version>
+    <spring.version>6.1.4</spring.version>
 
-    <spring-security.version>6.2.1</spring-security.version>
+    <spring-security.version>6.2.2</spring-security.version>
 
-    <aspectj.version>1.9.21</aspectj.version>
+    <aspectj.version>1.9.21.1</aspectj.version>
 
     <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
     <jakarta.servlet.jsp-api.version>3.1.1</jakarta.servlet.jsp-api.version>
@@ -82,8 +82,8 @@
     <!-- #### Servlet 4 Project Support #### -->
     <!-- ################################### -->
 
-    <spring5.version>5.3.31</spring5.version>
-    <spring-security5.version>5.8.9</spring-security5.version>
+    <spring5.version>5.3.32</spring5.version>
+    <spring-security5.version>5.8.10</spring-security5.version>
 
     <spring4.version>4.3.30.RELEASE</spring4.version>
     <!-- Spring 3까지 내려서 테스트하긴 시행착오가 많다. 😅 -->
@@ -106,8 +106,8 @@
 
     <java-time-jsptags-javax.version>1.1.4</java-time-jsptags-javax.version>
 
-    <jetty.version>11.0.19</jetty.version>
-    <jetty-javax.version>10.0.19</jetty-javax.version>
+    <jetty.version>11.0.20</jetty.version>
+    <jetty-javax.version>10.0.20</jetty-javax.version>
     <!-- ################################### -->
 
 
